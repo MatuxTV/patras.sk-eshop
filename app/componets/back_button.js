@@ -6,9 +6,9 @@ const GoBack = () => {
   };
 
   return (
-    <a onClick={goBackHandler} className=" flex text-h4 m-10 font-plus-jakarta">
+    <button onClick={goBackHandler} className=" flex text-h4 m-10 font-plus-jakarta">
       Späť
-    </a>
+    </button>
   );
 };
 

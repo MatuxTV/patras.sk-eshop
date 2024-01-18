@@ -2,7 +2,7 @@ import Nav from "../componets/nav";
 import Link from "next/link";
 import Image from "next/image";
 import ToCart from "../componets/tocart";
-import goBack from "../componets/back_button";
+import GoBack from "../componets/back_button";
 
 const Produkt = async ({ searchParams }) => {
   const productID = searchParams.id;
@@ -24,17 +24,13 @@ const Produkt = async ({ searchParams }) => {
   return (
     <div>
       <Nav product={"Produkty"} />
-      <div className="">
-        <div>
-          <goBack/>
-        </div>
+      {/* <GoBack /> */}
+      <div className=" flex">
         <div className="flex flex-row">
           <div className="w-1/2 justify-center items-center">
             <Image
-              // Uncomment and use the following line if the image should be responsive
-              // layout="responsive"
               src={`${process.env.NEXT_PUBLIC_DIRECTUS}assets/${produkt.data.obrazok}`}
-              alt={produkt.data.meno} // Replace with actual product name
+              alt={produkt.data.meno}
               width={500}
               height={500}
             />
@@ -46,25 +42,27 @@ const Produkt = async ({ searchParams }) => {
               </h1>
             </div>
             <div>
-              <p className=" text-left py-5 font-plus-jakarta ">{produkt.data.popisok}</p>
+              <p className=" text-left py-5 font-plus-jakarta ">
+                {produkt.data.popisok}
+              </p>
             </div>
             <div>
-              <p className=" text-h4 font-plus-jakarta py-5">{produkt.data.cena}€</p>
+              <p className=" text-h4 font-plus-jakarta py-5">
+                {produkt.data.cena}€
+              </p>
             </div>
             <div className=" align-middle py-5">
               <ToCart product={produkt} />
             </div>
             <div>
-              <p>
-                <p
-                  className={`${
-                    produkt.data.dostupnost
-                      ? "text-blue1 text-h6"
-                      : "text-red text-h6"
-                  } py-8 font-plus-jakarta`}
-                >
-                  {produkt.data.dostupnost ? "Skladom" : "Nedostupne"}
-                </p>
+              <p
+                className={`${
+                  produkt.data.dostupnost
+                    ? "text-blue1 text-h6"
+                    : "text-red text-h6"
+                } py-8 font-plus-jakarta`}
+              >
+                {produkt.data.dostupnost ? "Skladom" : "Nedostupne"}
               </p>
             </div>
           </div>
