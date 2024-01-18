@@ -25,7 +25,7 @@ export default function Product(data) {
             </div>
           </div>
           <p className={`${available ? "text-blue1 text-h6" : "text-red text-h6"} text-center `} >
-            {available ? "Skladom" : "Nedostupne"}
+            {available ? `Na sklade - ${data.mnozstvo}ks` : "Nedostupne"}
           </p>
         </div>
       </a>

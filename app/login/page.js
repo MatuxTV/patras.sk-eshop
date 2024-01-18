@@ -27,8 +27,6 @@ const LoginPage = () => {
         setError('Your email or password is incorrect');
       }
     }
-    
-
     console.log(data);
   }
 

@@ -22,7 +22,6 @@ export async function POST(request) {
     if (code === 'RECORD_NOT_UNIQUE') {
       return NextResponse.json({ message: "This user already exist" }, { status: 409 });
     }
-
     return NextResponse.json({ message: "An unexpected error occurred, please try again" }, { status: 500 });
   }
 }

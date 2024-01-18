@@ -1,25 +1,48 @@
 'use client';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
+import Link from 'next/link';
+import Image from 'next/image';
+import Nav from '../componets/nav';
 
 export default function RegistrationForm() {
   const router = useRouter();
+  const [formData, setFormData] = useState({
+    first_name: '',
+    last_name: '',
+    email: '',
+    password: ''
+  });
   const [error, setError] = useState('');
-  
-  const handleSubmit = async (data) => {
-    const response = await fetch(`/api/auth/register`, {
-      method: 'POST',
-      body: JSON.stringify(data),
-    });
-    
-    if (response.status === 201) {
-      router.push('/');
-      router.refresh();
-    } else if (response.status === 409) {
-      setError('A user with this email already exist');
-    }
+
+  // Update form data on input change
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+    setFormData(prevFormData => ({
+      ...prevFormData,
+      [name]: value
+    }));
   };
 
+  // Submit form data to the API route
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+
+    const response = await fetch(`/api/auth/register`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(formData)
+    });
+
+    if (response.status === 201) {
+      router.push('/');
+    } else {
+      const result = await response.json();
+      setError(result.message || 'An error occurred during registration.');
+    }
+  };
 
   return(
     <>
@@ -158,5 +181,5 @@ export default function RegistrationForm() {
         </div>
       </div>
     </>
-  )
-}
+  );
+};

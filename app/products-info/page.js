@@ -62,7 +62,7 @@ const Produkt = async ({ searchParams }) => {
                     : "text-red text-h6"
                 } py-8 font-plus-jakarta`}
               >
-                {produkt.data.dostupnost ? "Skladom" : "Nedostupne"}
+                {produkt.data.dostupnost ? `Na sklade - ${produkt.data.mnozstvo}ks` : "Nedostupne"}
               </p>
             </div>
           </div>
