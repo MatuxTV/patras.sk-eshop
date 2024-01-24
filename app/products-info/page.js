@@ -3,6 +3,8 @@ import Link from "next/link";
 import Image from "next/image";
 import ToCart from "../componets/tocart";
 import GoBack from "../componets/back_button";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Produkt = async ({ searchParams }) => {
   const productID = searchParams.id;
@@ -19,14 +21,21 @@ const Produkt = async ({ searchParams }) => {
 
   const produkt = await getProduct();
 
-  console.log(produkt);
-
   return (
     <div>
       <Nav product={"Produkty"} />
       {/* <GoBack /> */}
       <div className=" flex">
         <div className="flex flex-row">
+        <ToastContainer
+        position="top-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        zIndex={1}
+      />
           <div className="w-1/2 justify-center items-center">
             <Image
               src={`${process.env.NEXT_PUBLIC_DIRECTUS}assets/${produkt.data.obrazok}`}
@@ -52,7 +61,7 @@ const Produkt = async ({ searchParams }) => {
               </p>
             </div>
             <div className=" align-middle py-5">
-              <ToCart product={produkt} />
+              <ToCart product={produkt.data} />
             </div>
             <div>
               <p

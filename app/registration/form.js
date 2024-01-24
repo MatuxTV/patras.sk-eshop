@@ -28,6 +28,7 @@ export default function RegistrationForm() {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
+    console.log(formData);
     const response = await fetch(`/api/auth/register`, {
       method: 'POST',
       headers: {
@@ -62,7 +63,6 @@ export default function RegistrationForm() {
             onSubmit={handleSubmit}
           >
             <div className="text-center">
-              {" "}
               {/* Nadpis formulára */}
               <p className="text-h4 text-black1 font-plus-jakarta m-4">
                 Registrácia

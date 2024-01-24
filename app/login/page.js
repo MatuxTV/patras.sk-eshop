@@ -1,9 +1,9 @@
 "use client";
 import React, { useState } from "react";
 import Image from "next/image";
-import Nav from "../componets/nav"; 
+import Nav from "../componets/nav";  
 import Link from "next/link";
-import { signIn } from 'next-auth/react';
+import { signIn} from 'next-auth/react';
 import { useRouter } from "next/navigation"; 
 
 const LoginPage = () => {
@@ -27,7 +27,6 @@ const LoginPage = () => {
         setError('Your email or password is incorrect');
       }
     }
-    console.log(data);
   }
 
   return (
@@ -48,7 +47,6 @@ const LoginPage = () => {
             onSubmit = {handleSubmit}
           >
             <div className="text-center">
-              {" "}
               {/* Nadpis formulára */}
               <p className="text-h4 text-black1 font-plus-jakarta m-4">
                 Prihlásenie

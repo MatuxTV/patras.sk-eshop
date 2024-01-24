@@ -3,6 +3,11 @@ import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useCart } from "../../lib/cart-context"; // Import the hook
+import { faShoppingCart } from "@fortawesome/free-solid-svg-icons";
+import "@fortawesome/fontawesome-svg-core/styles.css";
+import { config } from "@fortawesome/fontawesome-svg-core";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+config.autoAddCss = false;
 
 const Nav = (props) => {
   const { cartItems } = useCart(); // Get cart items from the cart context
@@ -53,7 +58,7 @@ const Nav = (props) => {
               </span>
             ) : (
               // Show the cart icon when the cart is empty
-              <i className="fas fa-shopping-cart text-white1" />
+              <FontAwesomeIcon icon={faShoppingCart} className="fas fa-shopping-cart" style={{ color: "white" }}/>
             )}
           </button>
         </Link>

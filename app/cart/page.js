@@ -4,9 +4,12 @@ import React from "react";
 import Image from "next/image";
 import { useCart } from "../../lib/cart-context"; // Adjust the import path accordingly
 import Nav from "../componets/nav";
+import Link from "next/link";
 
 const CartItem = ({ item }) => {
   const { removeFromCart, changeQuantity } = useCart(); // Use the removeFromCart function from context
+
+  
   return (
     <div className="flex items-center justify-between p-4 border-b">
       <button
@@ -54,7 +57,6 @@ const Cart = () => {
     (acc, item) => acc + item.cena * item.quantity,
     0
   );
-
   return (
     <div className="container mx-auto my-8">
       <Nav product={"Produkty"} />
@@ -76,9 +78,12 @@ const Cart = () => {
             <span className="text-lg font-bold">Celková suma</span>
             <span className="text-lg font-bold">{`${total}€`}</span>
           </div>
+          <Link href={"/"}>
           <button className="w-full mt-4 py-2 bg-blue-500 text-white font-bold rounded hover:bg-blue-600">
             Pokračovať
           </button>
+          </Link>
+          
         </div>
       </div>
     </div>

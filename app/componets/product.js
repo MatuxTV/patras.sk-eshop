@@ -2,6 +2,7 @@ import Image from "next/image";
 import ToCart from "../componets/tocart";
 
 export default function Product(data) {
+  
   const available = data.dostupnost;
 
   return (
