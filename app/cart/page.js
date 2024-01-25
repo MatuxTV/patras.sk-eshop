@@ -65,7 +65,7 @@ const Cart = () => {
           <h1 className=" text-h3 font-bold text-center my-4 font-plus-jakarta ">
             Váš Košík
           </h1>
-          <div className=" bg-blue1 w-16 h-2 rounded-lg bottom-0 z-10  rotate-[-2deg] left-[180px] "> </div>
+          {/* <div className=" bg-blue1 w-16 h-2 rounded-lg bottom-0 z-10  rotate-[-2deg] left-[180px] "> </div> */}
         </div>
 
         <div className="w-full">
@@ -78,7 +78,7 @@ const Cart = () => {
             <span className="text-lg font-bold">Celková suma</span>
             <span className="text-lg font-bold">{`${total}€`}</span>
           </div>
-          <Link href={"/"}>
+          <Link href={"/cart/order"}>
           <button className="w-full mt-4 py-2 bg-blue-500 text-white font-bold rounded hover:bg-blue-600">
             Pokračovať
           </button>
