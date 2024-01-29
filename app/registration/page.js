@@ -1,13 +1,4 @@
 "use client";
-import React, { useState } from "react";
-import Image from "next/image";
-import Nav from "../componets/nav"; // Uistite sa, že cesta k komponentu Nav je správna
-import Link from "next/link";
-import {createUser} from '@directus/sdk';
-import { NextResponse } from "next/server";
-import directus from "@/lib/directus";
-import { getServerSession } from "next-auth";
-import { redirect } from "next/navigation";
 import RegistrationForm from "./form";
 
 export default async function RegisterPage() {

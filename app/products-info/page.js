@@ -2,7 +2,7 @@ import Nav from "../componets/nav";
 import Link from "next/link";
 import Image from "next/image";
 import ToCart from "../componets/tocart";
-import GoBack from "../componets/back_button";
+import BackButton from "../componets/back_button";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -24,7 +24,7 @@ const Produkt = async ({ searchParams }) => {
   return (
     <div>
       <Nav product={"Produkty"} />
-      {/* <GoBack /> */}
+      <BackButton/>
       <div className=" flex">
         <div className="flex flex-row">
         <ToastContainer
