@@ -3,12 +3,14 @@ import React from "react";
 // Import components from Next.js and Tailwind CSS
 import Image from "next/image";
 import Link from "next/link";
+import Nav from "@/app/componets/nav";
 
 const CheckoutLayout = () => {
   // State and functions would go here to handle form submissions, etc.
 
   return (
     <div className="container mx-auto my-8 p-4">
+        <Nav/>
       <div className="flex justify-center py-8">
         <h1 className=" text-h3 font-bold text-center my-4 font-plus-jakarta ">
           Váš Košík
