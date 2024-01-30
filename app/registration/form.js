@@ -6,6 +6,7 @@ import Image from 'next/image';
 import Nav from '../componets/nav';
 
 export default function RegistrationForm() {
+  
   const router = useRouter();
   const [formData, setFormData] = useState({
     first_name: '',
@@ -43,7 +44,7 @@ export default function RegistrationForm() {
       const result = await response.json();
       setError(result.message || 'An error occurred during registration.');
     }
-  };
+  }
 
   return(
     <>

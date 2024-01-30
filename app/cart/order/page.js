@@ -3,8 +3,6 @@ import React from "react";
 // Import components from Next.js and Tailwind CSS
 import Image from "next/image";
 import Link from "next/link";
-import { useCart } from "../../../lib/cart-context";
-import Nav from "@/app/componets/nav";
 
 const CheckoutLayout = () => {
   // const { cartItems } = useCart();
@@ -14,8 +12,7 @@ const CheckoutLayout = () => {
   // );
 
   return (
-    <div className="container">
-      <Nav />
+    <div className="container mx-auto my-8 p-4">
       <div className="flex justify-center py-8">
         <h1 className=" text-h3 font-bold text-center mb-4 font-plus-jakarta ">
           Váš Košík
