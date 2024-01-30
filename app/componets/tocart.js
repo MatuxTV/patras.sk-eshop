@@ -3,6 +3,11 @@ import React from "react";
 import { useCart } from "../../lib/cart-context"; // Import the hook
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { faShoppingCart } from "@fortawesome/free-solid-svg-icons";
+import "@fortawesome/fontawesome-svg-core/styles.css";
+import { config } from "@fortawesome/fontawesome-svg-core";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+config.autoAddCss = false;
 
 const ToCart = ({ product }) => {
   const { addToCart } = useCart(); // Use the hook
@@ -26,7 +31,11 @@ const ToCart = ({ product }) => {
       >
         <div className="flex flex-row items-center">
           <div className="flex">
-            <i className="fa-solid fa-cart-arrow-down text-white1 m-2" />
+            <FontAwesomeIcon
+              icon={faShoppingCart}
+              className="fas fa-shopping-cart"
+              style={{ color: "white" }}
+            />
           </div>
           <div>
             <p className="text-white1 text-h6 font-plus-jakarta">Do Kosiku</p>

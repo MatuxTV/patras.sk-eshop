@@ -3,39 +3,52 @@ import React from "react";
 // Import components from Next.js and Tailwind CSS
 import Image from "next/image";
 import Link from "next/link";
+import { useCart } from "../../../lib/cart-context";
+import Nav from "@/app/componets/nav";
 
 const CheckoutLayout = () => {
-  // State and functions would go here to handle form submissions, etc.
+  // const { cartItems } = useCart();
+  // const total = cartItems.reduce(
+  //   (acc, item) => acc + item.cena * item.quantity,
+  //   0
+  // );
 
   return (
-    <div className="container mx-auto my-8 p-4">
+    <div className="container">
+      <Nav />
       <div className="flex justify-center py-8">
-        <h1 className=" text-h3 font-bold text-center my-4 font-plus-jakarta ">
+        <h1 className=" text-h3 font-bold text-center mb-4 font-plus-jakarta ">
           Váš Košík
         </h1>
         {/* <div className=" bg-blue1 w-16 h-2 rounded-lg bottom-0 z-10  rotate-[-2deg] left-[180px] "> </div> */}
       </div>
       {/* Progress Bar - indicate checkout steps */}
-      <div className="flex justify-around mb-8">
-        <div className="text-center">
+      <div className="flex justify-around mb-8 h-16 items-center bg-blue2">
+
+        <div className="text-center grid-flow-col grid grid-cols-2 gap-2">
+          <p className=" bg-blue1 w-16  font-plus-jakarta text-h5 text-white1 rounded-full">1</p>
           <Link href={"/cart"}>
-            <p>1. Košík</p>
+            <p className=" font-plus-jakarta text-h5">Košík</p>
           </Link>
         </div>
-        <div className="text-center">
+
+        <div className="text-center grid-flow-col grid grid-cols-2 gap-2">
+        <p className=" bg-blue1 w-16   font-plus-jakarta text-h5 text-white1 rounded-full">2</p>
           <Link href={"/cart/order"}>
-            <p>2.Dodacie udaje</p>
+            <p className=" font-plus-jakarta text-h5">Dodacie udaje</p>
           </Link>
         </div>
-        <div className="text-center">
+
+        <div className="text-center grid-flow-col grid grid-cols-2 gap-2">
+        <p className=" border w-16  font-plus-jakarta text-h5 text-black1 rounded-full">3</p>
           <Link href={"/cart"}>
-            <p>3. Doprava a platba</p>
+            <p className=" font-plus-jakarta text-h5">Doprava a platba</p>
           </Link>
         </div>
       </div>
 
       {/* Checkout Form */}
-      <div className="flex flex-wrap md:flex-nowrap">
+      <div className="flex flex-wrap md:flex-nowrap p-4">
         <div className="w-full md:w-2/3 p-4 bg-blue2">
           <form>
             <h2 className="text-xl mb-4 font-plus-jakarta">Kontaktné údaje</h2>
@@ -77,7 +90,9 @@ const CheckoutLayout = () => {
               </div>
             </div>
 
-            <h2 className="text-xl mb-4 mt-8 font-plus-jakarta">Fakturačné údaje</h2>
+            <h2 className="text-xl mb-4 mt-8 font-plus-jakarta">
+              Fakturačné údaje
+            </h2>
             <div className=" p-6 bg-white1">
               <div className="mb-4 grid grid-cols-3 gap-3">
                 <input
