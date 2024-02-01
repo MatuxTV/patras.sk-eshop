@@ -7,12 +7,11 @@ import Nav from "../componets/nav";
 import Link from "next/link";
 
 const CartItem = ({ item }) => {
-  const { removeFromCart, changeQuantity } = useCart(); // Use the removeFromCart function from context
+  const { removeFromCart, changeQuantity } = useCart(); 
 
   
   return (
 
-    
     <div className="flex items-center justify-between p-4 border-b">
       <button
         onClick={() => removeFromCart(item.id)}
