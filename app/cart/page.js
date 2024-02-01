@@ -7,11 +7,9 @@ import Nav from "../componets/nav";
 import Link from "next/link";
 
 const CartItem = ({ item }) => {
-  const { removeFromCart, changeQuantity } = useCart(); 
+  const { removeFromCart, changeQuantity } = useCart();
 
-  
   return (
-
     <div className="flex items-center justify-between p-4 border-b">
       <button
         onClick={() => removeFromCart(item.id)}
@@ -59,33 +57,58 @@ const Cart = () => {
     0
   );
   return (
-    <div className="container mx-auto my-8">
-      <Nav product={"Produkty"} />
-      <div className="flex flex-col items-center">
-        <div className="flex">
-          <h1 className=" text-h3 font-bold text-center my-4 font-plus-jakarta ">
-            Váš Košík
-          </h1>
-          {/* <div className=" bg-blue1 w-16 h-2 rounded-lg bottom-0 z-10  rotate-[-2deg] left-[180px] "> </div> */}
+    <div className="container mx-auto my-8 p-4">
+      <Nav />
+
+      <div className="flex justify-center py-8">
+        <h1 className=" text-h3 font-bold text-center mb-4 font-plus-jakarta ">
+          Váš Košík
+        </h1>
+      </div>
+      <div className="flex justify-around mb-8 h-16 items-center bg-blue2">
+          <div className="flex flex-row gap-2">
+            <p className="bg-blue1 w-16 text-center font-plus-jakarta text-h5 text-white1 rounded-full">
+              1
+            </p>
+            <Link href={"/cart"}>
+              <p className="font-plus-jakarta text-h5">Košík</p>
+            </Link>
+          </div>
+
+          <div className="flex flex-row gap-2">
+            <p className="border w-16  text-center font-plus-jakarta text-h5 text-black1 rounded-full">
+              2
+            </p>
+            
+              <p className="font-plus-jakarta text-h5">Dodacie udaje</p>
+            
+          </div>
+
+          <div className="flex flex-row gap-2">
+            <p className="border w-16  text-center font-plus-jakarta text-h5 text-black1 rounded-full">
+              3
+            </p>
+            
+              <p className=" font-plus-jakarta text-h5">Doprava a platba</p>
+            
+          </div>
         </div>
 
-        <div className="w-full">
-          {cartItems.map((item) => (
-            <CartItem key={item.id} item={item} />
-          ))}
+      <div className="w-full">
+        {cartItems.map((item) => (
+          <CartItem key={item.id} item={item} />
+        ))}
+      </div>
+      <div className="flex flex-col items-center w-full mt-6 p-4 border-t">
+        <div className="self-end flex justify-between w-full">
+          <span className="text-lg font-bold">Celková suma</span>
+          <span className="text-lg font-bold">{`${total}€`}</span>
         </div>
-        <div className="flex flex-col items-center w-full mt-6 p-4 border-t">
-          <div className="self-end flex justify-between w-full">
-            <span className="text-lg font-bold">Celková suma</span>
-            <span className="text-lg font-bold">{`${total}€`}</span>
-          </div>
-          <Link href={"/cart/order"}>
+        <Link href={"/cart/order"}>
           <button className="w-full mt-4 py-2 bg-blue-500 text-white font-bold rounded hover:bg-blue-600">
             Pokračovať
           </button>
-          </Link>
-          
-        </div>
+        </Link>
       </div>
     </div>
   );

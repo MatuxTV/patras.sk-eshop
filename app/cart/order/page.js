@@ -6,6 +6,7 @@ import { useState } from "react";
 import { useCart } from "../../../lib/cart-context";
 import { ShippingProvider } from "@/lib/shipping-context";
 import { useShipping } from "@/lib/shipping-context";
+import Nav from "../../componets/nav";
 
 const CartItem = ({ item }) => {
   const { removeFromCart, changeQuantity } = useCart();
@@ -92,6 +93,7 @@ const CheckoutLayout = () => {
 
   return (
     <div className="container mx-auto my-8 p-4">
+      <Nav/>
       <div className="flex justify-center py-8">
         <h1 className=" text-h3 font-bold text-center mb-4 font-plus-jakarta ">
           Váš Košík
@@ -99,33 +101,33 @@ const CheckoutLayout = () => {
       </div>
       {/* Progress Bar */}
       <div className="flex justify-around mb-8 h-16 items-center bg-blue2">
-        <div className="text-center grid-flow-col grid grid-cols-2 gap-2">
-          <p className=" bg-blue1 w-16  font-plus-jakarta text-h5 text-white1 rounded-full">
-            1
-          </p>
-          <Link href={"/cart"}>
-            <p className=" font-plus-jakarta text-h5">Košík</p>
-          </Link>
-        </div>
+          <div className="flex flex-row gap-2">
+            <p className="bg-blue1 w-16 text-center font-plus-jakarta text-h5 text-white1 rounded-full">
+              1
+            </p>
+            <Link href={"/cart"}>
+              <p className="font-plus-jakarta text-h5">Košík</p>
+            </Link>
+          </div>
 
-        <div className="text-center grid-flow-col grid grid-cols-2 gap-2">
-          <p className=" bg-blue1 w-16   font-plus-jakarta text-h5 text-white1 rounded-full">
-            2
-          </p>
-          <Link href={"/cart/order"}>
-            <p className=" font-plus-jakarta text-h5">Dodacie udaje</p>
-          </Link>
-        </div>
+          <div className="flex flex-row gap-2">
+            <p className="bg-blue1 w-16 text-center  font-plus-jakarta text-h5 text-white1 rounded-full">
+              2
+            </p>
+            <Link href={"/cart/order"}>
+              <p className="font-plus-jakarta text-h5">Dodacie udaje</p>
+            </Link>
+          </div>
 
-        <div className="text-center grid-flow-col grid grid-cols-2 gap-2">
-          <p className=" border w-16  font-plus-jakarta text-h5 text-black1 rounded-full">
-            3
-          </p>
-          <Link href={"/cart"}>
-            <p className=" font-plus-jakarta text-h5">Doprava a platba</p>
-          </Link>
+          <div className="flex flex-row gap-2">
+            <p className="border w-16  text-center font-plus-jakarta text-h5 text-black1 rounded-full">
+              3
+            </p>
+           
+              <p className=" font-plus-jakarta text-h5">Doprava a platba</p>
+            
+          </div>
         </div>
-      </div>
 
       {/* Form */}
       <div className="flex flex-wrap md:flex-nowrap p-4">
