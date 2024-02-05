@@ -76,7 +76,7 @@ export default async function RootLayout({ children }) {
                   </Link>
                 ) : (
                   <Link href="/login">
-                    <p className="font-plus-jakarta">Prihlasenie</p>
+                    <p className="font-plus-jakarta hover:underline">Prihlasenie</p>
                   </Link>
                 )}
               </div>

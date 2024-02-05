@@ -15,19 +15,6 @@ export async function POST(request) {
         role: "bb4da356-49ec-44b3-88af-5c8612676ae4",
       })
     );
-    // const result =await fetch("http://localhost:8055/users", {
-    //   method: "POST",
-    //   body: JSON.stringify({
-    //     // first_name,
-    //     // last_name,
-    //     email,
-    //     password,
-    //     role: "bb4da356-49ec-44b3-88af-5c8612676ae4", // Nastavte ID role pre nových užívateľov
-    //   }),
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //   },
-    // });
     console.log(result);
     return NextResponse.json({ message: "Account Created!" }, { status: 201 });
   } catch (e) {

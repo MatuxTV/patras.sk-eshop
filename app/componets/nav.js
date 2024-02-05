@@ -53,7 +53,7 @@ const Nav = (props) => {
           >
             {cartItemCount > 0 ? (
               // Show the number of items in the cart
-              <span className="">
+              <span className=" text-white1 font-plus-jakarta text-h6">
                 {cartItemCount}
               </span>
             ) : (

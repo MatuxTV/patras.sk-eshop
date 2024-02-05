@@ -7,6 +7,7 @@ import { useCart } from "../../../lib/cart-context";
 import { ShippingProvider } from "@/lib/shipping-context";
 import { useShipping } from "@/lib/shipping-context";
 import Nav from "../../componets/nav";
+import { useRouter } from "next/navigation";
 
 const CartItem = ({ item }) => {
   const { removeFromCart, changeQuantity } = useCart();
@@ -43,47 +44,37 @@ const CheckoutLayout = () => {
     (acc, item) => acc + item.cena * item.quantity,
     0
   );
-
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [phoneNumber, setPhoneNumber] = useState("");
-  const [email, setEmail] = useState("");
-  const [street, setStreet] = useState("");
-  const [city, setCity] = useState("");
-  const [postalCode, setPostalCode] = useState("");
-  const [companyName, setCompanyName] = useState("");
-  const [ICO, setICO] = useState("");
-  const [DIC, setDIC] = useState("");
-  const [ICDPH, setICDPH] = useState("");
-
+  const router = useRouter();
+  const [formData, setFormData] = useState({
+    firstName: "",
+    lastName: "",
+    prefix: "+421",
+    phoneNumber: "",
+    email: "",
+    street: "",
+    city: "",
+    postalCode: "",
+    companyName: "",
+    ico: "",
+    dic: "",
+    icdph: "",
+  });
   const { updateShippingData } = useShipping();
 
-  const handleInputChange = (setter) => (e) => {
-    setter(e.target.value);
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+    console.log(name, value);
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      [name]: value,
+    }));
   };
 
   const handleSubmit = (e) => {
-    console.log(updateShippingData)
     e.preventDefault();
-    const formData = {
-      firstName,
-      lastName,
-      phoneNumber,
-      email,
-      address: {
-        street,
-        city,
-        postalCode,
-      },
-      company: {
-        companyName,
-        ico,
-        dic,
-        icdph,
-      },
-    };
-
+    console.log("form", formData);
     updateShippingData(formData); // Odosielanie dat do shipping-conteext
+    router.push("/cart/order/shipping");
   };
   const [showCompanyFields, setShowCompanyFields] = useState(false);
 
@@ -93,7 +84,7 @@ const CheckoutLayout = () => {
 
   return (
     <div className="container mx-auto my-8 p-4">
-      <Nav/>
+      <Nav />
       <div className="flex justify-center py-8">
         <h1 className=" text-h3 font-bold text-center mb-4 font-plus-jakarta ">
           Váš Košík
@@ -101,84 +92,88 @@ const CheckoutLayout = () => {
       </div>
       {/* Progress Bar */}
       <div className="flex justify-around mb-8 h-16 items-center bg-blue2">
-          <div className="flex flex-row gap-2">
-            <p className="bg-blue1 w-16 text-center font-plus-jakarta text-h5 text-white1 rounded-full">
-              1
-            </p>
-            <Link href={"/cart"}>
-              <p className="font-plus-jakarta text-h5">Košík</p>
-            </Link>
-          </div>
-
-          <div className="flex flex-row gap-2">
-            <p className="bg-blue1 w-16 text-center  font-plus-jakarta text-h5 text-white1 rounded-full">
-              2
-            </p>
-            <Link href={"/cart/order"}>
-              <p className="font-plus-jakarta text-h5">Dodacie udaje</p>
-            </Link>
-          </div>
-
-          <div className="flex flex-row gap-2">
-            <p className="border w-16  text-center font-plus-jakarta text-h5 text-black1 rounded-full">
-              3
-            </p>
-           
-              <p className=" font-plus-jakarta text-h5">Doprava a platba</p>
-            
-          </div>
+        <div className="flex flex-row gap-2">
+          <p className="bg-blue1 w-16 text-center font-plus-jakarta text-h5 text-white1 rounded-full">
+            1
+          </p>
+          <Link href={"/cart"}>
+            <p className="font-plus-jakarta text-h5">Košík</p>
+          </Link>
         </div>
 
+        <div className="flex flex-row gap-2">
+          <p className="bg-blue1 w-16 text-center  font-plus-jakarta text-h5 text-white1 rounded-full">
+            2
+          </p>
+          <Link href={"/cart/order"}>
+            <p className="font-plus-jakarta text-h5">Dodacie udaje</p>
+          </Link>
+        </div>
+
+        <div className="flex flex-row gap-2">
+          <p className="border w-16  text-center font-plus-jakarta text-h5 text-black1 rounded-full">
+            3
+          </p>
+
+          <p className=" font-plus-jakarta text-h5">Doprava a platba</p>
+        </div>
+      </div>
+
       {/* Form */}
-      <div className="flex flex-wrap md:flex-nowrap p-4">
-        <div className="w-full md:w-2/3 p-4 bg-blue2">
-          <form onSubmit={handleSubmit}>
+
+      <form onSubmit={handleSubmit}>
+        <div className="flex flex-wrap md:flex-nowrap p-4">
+          <div className="w-full md:w-2/3 p-4 bg-blue2">
             <h2 className="text-xl mb-4 font-plus-jakarta">Kontaktné údaje</h2>
             <div className=" p-6 bg-white1 grid grid-cols-2 gap-4">
               <div className="mb-4">
                 <input
+                  name="firstName"
                   className="w-full p-2 border shadow-md"
                   placeholder="Meno"
                   type="text"
-                  value={firstName}
-                  onChange={handleInputChange(setFirstName)}
+                  onChange={handleChange}
                   required
                 />
               </div>
               <div className="mb-4">
                 <input
+                  name="lastName"
                   className="w-full p-2 border shadow-md"
                   placeholder="Priezvisko"
                   type="text"
-                  value={lastName}
-                  onChange={handleInputChange(setLastName)}
+                  onChange={handleChange}
                   required
                 />
               </div>
               <div className=" flex mb-4 shadow-md gap-2">
-                <select className="w-1/4 p-2 border">
+                <select
+                  className="w-1/4 p-2 border"
+                  name="prefix"
+                  onChange={handleChange}
+                >
                   <option value="+421">+421</option>
                   <option value="+420">+420</option>
                 </select>
 
                 <input
+                  name="phoneNumber"
                   className="w-3/4 p-2 border shadow-md"
                   type="tel"
                   placeholder="Tel.cislo"
                   id="telefonne_cislo"
                   pattern="\d{3}\s?\d{3}\s?\d{3}"
-                  value={phoneNumber}
-                  onChange={handleInputChange(setPhoneNumber)}
+                  onChange={handleChange}
                   required
                 />
               </div>
               <div className="mb-4 shadow-md">
                 <input
+                  name="email"
                   className="w-full p-2 border"
                   placeholder="Email"
                   type="email"
-                  value={email}
-                  onChange={handleInputChange(setEmail)}
+                  onChange={handleChange}
                   required
                 />
               </div>
@@ -190,19 +185,19 @@ const CheckoutLayout = () => {
             <div className=" p-6 bg-white1">
               <div className="mb-4 grid grid-cols-3 gap-3">
                 <input
+                  name="street"
                   className="w-full p-2 border mb-4 shadow-md"
                   placeholder="Ulica"
                   type="text"
-                  value={street}
-                  onChange={handleInputChange(setStreet)}
+                  onChange={handleChange}
                   required
                 />
                 <input
                   className="w-full p-2 border mb-4 shadow-md"
                   placeholder="Mesto"
                   type="text"
-                  value={city}
-                  onChange={handleInputChange(setCity)}
+                  name="city"
+                  onChange={handleChange}
                   required
                 />
                 <input
@@ -210,86 +205,86 @@ const CheckoutLayout = () => {
                   placeholder="PSC"
                   pattern="\d{5}"
                   type="text"
-                  value={postalCode}
-                  onChange={handleInputChange(setPostalCode)}
+                  name="postalCode"
+                  onChange={handleChange}
                   required
                 />
               </div>
             </div>
-          </form>
 
-          <label className=" font-plus-jakarta">
-            <input
-              type="checkbox"
-              onChange={handleCheckboxChange}
-              className=""
-            />{" "}
-            Nakupujem na firmu
-          </label>
-          {showCompanyFields && (
-            <div className=" p-6 bg-white1">
-              <div>
-                <input
-                  className="w-full p-2 border shadow-md"
-                  placeholder="Spoločnosť"
-                  pattern="\d{5}"
-                  type="text"
-                  value={companyName}
-                  onChange={handleInputChange(setCompanyName)}
-                  required
-                />
+            <label className=" font-plus-jakarta">
+              <input
+                type="checkbox"
+                onChange={handleCheckboxChange}
+                className=""
+              />{" "}
+              Nakupujem na firmu
+            </label>
+            {showCompanyFields && (
+              <div className=" p-6 bg-white1">
+                <div>
+                  <input
+                    className="w-full p-2 border shadow-md"
+                    placeholder="Spoločnosť"
+                    pattern="\d{5}"
+                    type="text"
+                    name="companyName"
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
+
+                <div className="bg-white1 grid grid-cols-3 gap-4">
+                  <input
+                    className="w-full p-2 border shadow-md"
+                    placeholder="IČO"
+                    pattern="\d{5}"
+                    type="text"
+                    name="ico"
+                    onChange={handleChange}
+                    required
+                  />
+                  <input
+                    className="w-full p-2 border shadow-md"
+                    placeholder="DIČ"
+                    pattern="\d{5}"
+                    type="text"
+                    name="dic"
+                    onChange={handleChange}
+                    required
+                  />
+                  <input
+                    className="w-full p-2 border shadow-md"
+                    placeholder="IC DPH"
+                    pattern="\d{5}"
+                    type="text"
+                    name="icdph"
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
               </div>
-
-              <div className="bg-white1 grid grid-cols-3 gap-4">
-                <input
-                  className="w-full p-2 border shadow-md"
-                  placeholder="IČO"
-                  pattern="\d{5}"
-                  type="text"
-                  value={ICO}
-                  onChange={handleInputChange(setICO)}
-                  required
-                />
-                <input
-                  className="w-full p-2 border shadow-md"
-                  placeholder="DIČ"
-                  pattern="\d{5}"
-                  type="text"
-                  value={DIC}
-                  onChange={handleInputChange(setDIC)}
-                  required
-                />
-                <input
-                  className="w-full p-2 border shadow-md"
-                  placeholder="IC DPH"
-                  pattern="\d{5}"
-                  type="text"
-                  value={ICDPH}
-                  onChange={handleInputChange(setICDPH)}
-                  required
-                />
-              </div>
-            </div>
-          )}
-        </div>
-
-        {/* SUM */}
-        <div className="w-full md:w-1/3 bg-gray-100 p-4">
-          {cartItems.map((item) => (
-            <CartItem key={item.id} item={item} />
-          ))}
-          <div className="flex justify-between items-center mt-4">
-            <span className="text-lg">Celková suma</span>
-            <span className="text-lg font-bold">{`${total}€`}</span>
-          </div>
-
-          <Link href="/cart/order/shipping">
-            <button className="block w-full text-center bg-blue-500 text-white py-2 mt-4 rounded">
+            )}
+            <button
+              type="submit"
+              className="block w-full text-center bg-blue-500 text-white py-2 mt-4 rounded"
+            >
               Pokračovať
             </button>
-          </Link>
+
+            {/* SUM */}
+            <div className="w-full md:w-2/3 bg-white2 p-4">
+              {cartItems.map((item) => (
+                <CartItem key={item.id} item={item} />
+              ))}
+              <div className="flex justify-between items-center mt-4">
+                <span className="text-lg">Celková suma</span>
+                <span className="text-lg font-bold">{`${total}€`}</span>
+              </div>
+            </div>
+          </div>
         </div>
-      </div>
+      </form>
     </div>
   );
 };

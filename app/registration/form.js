@@ -8,6 +8,7 @@ import Nav from '../componets/nav';
 export default function RegistrationForm() {
   
   const router = useRouter();
+
   const [formData, setFormData] = useState({
     first_name: '',
     last_name: '',
@@ -80,7 +81,7 @@ export default function RegistrationForm() {
               </label>
               <input
                 className="shadow appearance-none rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                id="first_name"
+                
                 name="first_name"
                 type="text"
                 placeholder="Meno"
@@ -99,7 +100,7 @@ export default function RegistrationForm() {
               </label>
               <input
                 className="shadow appearance-none rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                id="last_name"
+                
                 name="last_name"
                 type="text"
                 placeholder="Priezvisko"
@@ -118,7 +119,7 @@ export default function RegistrationForm() {
               </label>
               <input
                 className="shadow appearance-none rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                id="email"
+              
                 name="email"
                 type="email"
                 placeholder="E-mail"
@@ -137,7 +138,7 @@ export default function RegistrationForm() {
               </label>
               <input
                 className="shadow appearance-none rounded w-full py-2 px-3 text-black1 mb-3 leading-tight focus:outline-none focus:shadow-outline"
-                id="password"
+                
                 name="password"
                 type="password"
                 placeholder="Heslo"

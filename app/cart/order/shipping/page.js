@@ -4,10 +4,9 @@ import Image from "next/image";
 import Link from "next/link";
 import Nav from "../../../componets/nav";
 import { useCart } from "../../../../lib/cart-context";
-
+import { useShipping } from "@/lib/shipping-context";
 
 const CartItem = ({ item }) => {
-
   const { removeFromCart, changeQuantity } = useCart();
 
   return (
@@ -22,11 +21,6 @@ const CartItem = ({ item }) => {
         />
         <div className="ml-4">
           <p className="text-lg font-bold">{item.meno}</p>
-          <p
-            className={`${item.dostupnost ? "text-green-500" : "text-red-500"}`}
-          >
-            {item.dostupnost ? `Na sklade - ${item.mnozstvo}ks` : "Nedostupné"}
-          </p>
         </div>
       </div>
       <div className="flex items-center">
@@ -37,8 +31,10 @@ const CartItem = ({ item }) => {
 };
 
 const FinalPage = () => {
-
   const { cartItems } = useCart();
+  const { shippingData } = useShipping();
+
+  console.log(shippingData);
 
   const total = cartItems.reduce(
     (acc, item) => acc + item.cena * item.quantity,
@@ -48,71 +44,74 @@ const FinalPage = () => {
   return (
     <div className="container mx-auto my-8 p-4">
       <Nav />
-        <div className="flex justify-center py-8">
-          <h1 className=" text-h3 font-bold text-center mb-4 font-plus-jakarta ">
-            Váš Košík
-          </h1>
-        </div>
-        {/* Progress Bar */}
-        <div className="flex justify-around mb-8 h-16 items-center bg-blue2">
-          <div className="flex flex-row gap-2">
-            <p className="bg-blue1 w-16 text-center font-plus-jakarta text-h5 text-white1 rounded-full">
-              1
-            </p>
-            <Link href={"/cart"}>
-              <p className="font-plus-jakarta text-h5">Košík</p>
-            </Link>
-          </div>
-
-          <div className="flex flex-row gap-2">
-            <p className="bg-blue1 w-16 text-center  font-plus-jakarta text-h5 text-white1 rounded-full">
-              2
-            </p>
-            <Link href={"/cart/order"}>
-              <p className="font-plus-jakarta text-h5">Dodacie udaje</p>
-            </Link>
-          </div>
-
-          <div className="flex flex-row gap-2">
-            <p className="border w-16  text-center font-plus-jakarta text-h5 text-black1 rounded-full">
-              3
-            </p>
-            <Link href={"/cart"}>
-              <p className=" font-plus-jakarta text-h5">Doprava a platba</p>
-            </Link>
-          </div>
-        </div>
-
-
-
-
-
-        <div className="flex flex-wrap p-4">
-          <div className="w-full  p-4 bg-blue2">
-            {/* SUM */}
-            <div className="w-full md:w-1/3 bg-gray-100 p-4">
-              {cartItems.map((item) => (
-                <CartItem key={item.id} item={item} />
-              ))}
-              <div className="flex justify-between items-center mt-4">
-                <span className="text-lg">Celková suma</span>
-                <span className="text-lg font-bold">{`${total}€`}</span>
-              </div>
-
-              <Link href="/cart/order/shipping">
-                <button className="block w-full text-center bg-blue-500 text-white py-2 mt-4 rounded">
-                  Pokračovať
-                </button>
-              </Link>
-            </div>
-          </div>
-        </div>
-
-
-
-
+      <div className="flex justify-center py-8">
+        <h1 className=" text-h3 font-bold text-center mb-4 font-plus-jakarta ">
+          Váš Košík
+        </h1>
       </div>
-   
+
+      {/* Progress Bar */}
+      <div className="flex justify-around mb-8 h-16 items-center bg-blue2">
+        <div className="flex flex-row gap-2">
+          <p className="bg-blue1 w-16 text-center font-plus-jakarta text-h5 text-white1 rounded-full">
+            1
+          </p>
+          <Link href={"/cart"}>
+            <p className="font-plus-jakarta text-h5">Košík</p>
+          </Link>
+        </div>
+
+        <div className="flex flex-row gap-2">
+          <p className="bg-blue1 w-16 text-center  font-plus-jakarta text-h5 text-white1 rounded-full">
+            2
+          </p>
+          <Link href={"/cart/order"}>
+            <p className="font-plus-jakarta text-h5">Dodacie udaje</p>
+          </Link>
+        </div>
+
+        <div className="flex flex-row gap-2">
+          <p className="bg-blue1 w-16 text-center  font-plus-jakarta text-h5 text-white1 rounded-full">
+            3
+          </p>
+          <Link href={"/cart"}>
+            <p className=" font-plus-jakarta text-h5">Doprava a platba</p>
+          </Link>
+        </div>
+      </div>
+
+      <div>
+       {/* O vas  */}
+        <div className=" bg-blue2 mb-5 justify-center">
+          <p className=" p-4 font-plus-jakarta text-h4 text-center">Vasa objednavka</p>
+
+          <div className=" bg-white1  justify-center">
+     
+           <p>{shippingData.firstName}</p>
+              
+          </div>
+        </div>
+
+
+
+        {/* SUM */}
+        <div className=" p-4 bg-blue2">
+          {cartItems.map((item) => (
+            <CartItem key={item.id} item={item} />
+          ))}
+          <div className="flex justify-between items-center mt-4">
+            <span className="text-lg">Celková suma</span>
+            <span className="text-lg font-bold">{`${total}€`}</span>
+          </div>
+
+          <Link href="/cart/order/shipping">
+            <button className="block w-full text-center bg-blue-500 text-white py-2 mt-4 rounded">
+              Pokračovať
+            </button>
+          </Link>
+        </div>
+      </div>
+    </div>
   );
 };
 
