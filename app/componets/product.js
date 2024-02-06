@@ -22,7 +22,7 @@ export default function Product(data) {
           <div className="flex flex-row font-plus-jakarta h-16 items-center drop-shadow-xl justify-between">
             <p className="m-6">{data.cena}€</p>
             <div className="drop-shadow-md m-4">
-              <ToCart product={data}/>
+            {available ? <ToCart product={data}/> : ""}
             </div>
           </div>
           <p className={`${available ? "text-blue1 text-h6" : "text-red text-h6"} text-center `} >

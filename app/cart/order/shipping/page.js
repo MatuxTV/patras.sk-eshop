@@ -5,7 +5,9 @@ import Link from "next/link";
 import Nav from "../../../componets/nav";
 import { useCart } from "../../../../lib/cart-context";
 import { useShipping } from "@/lib/shipping-context";
-import { createItem } from '@directus/sdk';
+import { createItem } from "@directus/sdk";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const CartItem = ({ item }) => {
   const { removeFromCart, changeQuantity } = useCart();
@@ -23,6 +25,9 @@ const CartItem = ({ item }) => {
         <div className="ml-4">
           <p className="text-lg font-bold">{item.meno}</p>
         </div>
+      </div>
+      <div className=" flex items-center">
+        <p>{item.quantity}ks</p>
       </div>
       <div className="flex items-center">
         <p className="text-lg font-bold ml-4">{`${item.cena}€`}</p>
@@ -49,29 +54,42 @@ const FinalPage = () => {
   const handleCompleteOrder = async (event) => {
     const orderDetails = await request.json();
     const result = await directus.request(
-        createItem ('Objednavka',{
-            Meno: "Matus",
-            Priezvisko: "Magyar",
-            Email: "masdsda",
-            Tcislo: "44455412",
-            Ulica: "Haskova",
-            Mesto: "Banska Bystrica",
-            PSC: "97411",
-            Poznamka: "AHOJ TEST",
-        })
+      createItem("Objednavka", {
+        Meno: data?.firstName,
+        Priezvisko: data?.lastName,
+        Email: data?.email,
+        Prefix: data?.prefix,
+        Tcislo: data?.phoneNumber,
+        Ulica: data?.street,
+        Mesto: data?.city,
+        PSC: data?.postalCode,
+        Poznamka: data?.note,
+      })
     );
     console.log(result);
-    return NextResponse.json({ message: "Order Created!" }, { status: 201 });  
-};
+    return NextResponse.json({ message: "Order Created!" }, { status: 201 });
 
-
-
-
-
+    try {
+      toast.success("Produkt bol pridaný do košíka!"); // Zobrazenie úspešného toastu
+    } catch (error) {
+      toast.error("Nepodarilo sa pridať produkt do košíka."); // Zobrazenie chybového toastu
+    }
+  };
 
   return (
     <div className="container mx-auto my-8 p-4">
       <Nav />
+
+      <ToastContainer
+        position="top-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        zIndex={1}
+      />
+
       <div className="flex justify-center py-8">
         <h1 className=" text-h3 font-bold text-center mb-4 font-plus-jakarta ">
           Váš Košík
@@ -125,10 +143,20 @@ const FinalPage = () => {
               <p>
                 {data?.street},{data?.postalCode},{data?.city}
               </p>
+              <p>{data?.email}</p>
               <p>
                 {data?.prefix}
                 {data?.phoneNumber}
               </p>
+              {(data?.companyName!="") ?
+                <div className=" my-6">
+                <p><b> Spoločnosť: </b>{data?.companyName}</p>
+                <p><b> ICO: </b>{data?.ico}</p>
+                <p><b> DIC: </b>{data?.dic}</p>
+                <p><b> ICDPH: </b>{data?.icdph} </p>
+              </div>
+              : ""}
+              
             </div>
           </div>
           <div className=" bg-blue2 p-4">
@@ -141,6 +169,7 @@ const FinalPage = () => {
               pattern="\d{5}"
               type="text"
               name="note"
+              value={data?.note}
             />
           </div>
         </div>
@@ -154,7 +183,7 @@ const FinalPage = () => {
           </div>
           <div className="flex justify-between items-center mt-4">
             <span className="text-lg">Celková suma</span>
-            <span className="text-lg font-bold">{`${total}€`}</span>
+            <span className="text-lg font-bold">{`${total.toFixed(2)}€`}</span>
           </div>
 
           <div className="block m-4">
@@ -171,7 +200,10 @@ const FinalPage = () => {
 
           <div className="flex justify-center">
             <Link href="/cart/order/shipping">
-              <button onClick={handleCompleteOrder} className=" text-center bg-green text-white1 text-white p-3 rounded font-plus-jakarta hover:shadow hover:shadow-green">
+              <button
+                onClick={handleCompleteOrder}
+                className=" text-center bg-green text-white1 text-white p-3 rounded font-plus-jakarta hover:shadow hover:shadow-green"
+              >
                 Dokoncit objednavku
               </button>
             </Link>

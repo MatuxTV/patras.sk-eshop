@@ -61,7 +61,7 @@ const Produkt = async ({ searchParams }) => {
               </p>
             </div>
             <div className=" align-middle py-5">
-              <ToCart product={produkt.data} />
+            {produkt.data.dostupnost ? <ToCart product={produkt.data}/> : ""}
             </div>
             <div>
               <p

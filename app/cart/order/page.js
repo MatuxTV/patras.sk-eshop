@@ -32,6 +32,10 @@ const CartItem = ({ item }) => {
           </p>
         </div>
       </div>
+      <div className=" flex items-center">
+        <p>{item.quantity}ks</p>
+      </div>
+
       <div className="flex items-center">
         <p className="text-lg font-bold ml-4">{`${item.cena}€`}</p>
       </div>
@@ -40,7 +44,6 @@ const CartItem = ({ item }) => {
 };
 
 const CheckoutLayout = () => {
-  
   const { cartItems } = useCart();
   const total = cartItems.reduce(
     (acc, item) => acc + item.cena * item.quantity,
@@ -69,12 +72,12 @@ const CheckoutLayout = () => {
       ...prevFormData,
       [name]: value,
     }));
-    localStorage.setItem("userData",JSON.stringify(formData))
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    updateShippingData(formData); // Odosielanie dat do shipping-conteext
+    localStorage.setItem("userData", JSON.stringify(formData));
+    // updateShippingData(formData); // Odosielanie dat do shipping-conteext
     router.push("/cart/order/shipping");
   };
 
@@ -83,13 +86,14 @@ const CheckoutLayout = () => {
   const handleCheckboxChange = (e) => {
     setShowCompanyFields(e.target.checked);
   };
-  useEffect(()=>{
-    const data=JSON.parse(localStorage.getItem("userData"))
-    setFormData((prevFormData) => ({  
+
+  useEffect(() => {
+    const data = JSON.parse(localStorage.getItem("userData"));
+    setFormData((prevFormData) => ({
       ...prevFormData,
-      ...data
+      ...data,
     }));
-  },[])
+  }, []);
 
   return (
     <div className="container mx-auto my-8 p-4">
@@ -234,7 +238,8 @@ const CheckoutLayout = () => {
                 type="checkbox"
                 onChange={handleCheckboxChange}
                 className=""
-              />{" "}
+                value={showCompanyFields}
+              />
               Nakupujem na firmu
             </label>
             {showCompanyFields && (
@@ -260,8 +265,6 @@ const CheckoutLayout = () => {
                     name="ico"
                     onChange={handleChange}
                     value={formData.ico}
-                    
-                
                     required
                   />
                   <input
@@ -271,7 +274,6 @@ const CheckoutLayout = () => {
                     type="text"
                     name="dic"
                     value={formData.dic}
-
                     onChange={handleChange}
                     required
                   />
@@ -282,36 +284,34 @@ const CheckoutLayout = () => {
                     type="text"
                     name="icdph"
                     value={formData.icdph}
-
                     onChange={handleChange}
                     required
                   />
                 </div>
               </div>
             )}
+          </div>
+
+          <div className="md:w-1/3 p-4">
+            {/* SUM */}
+            {cartItems.map((item) => (
+              <CartItem key={item.id} item={item} />
+            ))}
+            <div className="flex justify-between items-center mt-4">
+              <span className="text-lg">Celková suma</span>
+              <span className="text-lg font-bold">{`${total.toFixed(
+                2
+              )}€`}</span>
             </div>
 
-
-            <div className="md:w-1/3 p-4">
-            {/* SUM */}
-              {cartItems.map((item) => (
-                <CartItem key={item.id} item={item} />
-              ))}
-              <div className="flex justify-between items-center mt-4">
-                <span className="text-lg">Celková suma</span>
-                <span className="text-lg font-bold">{`${total}€`}</span>
-              </div>
-
-              <button
+            <button
               type="submit"
               className=" mt-4 py-2 bg-white2 text-white font-bold rounded-lg hover:bg-blue2 p-6"
             >
               Pokračovať
             </button>
-
-            </div>
           </div>
-        
+        </div>
       </form>
     </div>
   );

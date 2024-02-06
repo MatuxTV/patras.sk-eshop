@@ -102,7 +102,7 @@ const Cart = () => {
       <div className="flex flex-col items-center w-full mt-6 p-4 border-t">
         <div className="self-end flex justify-between w-full">
           <span className="text-lg font-bold">Celková suma</span>
-          <span className="text-lg font-bold">{`${total}€`}</span>
+          <span className="text-lg font-bold">{`${total.toFixed(2)}€`}</span>
         </div>
         <Link href={"/cart/order"}>
           <button className="w-full mt-4 py-2 bg-white2 text-white font-bold rounded-lg hover:bg-blue2 p-6">
