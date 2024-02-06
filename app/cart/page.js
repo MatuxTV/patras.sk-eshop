@@ -10,10 +10,10 @@ const CartItem = ({ item }) => {
   const { removeFromCart, changeQuantity } = useCart();
 
   return (
-    <div className="flex items-center justify-between p-4 border-b">
+    <div className="flex items-center justify-between p-4 border-b bg-blue2 rounded-lg mb-5">
       <button
         onClick={() => removeFromCart(item.id)}
-        className="text-red-600 hover:text-red-800"
+        className=" font-plus-jakarta"
       >
         x
       </button>
@@ -26,15 +26,15 @@ const CartItem = ({ item }) => {
           className="rounded"
         />
         <div className="ml-4">
-          <p className="text-lg font-bold">{item.meno}</p>
+          <p className="text-h6 font-plus-jakarta">{item.meno}</p>
           <p
-            className={`${item.dostupnost ? "text-green-500" : "text-red-500"}`}
+            className={`${item.dostupnost ? " text-blue1 font-bold" : " text-red"}`}
           >
             {item.dostupnost ? `Na sklade - ${item.mnozstvo}ks` : "Nedostupné"}
           </p>
         </div>
       </div>
-      <div className="flex items-center">
+      <div className="flex items-center justify-end">
         <input
           type="number"
           min="1"
@@ -42,9 +42,9 @@ const CartItem = ({ item }) => {
           onChange={(e) => {
             changeQuantity(item.id, e.target.value);
           }}
-          className="w-12 text-center border rounded"
+          className="w-10 text-center border rounded"
         />
-        <p className="text-lg font-bold ml-4">{`${item.cena}€`}</p>
+        <p className="text-lg font-plus-jakarta font-bold ml-4">{`${item.cena}€`}</p>
       </div>
     </div>
   );
@@ -94,7 +94,7 @@ const Cart = () => {
           </div>
         </div>
 
-      <div className="w-full">
+      <div className="w-full ">
         {cartItems.map((item) => (
           <CartItem key={item.id} item={item} />
         ))}
@@ -105,7 +105,7 @@ const Cart = () => {
           <span className="text-lg font-bold">{`${total}€`}</span>
         </div>
         <Link href={"/cart/order"}>
-          <button className="w-full mt-4 py-2 bg-blue-500 text-white font-bold rounded hover:bg-blue-600">
+          <button className="w-full mt-4 py-2 bg-white2 text-white font-bold rounded-lg hover:bg-blue2 p-6">
             Pokračovať
           </button>
         </Link>

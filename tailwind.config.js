@@ -14,6 +14,7 @@ module.exports = {
       xl: "1440px",
     },
     colors: {
+      whiteBG: "rgba(255, 255, 255, 1)",
       white1: "rgba(245, 245, 245, 1)",
       white2: "rgba(228, 228, 228, 1)",
       black1: "rgba(31, 31, 41, 1)",

@@ -134,7 +134,7 @@ const CheckoutLayout = () => {
         <div className="flex flex-wrap md:flex-nowrap p-4">
           <div className="w-full md:w-2/3 p-4 bg-blue2">
             <h2 className="text-xl mb-4 font-plus-jakarta">Kontaktné údaje</h2>
-            <div className=" p-6 bg-white1 grid grid-cols-2 gap-4">
+            <div className=" p-6 bg-whiteBG grid grid-cols-2 gap-4">
               <div className="mb-4">
                 <input
                   name="firstName"
@@ -196,8 +196,8 @@ const CheckoutLayout = () => {
             <h2 className="text-xl mb-4 mt-8 font-plus-jakarta">
               Fakturačné údaje
             </h2>
-            <div className=" p-6 bg-white1">
-              <div className="mb-4 grid grid-cols-3 gap-3">
+            <div className=" p-6 bg-whiteBG">
+              <div className="grid grid-cols-3 gap-3">
                 <input
                   name="street"
                   className="w-full p-2 border mb-4 shadow-md"
@@ -229,7 +229,7 @@ const CheckoutLayout = () => {
               </div>
             </div>
 
-            <label className=" font-plus-jakarta">
+            <label className=" font-plus-jakarta text-center">
               <input
                 type="checkbox"
                 onChange={handleCheckboxChange}
@@ -238,8 +238,8 @@ const CheckoutLayout = () => {
               Nakupujem na firmu
             </label>
             {showCompanyFields && (
-              <div className=" p-6 bg-white1">
-                <div>
+              <div className=" p-6 bg-whiteBG">
+                <div className=" pb-3">
                   <input
                     className="w-full p-2 border shadow-md"
                     placeholder="Spoločnosť"
@@ -290,12 +290,10 @@ const CheckoutLayout = () => {
               </div>
             )}
             </div>
-            <div className="w-full md:w-2/3 bg-white2 p-4">
-           
 
 
+            <div className="md:w-1/3 p-4">
             {/* SUM */}
-           
               {cartItems.map((item) => (
                 <CartItem key={item.id} item={item} />
               ))}
@@ -303,12 +301,14 @@ const CheckoutLayout = () => {
                 <span className="text-lg">Celková suma</span>
                 <span className="text-lg font-bold">{`${total}€`}</span>
               </div>
+
               <button
               type="submit"
-              className="block w-full text-center bg-blue-500 text-white py-2 mt-4 rounded"
+              className=" mt-4 py-2 bg-white2 text-white font-bold rounded-lg hover:bg-blue2 p-6"
             >
               Pokračovať
             </button>
+
             </div>
           </div>
         

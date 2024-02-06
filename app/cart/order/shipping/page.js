@@ -34,6 +34,7 @@ const FinalPage = () => {
   const { cartItems } = useCart();
   const { shippingData } = useShipping();
   const [data, setData] = useState();
+
   useEffect(() => {
     const localData = JSON.parse(localStorage.getItem("userData"));
     setData(localData);
@@ -43,6 +44,12 @@ const FinalPage = () => {
     (acc, item) => acc + item.cena * item.quantity,
     0
   );
+
+
+
+  const handleCompleteOrder = () => {
+
+  };
 
   return (
     <div className="container mx-auto my-8 p-4">
@@ -83,44 +90,74 @@ const FinalPage = () => {
         </div>
       </div>
 
-      <div>
+      <div className=" grid grid-cols-2 gap-6">
         {/* O vas  */}
-        <div className=" bg-blue2 mb-5 justify-center">
-          <p className=" p-4 font-plus-jakarta text-h4 text-center">
-            Vasa objednavka
-          </p>
-
-          <div className=" bg-white1  justify-center p-4">
+        <div className=" justify-center">
+          <div className=" bg-white1  justify-center p-4 rounded-xl mb-8">
             <div>
               <p className=" text-center text-h4 font-plus-jakarta">
                 Fakturacne udaje
               </p>
             </div>
             <div className=" text-center pt-4">
-              <p>{data?.firstName}</p>
-              <p>{data?.lastName}</p>
-              <p>{data?.street}</p>
-              <p>{data?.prefix}{data?.phoneNumber}</p>
-              <p>{data?.postalCode}</p>
+              <p>
+                {data?.firstName},{data?.lastName}
+              </p>
+
+              <p>
+                {data?.street},{data?.postalCode},{data?.city}
+              </p>
+              <p>
+                {data?.prefix}
+                {data?.phoneNumber}
+              </p>
             </div>
+          </div>
+          <div className=" bg-blue2 p-4">
+            <h2 className="text-xl mb-4 font-plus-jakarta font-bold">
+              Poznamka k objednavke
+            </h2>
+            <input
+              className="w-full p-2 border shadow-md "
+              placeholder="Mate poznamku k objednavke?"
+              pattern="\d{5}"
+              type="text"
+              name="note"
+            />
           </div>
         </div>
 
         {/* SUM */}
-        <div className=" p-4 bg-blue2">
-          {cartItems.map((item) => (
-            <CartItem key={item.id} item={item} />
-          ))}
+        <div>
+          <div className=" p-4 bg-blue2 rounded-xl">
+            {cartItems.map((item) => (
+              <CartItem key={item.id} item={item} />
+            ))}
+          </div>
           <div className="flex justify-between items-center mt-4">
             <span className="text-lg">Celková suma</span>
             <span className="text-lg font-bold">{`${total}€`}</span>
           </div>
 
-          <Link href="/cart/order/shipping" >
-            <button className=" text-center bg-green text-white1 text-white p-3 rounded font-plus-jakarta">
-              Dokoncit objednavku
-            </button>
-          </Link>
+          <div className="block m-4">
+            <label className=" font-plus-jakarta">
+              <input type="checkbox" required /> Oboznámil som sa s Obchodné
+              podmienky
+            </label>
+
+            <label className=" font-plus-jakarta">
+              <input required type="checkbox" /> Oboznámil som sa s ochrana
+              osobných údajov
+            </label>
+          </div>
+
+          <div className="flex justify-center">
+            <Link href="/cart/order/shipping">
+              <button onClick={handleCompleteOrder} className=" text-center bg-green text-white1 text-white p-3 rounded font-plus-jakarta hover:shadow hover:shadow-green">
+                Dokoncit objednavku
+              </button>
+            </Link>
+          </div>
         </div>
       </div>
     </div>
