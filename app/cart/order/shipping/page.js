@@ -5,6 +5,7 @@ import Link from "next/link";
 import Nav from "../../../componets/nav";
 import { useCart } from "../../../../lib/cart-context";
 import { useShipping } from "@/lib/shipping-context";
+import { createItem } from '@directus/sdk';
 
 const CartItem = ({ item }) => {
   const { removeFromCart, changeQuantity } = useCart();
@@ -45,11 +46,28 @@ const FinalPage = () => {
     0
   );
 
+  const handleCompleteOrder = async (event) => {
+    const orderDetails = await request.json();
+    const result = await directus.request(
+        createItem ('Objednavka',{
+            Meno: "Matus",
+            Priezvisko: "Magyar",
+            Email: "masdsda",
+            Tcislo: "44455412",
+            Ulica: "Haskova",
+            Mesto: "Banska Bystrica",
+            PSC: "97411",
+            Poznamka: "AHOJ TEST",
+        })
+    );
+    console.log(result);
+    return NextResponse.json({ message: "Order Created!" }, { status: 201 });  
+};
 
 
-  const handleCompleteOrder = () => {
 
-  };
+
+
 
   return (
     <div className="container mx-auto my-8 p-4">
@@ -165,8 +183,3 @@ const FinalPage = () => {
 };
 
 export default FinalPage;
-
-// Točiť sa krokmi by sa malo dynamicky a mali by odrážať aktuálny stav procesu.
-// Formulárové polia by sa mali spracovať a validovať pomocou štátu a funkcií React.
-// V prípade potreby by sa mali pridať ďalšie Tailwind CSS triedy pre responzívne rozloženie.
-// Odkaz na "next-step" by sa mal zameniť za skutočnú cestu v aplikácii.
