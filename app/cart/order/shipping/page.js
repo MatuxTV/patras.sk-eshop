@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import Nav from "../../../componets/nav";
@@ -33,8 +33,11 @@ const CartItem = ({ item }) => {
 const FinalPage = () => {
   const { cartItems } = useCart();
   const { shippingData } = useShipping();
-
-  console.log(shippingData);
+  const [data, setData] = useState();
+  useEffect(() => {
+    const localData = JSON.parse(localStorage.getItem("userData"));
+    setData(localData);
+  }, []);
 
   const total = cartItems.reduce(
     (acc, item) => acc + item.cena * item.quantity,
@@ -81,18 +84,27 @@ const FinalPage = () => {
       </div>
 
       <div>
-       {/* O vas  */}
+        {/* O vas  */}
         <div className=" bg-blue2 mb-5 justify-center">
-          <p className=" p-4 font-plus-jakarta text-h4 text-center">Vasa objednavka</p>
+          <p className=" p-4 font-plus-jakarta text-h4 text-center">
+            Vasa objednavka
+          </p>
 
-          <div className=" bg-white1  justify-center">
-     
-           <p>{shippingData.firstName}</p>
-              
+          <div className=" bg-white1  justify-center p-4">
+            <div>
+              <p className=" text-center text-h4 font-plus-jakarta">
+                Fakturacne udaje
+              </p>
+            </div>
+            <div className=" text-center pt-4">
+              <p>{data?.firstName}</p>
+              <p>{data?.lastName}</p>
+              <p>{data?.street}</p>
+              <p>{data?.prefix}{data?.phoneNumber}</p>
+              <p>{data?.postalCode}</p>
+            </div>
           </div>
         </div>
-
-
 
         {/* SUM */}
         <div className=" p-4 bg-blue2">
@@ -104,9 +116,9 @@ const FinalPage = () => {
             <span className="text-lg font-bold">{`${total}€`}</span>
           </div>
 
-          <Link href="/cart/order/shipping">
-            <button className="block w-full text-center bg-blue-500 text-white py-2 mt-4 rounded">
-              Pokračovať
+          <Link href="/cart/order/shipping" >
+            <button className=" text-center bg-green text-white1 text-white p-3 rounded font-plus-jakarta">
+              Dokoncit objednavku
             </button>
           </Link>
         </div>

@@ -13,7 +13,7 @@ const Nav = (props) => {
   const { cartItems } = useCart(); // Get cart items from the cart context
 
   // Calculate the total number of items in the cart
-  const cartItemCount = cartItems.reduce(
+  const cartItemCount = cartItems?.reduce(
     (total, item) => total + item.quantity,
     0
   );

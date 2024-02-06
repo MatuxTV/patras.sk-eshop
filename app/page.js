@@ -51,7 +51,7 @@ export default async function Home() {
               objectPosition="top"
             />
           </div>
-          <h1 className="md:text-h1 absolute right-[5vw] top-[17vw] z-20 max-w-[13ch]">
+          <h1 className="md:text-h1 absolute right-[5vw] top-[17vw] z-20 max-w-[13ch] ">
             Postaráme sa o váš pitný <b className="text-blue1"> REŽIM</b>
           </h1>
         </div>

@@ -17,7 +17,6 @@ import {
 
 import { ShippingProvider } from "@/lib/shipping-context";
 
-
 config.autoAddCss = false;
 
 const plus_jakarta = Plus_Jakarta_Sans({
@@ -36,7 +35,7 @@ export default async function RootLayout({ children }) {
   return (
     <html lang="sk">
       <Head>
-        <link rel="favicon" href="/favicon-32x32.png" />
+        <link rel="icon" href="" sizes="any" />
         <title>{metadata.title}</title>
         <meta name="description" content={metadata.description} />
       </Head>
@@ -76,7 +75,9 @@ export default async function RootLayout({ children }) {
                   </Link>
                 ) : (
                   <Link href="/login">
-                    <p className="font-plus-jakarta hover:underline">Prihlasenie</p>
+                    <p className="font-plus-jakarta hover:underline">
+                      Prihlasenie
+                    </p>
                   </Link>
                 )}
               </div>

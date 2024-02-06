@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
@@ -8,6 +8,7 @@ import { ShippingProvider } from "@/lib/shipping-context";
 import { useShipping } from "@/lib/shipping-context";
 import Nav from "../../componets/nav";
 import { useRouter } from "next/navigation";
+import { data } from "autoprefixer";
 
 const CartItem = ({ item }) => {
   const { removeFromCart, changeQuantity } = useCart();
@@ -39,6 +40,7 @@ const CartItem = ({ item }) => {
 };
 
 const CheckoutLayout = () => {
+  
   const { cartItems } = useCart();
   const total = cartItems.reduce(
     (acc, item) => acc + item.cena * item.quantity,
@@ -63,24 +65,31 @@ const CheckoutLayout = () => {
 
   const handleChange = (event) => {
     const { name, value } = event.target;
-    console.log(name, value);
     setFormData((prevFormData) => ({
       ...prevFormData,
       [name]: value,
     }));
+    localStorage.setItem("userData",JSON.stringify(formData))
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("form", formData);
     updateShippingData(formData); // Odosielanie dat do shipping-conteext
     router.push("/cart/order/shipping");
   };
+
   const [showCompanyFields, setShowCompanyFields] = useState(false);
 
   const handleCheckboxChange = (e) => {
     setShowCompanyFields(e.target.checked);
   };
+  useEffect(()=>{
+    const data=JSON.parse(localStorage.getItem("userData"))
+    setFormData((prevFormData) => ({  
+      ...prevFormData,
+      ...data
+    }));
+  },[])
 
   return (
     <div className="container mx-auto my-8 p-4">
@@ -132,6 +141,7 @@ const CheckoutLayout = () => {
                   className="w-full p-2 border shadow-md"
                   placeholder="Meno"
                   type="text"
+                  value={formData.firstName}
                   onChange={handleChange}
                   required
                 />
@@ -143,6 +153,7 @@ const CheckoutLayout = () => {
                   placeholder="Priezvisko"
                   type="text"
                   onChange={handleChange}
+                  value={formData.lastName}
                   required
                 />
               </div>
@@ -151,6 +162,7 @@ const CheckoutLayout = () => {
                   className="w-1/4 p-2 border"
                   name="prefix"
                   onChange={handleChange}
+                  value={formData.prefix}
                 >
                   <option value="+421">+421</option>
                   <option value="+420">+420</option>
@@ -164,6 +176,7 @@ const CheckoutLayout = () => {
                   id="telefonne_cislo"
                   pattern="\d{3}\s?\d{3}\s?\d{3}"
                   onChange={handleChange}
+                  value={formData.phoneNumber}
                   required
                 />
               </div>
@@ -174,6 +187,7 @@ const CheckoutLayout = () => {
                   placeholder="Email"
                   type="email"
                   onChange={handleChange}
+                  value={formData.email}
                   required
                 />
               </div>
@@ -190,6 +204,7 @@ const CheckoutLayout = () => {
                   placeholder="Ulica"
                   type="text"
                   onChange={handleChange}
+                  value={formData.street}
                   required
                 />
                 <input
@@ -198,6 +213,7 @@ const CheckoutLayout = () => {
                   type="text"
                   name="city"
                   onChange={handleChange}
+                  value={formData.city}
                   required
                 />
                 <input
@@ -207,6 +223,7 @@ const CheckoutLayout = () => {
                   type="text"
                   name="postalCode"
                   onChange={handleChange}
+                  value={formData.postalCode}
                   required
                 />
               </div>
@@ -226,10 +243,10 @@ const CheckoutLayout = () => {
                   <input
                     className="w-full p-2 border shadow-md"
                     placeholder="Spoločnosť"
-                    pattern="\d{5}"
                     type="text"
                     name="companyName"
                     onChange={handleChange}
+                    value={formData.companyName}
                     required
                   />
                 </div>
@@ -242,6 +259,9 @@ const CheckoutLayout = () => {
                     type="text"
                     name="ico"
                     onChange={handleChange}
+                    value={formData.ico}
+                    
+                
                     required
                   />
                   <input
@@ -250,6 +270,8 @@ const CheckoutLayout = () => {
                     pattern="\d{5}"
                     type="text"
                     name="dic"
+                    value={formData.dic}
+
                     onChange={handleChange}
                     required
                   />
@@ -259,21 +281,21 @@ const CheckoutLayout = () => {
                     pattern="\d{5}"
                     type="text"
                     name="icdph"
+                    value={formData.icdph}
+
                     onChange={handleChange}
                     required
                   />
                 </div>
               </div>
             )}
-            <button
-              type="submit"
-              className="block w-full text-center bg-blue-500 text-white py-2 mt-4 rounded"
-            >
-              Pokračovať
-            </button>
+            </div>
+            <div className="w-full md:w-2/3 bg-white2 p-4">
+           
+
 
             {/* SUM */}
-            <div className="w-full md:w-2/3 bg-white2 p-4">
+           
               {cartItems.map((item) => (
                 <CartItem key={item.id} item={item} />
               ))}
@@ -281,9 +303,15 @@ const CheckoutLayout = () => {
                 <span className="text-lg">Celková suma</span>
                 <span className="text-lg font-bold">{`${total}€`}</span>
               </div>
+              <button
+              type="submit"
+              className="block w-full text-center bg-blue-500 text-white py-2 mt-4 rounded"
+            >
+              Pokračovať
+            </button>
             </div>
           </div>
-        </div>
+        
       </form>
     </div>
   );
