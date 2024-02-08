@@ -9,6 +9,7 @@ import "react-toastify/dist/ReactToastify.css";
 const Produkt = async ({ searchParams }) => {
   const productID = searchParams.id;
 
+ 
   console.log(searchParams);
   function getProduct() {
     return fetch(

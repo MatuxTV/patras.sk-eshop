@@ -5,6 +5,12 @@ import Nav from "../componets/nav";
 import Link from "next/link";
 import { signIn} from 'next-auth/react';
 import { useRouter } from "next/navigation"; 
+import { useSession } from "next-auth/react"
+import { useUser } from "@/lib/user-context";
+import directus from "@/lib/directus";
+import { readMe, withToken } from "@directus/sdk";
+import { getSession } from "next-auth/react"
+
 
 const LoginPage = () => {
   const router = useRouter();
@@ -19,7 +25,15 @@ const LoginPage = () => {
       redirect: false,
     });
 
+    const session = await getSession()
+
+    console.log(session)
+
     if (!response?.error) {
+
+      if (session.user.role == "95863818-e696-411d-bae4-c1e04725c376"){
+          router.push('/admin');
+      }else
       router.push('/');
       router.refresh();
     } else {

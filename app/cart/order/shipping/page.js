@@ -6,6 +6,8 @@ import Nav from "../../../componets/nav";
 import { useCart } from "../../../../lib/cart-context";
 import { useShipping } from "@/lib/shipping-context";
 import { createItem } from "@directus/sdk";
+import directus from "@/lib/directus";
+import { useRouter } from "next/navigation";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -37,10 +39,15 @@ const CartItem = ({ item }) => {
 };
 
 const FinalPage = () => {
-  const { cartItems } = useCart();
+  const router = useRouter();
+  const { cartItems , removeFromCart } = useCart();
   const { shippingData } = useShipping();
   const [data, setData] = useState();
+  const [note, setNote] = useState();
 
+  const handlePoznamka = (e) => {
+    setNote(e.target.value);
+  };
   useEffect(() => {
     const localData = JSON.parse(localStorage.getItem("userData"));
     setData(localData);
@@ -52,44 +59,52 @@ const FinalPage = () => {
   );
 
   const handleCompleteOrder = async (event) => {
-    const orderDetails = await request.json();
+
+    console.log(cartItems);
+
+    const skladanie_produkt = cartItems.map((item) => {
+      return {
+        id_produkt: item.id,
+        pocet_kusov: item.quantity,
+      };
+    });
+    console.log(skladanie_produkt)
     const result = await directus.request(
-      createItem("Objednavka", {
-        Meno: data?.firstName,
-        Priezvisko: data?.lastName,
-        Email: data?.email,
-        Prefix: data?.prefix,
-        Tcislo: data?.phoneNumber,
-        Ulica: data?.street,
-        Mesto: data?.city,
-        PSC: data?.postalCode,
-        Poznamka: data?.note,
+      createItem("objednavka", {
+        meno: data?.firstName,
+        priezvisko: data?.lastName,
+        email: data?.email,
+        prefix: data?.prefix,
+        tcislo: data?.phoneNumber,
+        ulica: data?.street,
+        mesto: data?.city,
+        psc: data?.postalCode,
+        Poznamka: note,
+        id_objednavka: skladanie_produkt,
+        cena_objednavky: total,
+        nazov_spolocnost: data?.companyName,
+        ico: data?.ico,
+        dic:data?.dic,
+        icdph:data?.icdph
       })
     );
-    console.log(result);
-    return NextResponse.json({ message: "Order Created!" }, { status: 201 });
 
     try {
-      toast.success("Produkt bol pridaný do košíka!"); // Zobrazenie úspešného toastu
+      router.push("/");
+      toast.success("Dakujeme za objednavku"); 
     } catch (error) {
-      toast.error("Nepodarilo sa pridať produkt do košíka."); // Zobrazenie chybového toastu
+      toast.error("Chyba v objednavke. Skontrolujte si udaje a skuste to znova"); 
     }
+
+    console.log(result);
+
+    removeFromCart(cartItems.id)
+
   };
 
   return (
     <div className="container mx-auto my-8 p-4">
       <Nav />
-
-      <ToastContainer
-        position="top-right"
-        autoClose={3000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        zIndex={1}
-      />
-
       <div className="flex justify-center py-8">
         <h1 className=" text-h3 font-bold text-center mb-4 font-plus-jakarta ">
           Váš Košík
@@ -148,15 +163,28 @@ const FinalPage = () => {
                 {data?.prefix}
                 {data?.phoneNumber}
               </p>
-              {(data?.companyName!="") ?
+              {data?.companyName != "" ? (
                 <div className=" my-6">
-                <p><b> Spoločnosť: </b>{data?.companyName}</p>
-                <p><b> ICO: </b>{data?.ico}</p>
-                <p><b> DIC: </b>{data?.dic}</p>
-                <p><b> ICDPH: </b>{data?.icdph} </p>
-              </div>
-              : ""}
-              
+                  <p>
+                    <b> Spoločnosť: </b>
+                    {data?.companyName}
+                  </p>
+                  <p>
+                    <b> ICO: </b>
+                    {data?.ico}
+                  </p>
+                  <p>
+                    <b> DIC: </b>
+                    {data?.dic}
+                  </p>
+                  <p>
+                    <b> ICDPH: </b>
+                    {data?.icdph}{" "}
+                  </p>
+                </div>
+              ) : (
+                ""
+              )}
             </div>
           </div>
           <div className=" bg-blue2 p-4">
@@ -169,7 +197,8 @@ const FinalPage = () => {
               pattern="\d{5}"
               type="text"
               name="note"
-              value={data?.note}
+              value={note}
+              onChange={handlePoznamka}
             />
           </div>
         </div>
