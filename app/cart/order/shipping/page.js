@@ -12,7 +12,7 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const CartItem = ({ item }) => {
-  const { removeFromCart, changeQuantity } = useCart();
+  
 
   return (
     <div className="flex items-center justify-between p-4 border-b">
@@ -40,7 +40,7 @@ const CartItem = ({ item }) => {
 
 const FinalPage = () => {
   const router = useRouter();
-  const { cartItems , removeFromCart } = useCart();
+  const { cartItems , removeFromCart ,clearCart } = useCart();
   const { shippingData } = useShipping();
   const [data, setData] = useState();
   const [note, setNote] = useState();
@@ -60,7 +60,7 @@ const FinalPage = () => {
 
   const handleCompleteOrder = async (event) => {
 
-    console.log(cartItems);
+    console.log(cartItems,"cartItems");
 
     const skladanie_produkt = cartItems.map((item) => {
       return {
@@ -68,7 +68,9 @@ const FinalPage = () => {
         pocet_kusov: item.quantity,
       };
     });
-    console.log(skladanie_produkt)
+
+    console.log(skladanie_produkt,"skladanie_produkt");
+
     const result = await directus.request(
       createItem("objednavka", {
         meno: data?.firstName,
@@ -80,14 +82,23 @@ const FinalPage = () => {
         mesto: data?.city,
         psc: data?.postalCode,
         Poznamka: note,
-        id_objednavka: skladanie_produkt,
         cena_objednavky: total,
-        nazov_spolocnost: data?.companyName,
+        nazov_spolocnosti: data?.companyName,
         ico: data?.ico,
         dic:data?.dic,
         icdph:data?.icdph
       })
     );
+
+    skladanie_produkt.map(async(item)=>{
+      await directus.request(
+        createItem("skladanie_produkt", {
+          id_objednavky: result.id,
+          id_produkt: item.id_produkt,
+          pocet_kusov: item.pocet_kusov
+        })
+      );
+    })
 
     try {
       router.push("/");
@@ -96,9 +107,9 @@ const FinalPage = () => {
       toast.error("Chyba v objednavke. Skontrolujte si udaje a skuste to znova"); 
     }
 
-    console.log(result);
+    console.log(result,"objednavka");
 
-    removeFromCart(cartItems.id)
+    clearCart();
 
   };
 

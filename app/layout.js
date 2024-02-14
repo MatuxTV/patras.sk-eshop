@@ -34,6 +34,7 @@ export const metadata = {
 export default async function RootLayout({ children }) {
   let data = await getServerSession(options);
   let user = data?.user;
+  console.log(user,"uzivatel");
   return (
     <html lang="sk">
       <Head>
@@ -82,6 +83,11 @@ export default async function RootLayout({ children }) {
                   <p className="font-plus-jakarta">O nas</p>
 
                   {user ? (
+                    user.role == "95863818-e696-411d-bae4-c1e04725c376" ? (
+                      <Link href="/admin">
+                      <b className=" text-green">{user?.first_name}</b>
+                    </Link>
+                    ):
                     <Link href="/user">
                       <b className=" text-blue1">{user?.first_name}</b>
                     </Link>
