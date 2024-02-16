@@ -10,6 +10,7 @@ import directus from "@/lib/directus";
 import { useRouter } from "next/navigation";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useUser } from "@/lib/user-context";
 
 const CartItem = ({ item }) => {
   
@@ -43,9 +44,12 @@ const FinalPage = () => {
   const { cartItems , removeFromCart ,clearCart } = useCart();
   const { shippingData } = useShipping();
   const [data, setData] = useState();
-  const [note, setNote] = useState();
+  const [note, setNote] = useState("");
+
+  const user = useUser();
 
   const handlePoznamka = (e) => {
+    console.log(note)
     setNote(e.target.value);
   };
   useEffect(() => {
@@ -61,6 +65,7 @@ const FinalPage = () => {
   const handleCompleteOrder = async (event) => {
 
     console.log(cartItems,"cartItems");
+    console.log(note,"note")
 
     const skladanie_produkt = cartItems.map((item) => {
       return {
@@ -70,6 +75,8 @@ const FinalPage = () => {
     });
 
     console.log(skladanie_produkt,"skladanie_produkt");
+    
+    // console.log(user.id,"user");
 
     const result = await directus.request(
       createItem("objednavka", {
@@ -81,12 +88,13 @@ const FinalPage = () => {
         ulica: data?.street,
         mesto: data?.city,
         psc: data?.postalCode,
-        Poznamka: note,
+        poznamka: note,
         cena_objednavky: total,
         nazov_spolocnosti: data?.companyName,
         ico: data?.ico,
         dic:data?.dic,
-        icdph:data?.icdph
+        icdph:data?.icdph,
+        user_created:user?.id,
       })
     );
 
@@ -205,7 +213,6 @@ const FinalPage = () => {
             <input
               className="w-full p-2 border shadow-md "
               placeholder="Mate poznamku k objednavke?"
-              pattern="\d{5}"
               type="text"
               name="note"
               value={note}

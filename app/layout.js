@@ -34,7 +34,6 @@ export const metadata = {
 export default async function RootLayout({ children }) {
   let data = await getServerSession(options);
   let user = data?.user;
-  console.log(user,"uzivatel");
   return (
     <html lang="sk">
       <Head>
