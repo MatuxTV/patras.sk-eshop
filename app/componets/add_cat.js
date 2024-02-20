@@ -1,5 +1,8 @@
 'use client';
 import { toast } from "react-toastify";
+import directus from "@/lib/directus";
+import { createItem, uploadFiles } from "@directus/sdk";
+
 const AddCat = (props) => {
 
   const handleNewCategory = async(e) => {
@@ -10,27 +13,25 @@ const AddCat = (props) => {
       return;
     }
 
-    const formData = new FormData();
-
-    formData.append("obrazok", props.image);
-    formData.append("meno", props.category.category_name);
-
-    console.log(category);
-
     try {
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_DIRECTUS}items/kategoria`,
-        {
-          method: "POST",
-          body: formData,
-          headers: {
-            "Content-Type": "multipart/",
-          },
-        }
-      );
-      toast.success("Kategoria pridany");
-      console.log(formData);
+      const imageFile = new FormData();
+      imageFile.append('file', props.image);
+
+      const fileResponse = await directus.request(uploadFiles(imageFile));
+
+      //Upload Produkt
+      const categoryData = {
+        nazov: props.category.category_name,
+        obrazok: fileResponse.id,
+      };
+
+      const productResponse = await directus.request(createItem('kategoria', categoryData));
+      console.log(productResponse);
+      if (productResponse) {
+        toast.success("Kategoria pridana");
+      }
     } catch (error) {
+      console.error(error);
       toast.error("Aj jaj, nieco sa nepodarilo, skuste to znova");
     }
   };

@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 const RemoveItem =(props) => {
 
     const router = useRouter()
+    
     const itemRemove = async() =>{
 
         {await directus.request(deleteItem(

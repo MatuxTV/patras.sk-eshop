@@ -3,7 +3,7 @@ import { deleteUser } from "@directus/sdk";
 import { useEffect, useState } from "react";
 import directus from "@/lib/directus";
 
-const DelUser = (props) => {
+const DelUser = () => {
   const [user, setUser] = useState([]);
 
   useEffect(() => {
@@ -17,11 +17,6 @@ const DelUser = (props) => {
     fetchData().then((res) => setUser(res.data));
   }, []);
 
-  // const RemoveUser = async() => {
-  //   console.log(user[1].id,"ID")
-  //   // {await directus.request(deleteUser(user.id))}
-  //   // router.refresh()
-  // };
 
   return (
     <div className=" bg-white2 m-8 rounded-lg">

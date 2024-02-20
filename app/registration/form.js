@@ -51,7 +51,7 @@ export default function RegistrationForm() {
     <>
       <Nav /> {/* Komponent navigácie */}
       <div className="min-h-fit flex items-center justify-center bg-gray-100">
-        <div className="flex flex-col">
+        <div className="flex flex-col justify-center">
           <Image // Logo obrazok
             className="m-8"
             src="/IMG/logo.png"

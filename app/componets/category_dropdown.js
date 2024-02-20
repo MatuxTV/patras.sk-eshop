@@ -1,26 +1,31 @@
-'use client'
-import { useState , useEffect } from "react";
+import { useState, useEffect } from "react";
 
-const CatDetail = () =>{
+const CatDetail = ({ onCategorySelected }) => {
+  const [categories, setCategories] = useState([]);
 
-    const [category,setCategory] =useState();
-    useEffect(() => {
-      async function fetchData() {
-        const res = await fetch(process.env.NEXT_PUBLIC_DIRECTUS + "items/kategoria", {
-          cache: "no-store",
-        }).then((res) => res.json());
-        return res;
-      }
-  
-      fetchData().then((res) => setCategory(res.data));
-    }, []);
-    
-    return(
-      <select>
-        {category?.map((item) => {
-                return <option key={item.id} value={item.id}> {item.nazov}</option>;
-              })}
-      </select>
-    )
+  useEffect(() => {
+    async function fetchData() {
+      const res = await fetch(process.env.NEXT_PUBLIC_DIRECTUS + "items/kategoria", {
+        cache: "no-store",
+      }).then((res) => res.json());
+      setCategories(res.data);
     }
-export default CatDetail
+
+    fetchData();
+  }, []);
+
+  const handleSelectChange = (event) => {
+    const selectedCategoryId = event.target.value;
+    onCategorySelected(selectedCategoryId); // This callback will pass the selected ID up to the parent component
+  };
+
+  return (
+    <select onChange={handleSelectChange}>
+      {categories.map((category) => (
+        <option key={category.id} value={category.id}>{category.nazov}</option>
+      ))}
+    </select>
+  );
+}
+
+export default CatDetail;

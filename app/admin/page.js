@@ -1,17 +1,18 @@
 "use client";
 import Nav from "../componets/nav";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import CatDetail from "../componets/category_dropdown";
 import OrderList from "../componets/orders";
 import AddCat from "../componets/add_cat";
 import AddProduct from "../componets/add_prod";
 import DelUser from "../componets/dell_user";
-
 import SignOutButton from "../componets/signOutButton";
 
 const Admin = () => {
-  const [imageProd, setImageProd] = useState(null);
-  const [imageCat, setImageCat] = useState(null);
+
+  const [imageProd, setImageProd] = useState(null); // Fotka pre produkt
+  const [imageCat, setImageCat] = useState(null); // Fotka pre kategoriu
+  const [selectedCategoryId, setSelectedCategoryId] = useState(null); //Kategoria produktu
 
   const [product, setProduct] = useState({
     product_name: "",
@@ -19,17 +20,31 @@ const Admin = () => {
     price: "",
     avaibility: "",
     quantity: "",
+    category: "",
   });
 
   const [category, setCategory] = useState({
     category_name: "",
   });
 
+  useEffect(() => {
+    if (selectedCategoryId) {
+      setProduct(prevProduct => ({
+        ...prevProduct,
+        category: selectedCategoryId,
+      }));
+    }
+  }, [selectedCategoryId]);
+
+  const handleCategorySelected = (categoryId) => {
+    setSelectedCategoryId(categoryId);
+  };
+
   const handleChangeProduct = (event) => {
-    const { name, value } = event.target;
+    const { name, value,type,checked } = event.target;
     setProduct((prevProduct) => ({
       ...prevProduct,
-      [name]: value,
+      [name]: type === 'checkbox' ? checked : value,
     }));
   };
 
@@ -96,7 +111,7 @@ const Admin = () => {
               <p>Dostupnost produktu</p>
               <input
                 className=" p-2 shadow-md"
-                placeholder="Cena produktu"
+                placeholder="Dostupnost produktu"
                 type="checkbox"
                 name="avaibility"
                 value={product.avaibility}
@@ -114,7 +129,7 @@ const Admin = () => {
             />
             <div>
               <p>Kategoria produktu</p>
-              <CatDetail />
+              <CatDetail onCategorySelected={handleCategorySelected} />
             </div>
 
             <AddProduct product={product} image={imageProd} />
@@ -145,7 +160,7 @@ const Admin = () => {
               />
             </div>
 
-            <AddCat category={category} iamge={imageCat} />
+            <AddCat category={category} image={imageCat} />
           </div>
         </div>
 

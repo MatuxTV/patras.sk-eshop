@@ -23,14 +23,13 @@ const Nav = (props) => {
       <div className="flex items-center ">
         <Link href="/">
           <div className="container relative z-20 md:m-6">
-            <Image
-              className="z-20 md:m-6"
+          <Image
               src="/IMG/logo.png"
               alt="patras.sk"
-              sizes="30vw"
-              width={150}
-              height={150}
-              style={{ width: "100%", height: "auto" }}
+              width={100}
+              height={100}
+              objectFit="contain"
+              className="transition-transform duration-300 ease-in-out transform hover:scale-105"
             />
           </div>
         </Link>
