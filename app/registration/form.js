@@ -15,22 +15,40 @@ export default function RegistrationForm() {
     email: '',
     password: ''
   });
+  
   const [error, setError] = useState('');
 
   // Update form data on input change
   const handleChange = (event) => {
+    console.log(event.target,"event");
     const { name, value } = event.target;
     setFormData(prevFormData => ({
       ...prevFormData,
       [name]: value
     }));
   };
+  
+    // const handleSubmit = async (data) => {
+    //   const response = await fetch(`/api/auth/register`, {
+    //     method: 'POST',
+    //     body: JSON.stringify({
+    //       ...data,
+    //     }),
+    //   });
+  
+    //   if (response.status === 201) {
+    //     router.push('/');
+    //   } else {
+    //     if (response.status === 409) {
+    //       setError('A user with this email already exist');
+    //     }
+    //   }
+    // };
 
-  // Submit form data to the API route
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    console.log(formData);
+    console.log(formData,"formData");
     const response = await fetch(`/api/auth/register`, {
       method: 'POST',
       headers: {
@@ -38,9 +56,12 @@ export default function RegistrationForm() {
       },
       body: JSON.stringify(formData)
     });
+    
+    console.log(response,"response");
 
     if (response.status === 201) {
       router.push('/');
+      router.refresh();
     } else {
       const result = await response.json();
       setError(result.message || 'An error occurred during registration.');
@@ -81,12 +102,12 @@ export default function RegistrationForm() {
               </label>
               <input
                 className="shadow appearance-none rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                
                 name="first_name"
                 type="text"
                 placeholder="Meno"
                 onChange={handleChange}
                 required
+                value={formData.first_name}
               />
             </div>
 
@@ -106,6 +127,7 @@ export default function RegistrationForm() {
                 placeholder="Priezvisko"
                 onChange={handleChange}
                 required
+                value={formData.last_name}
               />
             </div>
 
@@ -125,6 +147,7 @@ export default function RegistrationForm() {
                 placeholder="E-mail"
                 onChange={handleChange}
                 required
+                value={formData.email}
               />
             </div>
 
@@ -146,6 +169,7 @@ export default function RegistrationForm() {
                 minLength={8} // Minimálna dĺžka hesla
                 // pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" // Mínimálne požiadavky na heslo
                 required
+                value={formData.password}
               />
             </div>
 

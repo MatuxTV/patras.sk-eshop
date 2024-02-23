@@ -7,7 +7,7 @@ export default function Product(data) {
 
   return (
     <div>
-      <a className="bg-white2 md:w-96 md:h-[400px] flex flex-col border-2 items-center border-white2 rounded-2xl hover:bg-blue2 shadow-lg " href={`/products-info?id=${data.id}`}>
+      <a className="bg-white2 w-64 h-[330px] md:w-[310px] md:h-[400px] m-5 mt-8 flex flex-col border-2 items-center border-white2 rounded-2xl hover:bg-blue2 shadow-lg " href={`/products-info?id=${data.id}`}>
         <div className="justify-center item-center border-1 border-black2 border-opacity-1 h-56 w-56 relative m-6 border-2 rounded-lg  bg-white2">
           <Image
             className="image"

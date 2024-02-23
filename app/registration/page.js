@@ -1,7 +1,7 @@
 "use client";
 import RegistrationForm from "./form";
 
-export default async function RegisterPage() {
+export default function RegisterPage() {
 
 
 

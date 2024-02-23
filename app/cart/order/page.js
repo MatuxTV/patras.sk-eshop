@@ -104,31 +104,29 @@ const CheckoutLayout = () => {
         </h1>
       </div>
       {/* Progress Bar */}
-      <div className="flex justify-around mb-8 h-16 items-center bg-blue2">
-        <div className="flex flex-row gap-2">
-          <p className="bg-blue1 w-16 text-center font-plus-jakarta text-h5 text-white1 rounded-full">
+      <div className="flex justify-around mb-8 h-16 items-center bg-blue2 text-xs sm:text-sm md:text-base lg:text-h5">
+        <div className="flex flex-row gap-2  items-center">
+          <p className="bg-blue1 w-10 h-10 flex items-center justify-center text-center font-plus-jakarta text-white1 rounded-full sm:w-12 sm:h-12 md:w-16 md:h-16">
             1
           </p>
           <Link href={"/cart"}>
-            <p className="font-plus-jakarta text-h5">Košík</p>
+            <p className="font-plus-jakarta">Košík</p>
           </Link>
         </div>
 
-        <div className="flex flex-row gap-2">
-          <p className="bg-blue1 w-16 text-center  font-plus-jakarta text-h5 text-white1 rounded-full">
+        <div className="flex flex-row gap-2 items-center">
+          <p className="bg-blue1 w-10 h-10 flex items-center justify-center text-center font-plus-jakarta text-white1 rounded-full sm:w-12 sm:h-12 md:w-16 md:h-16">
             2
           </p>
           <Link href={"/cart/order"}>
-            <p className="font-plus-jakarta text-h5">Dodacie udaje</p>
+            <p className="font-plus-jakarta">Dodacie udaje</p>
           </Link>
         </div>
-
-        <div className="flex flex-row gap-2">
-          <p className="border w-16  text-center font-plus-jakarta text-h5 text-black1 rounded-full">
+        <div className="flex flex-row gap-2 items-center">
+          <p className="border w-10 h-10 flex items-center justify-center text-center font-plus-jakarta text-black1 rounded-full sm:w-12 sm:h-12 md:w-16 md:h-16">
             3
           </p>
-
-          <p className=" font-plus-jakarta text-h5">Doprava a platba</p>
+          <p className="font-plus-jakarta">Doprava a platba</p>
         </div>
       </div>
 

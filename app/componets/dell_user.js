@@ -35,11 +35,10 @@ const DelUser = () => {
             >
               x
             </button>
-            <div className="flex justify-between">
-              <p>
-                {item.first_name} {item.last_name}
-              </p>
-              <p>{item.email}</p>
+            <div className="flex space-x-5">
+              <p> <b>Meno:</b> {item.first_name}</p>
+              <p><b>Priezvisko:</b> {item.last_name}</p>
+              <p><b>Email:</b> {item.email}</p>
             </div>
           </div>
         );

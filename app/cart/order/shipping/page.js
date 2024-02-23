@@ -13,8 +13,6 @@ import "react-toastify/dist/ReactToastify.css";
 import { useUser } from "@/lib/user-context";
 
 const CartItem = ({ item }) => {
-  
-
   return (
     <div className="flex items-center justify-between p-4 border-b">
       <div className="flex items-center">
@@ -41,7 +39,7 @@ const CartItem = ({ item }) => {
 
 const FinalPage = () => {
   const router = useRouter();
-  const { cartItems , removeFromCart ,clearCart } = useCart();
+  const { cartItems, removeFromCart, clearCart } = useCart();
   const { shippingData } = useShipping();
   const [data, setData] = useState();
   const [note, setNote] = useState("");
@@ -49,7 +47,7 @@ const FinalPage = () => {
   const user = useUser();
 
   const handlePoznamka = (e) => {
-    console.log(note)
+    console.log(note);
     setNote(e.target.value);
   };
   useEffect(() => {
@@ -63,9 +61,8 @@ const FinalPage = () => {
   );
 
   const handleCompleteOrder = async (event) => {
-
-    console.log(cartItems,"cartItems");
-    console.log(note,"note")
+    console.log(cartItems, "cartItems");
+    console.log(note, "note");
 
     const skladanie_produkt = cartItems.map((item) => {
       return {
@@ -74,8 +71,8 @@ const FinalPage = () => {
       };
     });
 
-    console.log(skladanie_produkt,"skladanie_produkt");
-    
+    console.log(skladanie_produkt, "skladanie_produkt");
+
     // console.log(user.id,"user");
 
     const result = await directus.request(
@@ -92,33 +89,34 @@ const FinalPage = () => {
         cena_objednavky: total,
         nazov_spolocnosti: data?.companyName,
         ico: data?.ico,
-        dic:data?.dic,
-        icdph:data?.icdph,
-        user_created:user?.id,
+        dic: data?.dic,
+        icdph: data?.icdph,
+        user_created: user?.id,
       })
     );
 
-    skladanie_produkt.map(async(item)=>{
+    skladanie_produkt.map(async (item) => {
       await directus.request(
         createItem("skladanie_produkt", {
           id_objednavky: result.id,
           id_produkt: item.id_produkt,
-          pocet_kusov: item.pocet_kusov
+          pocet_kusov: item.pocet_kusov,
         })
       );
-    })
+    });
 
     try {
       router.push("/");
-      toast.success("Dakujeme za objednavku"); 
+      toast.success("Dakujeme za objednavku");
     } catch (error) {
-      toast.error("Chyba v objednavke. Skontrolujte si udaje a skuste to znova"); 
+      toast.error(
+        "Chyba v objednavke. Skontrolujte si udaje a skuste to znova"
+      );
     }
 
-    console.log(result,"objednavka");
+    console.log(result, "objednavka");
 
     clearCart();
-
   };
 
   return (
@@ -131,31 +129,30 @@ const FinalPage = () => {
       </div>
 
       {/* Progress Bar */}
-      <div className="flex justify-around mb-8 h-16 items-center bg-blue2">
-        <div className="flex flex-row gap-2">
-          <p className="bg-blue1 w-16 text-center font-plus-jakarta text-h5 text-white1 rounded-full">
+      <div className="flex justify-around mb-8 h-16 items-center bg-blue2 text-xs sm:text-sm md:text-base lg:text-h5">
+        <div className="flex flex-row gap-2  items-center">
+          <p className="bg-blue1 w-10 h-10 flex items-center justify-center text-center font-plus-jakarta text-white1 rounded-full sm:w-12 sm:h-12 md:w-16 md:h-16">
             1
           </p>
           <Link href={"/cart"}>
-            <p className="font-plus-jakarta text-h5">Košík</p>
+            <p className="font-plus-jakarta">Košík</p>
           </Link>
         </div>
 
-        <div className="flex flex-row gap-2">
-          <p className="bg-blue1 w-16 text-center  font-plus-jakarta text-h5 text-white1 rounded-full">
+        <div className="flex flex-row gap-2 items-center">
+          <p className="bg-blue1 w-10 h-10 flex items-center justify-center text-center font-plus-jakarta text-white1 rounded-full sm:w-12 sm:h-12 md:w-16 md:h-16">
             2
           </p>
           <Link href={"/cart/order"}>
-            <p className="font-plus-jakarta text-h5">Dodacie udaje</p>
+            <p className="font-plus-jakarta">Dodacie udaje</p>
           </Link>
         </div>
-
-        <div className="flex flex-row gap-2">
-          <p className="bg-blue1 w-16 text-center  font-plus-jakarta text-h5 text-white1 rounded-full">
+        <div className="flex flex-row gap-2 items-center">
+          <p className="bg-blue1 w-10 h-10 flex items-center justify-center text-center font-plus-jakarta text-white1 rounded-full sm:w-12 sm:h-12 md:w-16 md:h-16">
             3
           </p>
-          <Link href={"/cart"}>
-            <p className=" font-plus-jakarta text-h5">Doprava a platba</p>
+          <Link href={"/cart/order/shipping"}>
+            <p className="font-plus-jakarta">Dodacie udaje</p>
           </Link>
         </div>
       </div>
@@ -246,14 +243,18 @@ const FinalPage = () => {
           </div>
 
           <div className="flex justify-center">
-            <Link href="/cart/order/shipping">
-              <button
-                onClick={handleCompleteOrder}
-                className=" text-center bg-green text-white1 text-white p-3 rounded font-plus-jakarta hover:shadow hover:shadow-green"
-              >
-                Dokoncit objednavku
-              </button>
-            </Link>
+            {cartItems.length === 0 ? (
+              <></>
+            ) : (
+              <Link href="/cart/order/shipping">
+                <button
+                  onClick={handleCompleteOrder}
+                  className=" text-center bg-green text-white1 text-white p-3 rounded font-plus-jakarta hover:shadow hover:shadow-green"
+                >
+                  Dokoncit objednavku
+                </button>
+              </Link>
+            )}
           </div>
         </div>
       </div>

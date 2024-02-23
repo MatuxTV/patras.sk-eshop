@@ -24,6 +24,7 @@ const ABT = (props) => {
 
 export default async function Home() {
   const category = await getCategory();
+  
   return (
     <div className="min-h-screen flex flex-col">
       <div className="flex items-center justify-center h-full">

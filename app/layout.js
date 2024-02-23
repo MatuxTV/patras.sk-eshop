@@ -78,8 +78,6 @@ export default async function RootLayout({ children }) {
                   <p className="font-plus-jakarta">patras@patras.sk</p>
                 </a>
                 <div className="ml-auto flex flex-row gap-4">
-                  <p className="font-plus-jakarta">Kontakty</p>
-                  <p className="font-plus-jakarta">O nas</p>
 
                   {user ? (
                     user.role == "95863818-e696-411d-bae4-c1e04725c376" ? (
@@ -114,12 +112,12 @@ export default async function RootLayout({ children }) {
                   <p className="font-plus-jakarta flex text-[8px] md:text-h7">
                     Mlynska 34 976 Selce
                   </p>
-                  <a href="">
+                  <a href="/podmienky">
                     <p className="font-plus-jakarta text-[8px] md:text-h7">
                       Obchodne podmienky
                     </p>
                   </a>
-                  <a href="">
+                  <a href="podmienky">
                     <p className="font-plus-jakarta text-[8px] md:text-h7">
                       Podmienky reklamacie
                     </p>

@@ -39,7 +39,7 @@ const AddCat = (props) => {
   return (
     <button
       type="submit"
-      className=" mt-4 py-2 bg-white2 text-white font-bold rounded-lg hover:bg-blue2 p-6"
+      className=" bg-white2 text-white font-bold rounded-lg hover:bg-blue2 p-6"
       onClick={handleNewCategory}
     >
       Pridat kategoriu

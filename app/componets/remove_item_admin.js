@@ -12,6 +12,10 @@ const RemoveItem =(props) => {
             'objednavka',
              props.id 
         ))}
+        {await directus.request(deleteItem(
+            'skladanie_produkt',
+             props.id_skladanie_objednavky 
+        ))}
         router.refresh()
     }
     

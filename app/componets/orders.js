@@ -54,6 +54,7 @@ const OrderList = () => {
         return (
           <div key={item.id + "order"} value={item.id}>
             <div className="bg-white2 p-8 m-8 rounded-lg">
+            <RemoveItem id={item.id}/>
               <h2 className="text-2xl font-bold font-plus-jakarta text-center mb-4">
                 OBJEDNÁVKA ČÍSLO <b>{item.id}</b>
               </h2>
@@ -64,7 +65,7 @@ const OrderList = () => {
                     FAKTURAČNÉ ÚDAJE
                   </h3>
                   <div className="flex justify-between">
-                    <RemoveItem id={item.id}/>
+                    
                     <div className="text-gray-600">
                       <p>Meno</p>
                       <p>Email</p>
@@ -162,5 +163,6 @@ const OrderList = () => {
       })}
     </div>
   );
+  
 };
 export default OrderList;

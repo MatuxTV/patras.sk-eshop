@@ -24,11 +24,11 @@ export const Produkty = async () => {
       <Nav />
       <div className="flex justify-center flex-col">
         <div className="w-full justify-center flex">
-          <h1 className="flex font-plus-jakarta text-h5 m-16 md:text-h2 ">
+          <h1 className="flex font-plus-jakarta text-h5 m-12 md:text-h2 ">
             Produkty
           </h1>
         </div>
-        <div className="flex flex-wrap flex-row space-x-16 m-16">
+        <div className="flex  flex-wrap p-4 justify-between m-16">
           {data?.map((item) => {
             return<ProductCard {...item} key={item.id} />;
           })}

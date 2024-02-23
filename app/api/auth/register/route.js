@@ -4,21 +4,27 @@ import directus from "@/lib/directus";
 
 export async function POST(request) {
   try {
+
     const { first_name, last_name, email, password } = await request.json();
+
     console.log(first_name, last_name, email, password,"prihlasovanie");
+
     const result = await directus.request(
       createUser({
         first_name,
         last_name,
         email,
         password,
-        role: "bb4da356-49ec-44b3-88af-5c8612676ae4",
+        role: process.env.USER_ROLE,
       })
     );
+
     console.log(result,"result");
+
     return NextResponse.json({ message: "Account Created!" }, { status: 201 });
   } catch (e) {
     const code = e.errors[0].extensions.code;
+
     if (code === "RECORD_NOT_UNIQUE") {
       return NextResponse.json(
         { message: "This user already exist" },
