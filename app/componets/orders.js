@@ -134,11 +134,13 @@ const OrderList = () => {
                           <p>ID</p>
                           <p>Produkt</p>
                           <p>Cena</p>
+                          <p>Pocet kusov</p>
                         </div>
                         <div className="font-medium text-red-600">
                           <p>{orderProduct[0].id}</p>
                           <p>{orderProduct[0].meno}</p>
                           <p>{orderProduct[0].cena}</p>
+                          <p>{order.pocet_kusov}</p>
                         </div>
                       </div>
                     ) : (

@@ -9,7 +9,7 @@ const BackButton = () => {
   };
 
   return (
-    <button className='flex text-h4 m-10 font-plus-jakarta' onClick={goBack}>--Spat</button>
+    <button className='flex text-h4 m-10 font-plus-jakarta' onClick={goBack}>⬅️</button>
   );
 };
 

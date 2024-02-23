@@ -9,11 +9,10 @@ import "react-toastify/dist/ReactToastify.css";
 const Produkt = async ({ searchParams }) => {
   const productID = searchParams.id;
 
- 
   console.log(searchParams);
   function getProduct() {
     return fetch(
-      process.env.NEXT_PUBLIC_DIRECTUS + `items/produkty/${productID}`,
+      `${process.env.NEXT_PUBLIC_DIRECTUS}items/produkty/${productID}`,
       {
         cache: "no-store",
       }
@@ -25,57 +24,49 @@ const Produkt = async ({ searchParams }) => {
   return (
     <div>
       <Nav product={"Produkty"} />
-      <BackButton/>
-      <div className=" flex">
-        <div className="flex flex-row">
+      <BackButton />
+      <div className="flex flex-col md:flex-row">
         <ToastContainer
-        position="top-right"
-        autoClose={3000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        zIndex={1}
-      />
-          <div className="w-1/2 justify-center items-center">
-            <Image
-              src={`${process.env.NEXT_PUBLIC_DIRECTUS}assets/${produkt.data.obrazok}`}
-              alt={produkt.data.meno}
-              width={500}
-              height={500}
-            />
+          position="top-right"
+          autoClose={3000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          zIndex={1}
+        />
+        <div className="flex justify-center items-center drop-shadow-lg w-1/2 border h-auto">
+          <Image
+            src={`${process.env.NEXT_PUBLIC_DIRECTUS}assets/${produkt.data.obrazok}`}
+            alt={produkt.data.meno}
+            width={400}
+            height={350}
+            layout="intrinsic" // Toto zachová pôvodné proporcie obrázku, ale nechá ho prispôsobiť šírke kontajnera
+            objectFit="contain" // Zabránime, aby obrázok prekročil kontajner a bol v ňom celý viditeľný
+          />
+        </div>
+        <div className="md:w-1/2 m-5">
+          <h1 className="text-h3 font-plus-jakarta py-8">
+            {produkt.data.meno}
+          </h1>
+          <p className="text-left py-5 font-plus-jakarta">
+            {produkt.data.popisok}
+          </p>
+          <p className="text-h4 font-plus-jakarta py-5">{produkt.data.cena}€</p>
+          <div className="align-middle py-5">
+            {produkt.data.dostupnost ? <ToCart product={produkt.data} /> : ""}
           </div>
-          <div className="w-1/2 m-5">
-            <div className="">
-              <h1 className=" text-h3 font-plus-jakarta py-8">
-                {produkt.data.meno}
-              </h1>
-            </div>
-            <div>
-              <p className=" text-left py-5 font-plus-jakarta ">
-                {produkt.data.popisok}
-              </p>
-            </div>
-            <div>
-              <p className=" text-h4 font-plus-jakarta py-5">
-                {produkt.data.cena}€
-              </p>
-            </div>
-            <div className=" align-middle py-5">
-            {produkt.data.dostupnost ? <ToCart product={produkt.data}/> : ""}
-            </div>
-            <div>
-              <p
-                className={`${
-                  produkt.data.dostupnost
-                    ? "text-blue1 text-h6"
-                    : "text-red text-h6"
-                } py-8 font-plus-jakarta`}
-              >
-                {produkt.data.dostupnost ? `Na sklade - ${produkt.data.mnozstvo}ks` : "Nedostupne"}
-              </p>
-            </div>
-          </div>
+          <p
+            className={`${
+              produkt.data.dostupnost
+                ? "text-blue1 text-h6"
+                : "text-red text-h6"
+            } py-8 font-plus-jakarta`}
+          >
+            {produkt.data.dostupnost
+              ? `Na sklade - ${produkt.data.mnozstvo}ks`
+              : "Nedostupne"}
+          </p>
         </div>
       </div>
     </div>

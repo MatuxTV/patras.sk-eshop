@@ -79,7 +79,7 @@ const UserPage = async () => {
                   </div>
 
                   <div>
-                  <p className=" text-center text-h6"> ID objednavky : <b>{item.id}</b></p>
+                  <p className=" text-center m-2 text-h6"> ID objednavky : <b>{item.id}</b></p>
                     {/* Objednané produkty */}
                     <div className="flex flex-col sm:flex-row sm:items-center">
                       <span className="text-sm font-medium text-gray-600 sm:mr-2">
@@ -100,8 +100,7 @@ const UserPage = async () => {
                         return (
                           <div key={id} value={id}>
                             <ul className="list-disc list-inside text-gray-800">
-                              <li>{orderProduct[0].meno}</li>
-                              <li>{orderProduct[0].cena}€</li>
+                              <li>{order.pocet_kusov}x - {orderProduct[0].meno} - {orderProduct[0].cena}€ </li>
                             </ul>
                           </div>
                         );

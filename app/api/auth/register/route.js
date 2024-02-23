@@ -5,7 +5,7 @@ import directus from "@/lib/directus";
 export async function POST(request) {
   try {
     const { first_name, last_name, email, password } = await request.json();
-    console.log(first_name, last_name, email, password);
+    console.log(first_name, last_name, email, password,"prihlasovanie");
     const result = await directus.request(
       createUser({
         first_name,
@@ -15,7 +15,7 @@ export async function POST(request) {
         role: "bb4da356-49ec-44b3-88af-5c8612676ae4",
       })
     );
-    console.log(result);
+    console.log(result,"result");
     return NextResponse.json({ message: "Account Created!" }, { status: 201 });
   } catch (e) {
     const code = e.errors[0].extensions.code;
