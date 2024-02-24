@@ -8,9 +8,7 @@ const OrderList = () => {
   const [products, setProducts] = useState([]);
   const [orders, setOrders] = useState([]);
 
-
   useEffect(() => {
-
     async function fetchData() {
       const res = await fetch(
         process.env.NEXT_PUBLIC_DIRECTUS + "items/objednavka",
@@ -44,8 +42,6 @@ const OrderList = () => {
     fetchData().then((res) => setData(res.data));
     fetchProducts().then((res) => setProducts(res.data));
     fetchOrders().then((res) => setOrders(res.data));
-
-    
   }, []);
 
   return (
@@ -54,7 +50,7 @@ const OrderList = () => {
         return (
           <div key={item.id + "order"} value={item.id}>
             <div className="bg-white2 p-8 m-8 rounded-lg">
-            <RemoveItem id={item.id}/>
+              <RemoveItem id={item.id} />
               <h2 className="text-2xl font-bold font-plus-jakarta text-center mb-4">
                 OBJEDNÁVKA ČÍSLO <b>{item.id}</b>
               </h2>
@@ -65,7 +61,6 @@ const OrderList = () => {
                     FAKTURAČNÉ ÚDAJE
                   </h3>
                   <div className="flex justify-between">
-                    
                     <div className="text-gray-600">
                       <p>Meno</p>
                       <p>Email</p>
@@ -110,22 +105,14 @@ const OrderList = () => {
               <div className="mt-8">
                 <h3 className="text-xl font-semibold mb-2">PRODUKTY</h3>
                 <div className="space-y-2">
-
                   {item.id_skladanie_objednavky.map((id) => {
-
-                    console.log(id,"id");
-
                     const order = orders.find((p) => p.id === id);
 
-                    console.log(order,"order");
+                    const orderProduct = products.filter(
+                      (p) => p.id === order.id_produkt
+                    );
 
-                    console.log(products,"products")
-
-                    const orderProduct=products.filter((p) => p.id === order.id_produkt);
-
-                    console.log(orderProduct,"orderProduct");
-
-                   return( orderProduct !=undefined ? (
+                    return orderProduct != undefined ? (
                       <div
                         key={id + "product"}
                         value={id}
@@ -146,7 +133,7 @@ const OrderList = () => {
                       </div>
                     ) : (
                       <>undefined</>
-                    ))
+                    );
                   })}
 
                   <div className="flex justify-between mt-4">
@@ -163,6 +150,5 @@ const OrderList = () => {
       })}
     </div>
   );
-  
 };
 export default OrderList;

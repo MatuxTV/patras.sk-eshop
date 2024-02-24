@@ -81,7 +81,7 @@ const Cart = () => {
           <p className="border w-10 h-10 flex items-center justify-center text-center font-plus-jakarta text-black1 rounded-full sm:w-12 sm:h-12 md:w-16 md:h-16">
             2
           </p>
-          <p className="font-plus-jakarta">Dodacie udaje</p>
+          <p className="font-plus-jakarta">Dodacie údaje</p>
         </div>
         <div className="flex flex-row gap-2 items-center">
           <p className="border w-10 h-10 flex items-center justify-center text-center font-plus-jakarta text-black1 rounded-full sm:w-12 sm:h-12 md:w-16 md:h-16">

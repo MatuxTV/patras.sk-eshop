@@ -119,7 +119,7 @@ const CheckoutLayout = () => {
             2
           </p>
           <Link href={"/cart/order"}>
-            <p className="font-plus-jakarta">Dodacie udaje</p>
+            <p className="font-plus-jakarta">Dodacie údaje</p>
           </Link>
         </div>
         <div className="flex flex-row gap-2 items-center">
@@ -174,7 +174,7 @@ const CheckoutLayout = () => {
                   name="phoneNumber"
                   className="w-3/4 p-2 border shadow-md"
                   type="tel"
-                  placeholder="Tel.cislo"
+                  placeholder="Tel.čislo"
                   id="telefonne_cislo"
                   pattern="\d{3}\s?\d{3}\s?\d{3}"
                   onChange={handleChange}
@@ -220,7 +220,7 @@ const CheckoutLayout = () => {
                 />
                 <input
                   className="w-full p-2 border mb-4 shadow-md"
-                  placeholder="PSC"
+                  placeholder="PSČ"
                   pattern="\d{5}"
                   type="text"
                   name="postalCode"
@@ -277,7 +277,7 @@ const CheckoutLayout = () => {
                   />
                   <input
                     className="w-full p-2 border shadow-md"
-                    placeholder="IC DPH"
+                    placeholder="IČ DPH"
                     pattern="\d{5}"
                     type="text"
                     name="icdph"

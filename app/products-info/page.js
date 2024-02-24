@@ -9,7 +9,6 @@ import "react-toastify/dist/ReactToastify.css";
 const Produkt = async ({ searchParams }) => {
   const productID = searchParams.id;
 
-  console.log(searchParams);
   function getProduct() {
     return fetch(
       `${process.env.NEXT_PUBLIC_DIRECTUS}items/produkty/${productID}`,
@@ -35,7 +34,7 @@ const Produkt = async ({ searchParams }) => {
           rtl={false}
           zIndex={1}
         />
-        <div className="flex justify-center items-center drop-shadow-lg w-1/2 border h-auto">
+        <div className="flex justify-center items-center drop-shadow-lg w-1/2 shadow-lg m-7 h-auto">
           <Image
             src={`${process.env.NEXT_PUBLIC_DIRECTUS}assets/${produkt.data.obrazok}`}
             alt={produkt.data.meno}

@@ -26,7 +26,6 @@ const AddCat = (props) => {
       };
 
       const productResponse = await directus.request(createItem('kategoria', categoryData));
-      console.log(productResponse);
       if (productResponse) {
         toast.success("Kategoria pridana");
       }

@@ -5,7 +5,6 @@ import { createItem, uploadFiles } from "@directus/sdk";
 const AddProduct = (props) => {
   const handleNewProduct = async (e) => {
     e.preventDefault();
-    console.log(props.product);
 
     if (!props.image) {
       toast.error("Nepridali ste obrazok");
@@ -36,7 +35,6 @@ const AddProduct = (props) => {
       };
 
       const productResponse = await directus.request(createItem('produkty', productData));
-      console.log(productResponse);
       if (productResponse) {
         toast.success("Produkt pridany");
       }

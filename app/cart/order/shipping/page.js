@@ -47,7 +47,6 @@ const FinalPage = () => {
   const user = useUser();
 
   const handlePoznamka = (e) => {
-    console.log(note);
     setNote(e.target.value);
   };
   useEffect(() => {
@@ -61,8 +60,6 @@ const FinalPage = () => {
   );
 
   const handleCompleteOrder = async (event) => {
-    console.log(cartItems, "cartItems");
-    console.log(note, "note");
 
     const skladanie_produkt = cartItems.map((item) => {
       return {
@@ -71,9 +68,6 @@ const FinalPage = () => {
       };
     });
 
-    console.log(skladanie_produkt, "skladanie_produkt");
-
-    // console.log(user.id,"user");
 
     const result = await directus.request(
       createItem("objednavka", {
@@ -114,8 +108,6 @@ const FinalPage = () => {
       );
     }
 
-    console.log(result, "objednavka");
-
     clearCart();
   };
 
@@ -144,7 +136,7 @@ const FinalPage = () => {
             2
           </p>
           <Link href={"/cart/order"}>
-            <p className="font-plus-jakarta">Dodacie udaje</p>
+            <p className="font-plus-jakarta">Dodacie údaje</p>
           </Link>
         </div>
         <div className="flex flex-row gap-2 items-center">
@@ -152,7 +144,7 @@ const FinalPage = () => {
             3
           </p>
           <Link href={"/cart/order/shipping"}>
-            <p className="font-plus-jakarta">Dodacie udaje</p>
+            <p className="font-plus-jakarta">Doprava a platba</p>
           </Link>
         </div>
       </div>
@@ -160,21 +152,21 @@ const FinalPage = () => {
       <div className=" grid grid-cols-2 gap-6">
         {/* O vas  */}
         <div className=" justify-center">
-          <div className=" bg-white1  justify-center p-4 rounded-xl mb-8">
+          <div className=" bg-white1 shadow-md  justify-center p-4 rounded-xl mb-8">
             <div>
               <p className=" text-center text-h4 font-plus-jakarta">
-                Fakturacne udaje
+                Fakturačné údaje
               </p>
             </div>
             <div className=" text-center pt-4">
               <p>
-                {data?.firstName},{data?.lastName}
+                {data?.firstName} {data?.lastName}
               </p>
 
               <p>
                 {data?.street},{data?.postalCode},{data?.city}
               </p>
-              <p>{data?.email}</p>
+              <p >{data?.email}</p>
               <p>
                 {data?.prefix}
                 {data?.phoneNumber}
@@ -186,15 +178,15 @@ const FinalPage = () => {
                     {data?.companyName}
                   </p>
                   <p>
-                    <b> ICO: </b>
+                    <b> IČO: </b>
                     {data?.ico}
                   </p>
                   <p>
-                    <b> DIC: </b>
+                    <b> DIČ: </b>
                     {data?.dic}
                   </p>
                   <p>
-                    <b> ICDPH: </b>
+                    <b> IČDPH: </b>
                     {data?.icdph}{" "}
                   </p>
                 </div>
@@ -205,11 +197,11 @@ const FinalPage = () => {
           </div>
           <div className=" bg-blue2 p-4">
             <h2 className="text-xl mb-4 font-plus-jakarta font-bold">
-              Poznamka k objednavke
+              Poznámka k objednávke
             </h2>
             <input
               className="w-full p-2 border shadow-md "
-              placeholder="Mate poznamku k objednavke?"
+              placeholder="Máte poznamku k objednávke?"
               type="text"
               name="note"
               value={note}
@@ -220,6 +212,13 @@ const FinalPage = () => {
 
         {/* SUM */}
         <div>
+          <div className=" p-4 bg-blue2 rounded-xl my-4">
+            <p className=" text-left font-plus-jakarta m-2">PLATBA</p>
+                <div className=" p-4 bg-white2 rounded-xl flex space-x-2 items-center ">
+                  <div className=" bg-white1 border rounded md:px-2 font-plus-jakarta">X</div>
+                  <p className=" font-plus-jakarta">Platba pri prevzatí</p>
+                </div>
+          </div>
           <div className=" p-4 bg-blue2 rounded-xl">
             {cartItems.map((item) => (
               <CartItem key={item.id} item={item} />
@@ -230,14 +229,14 @@ const FinalPage = () => {
             <span className="text-lg font-bold">{`${total.toFixed(2)}€`}</span>
           </div>
 
-          <div className="block m-4">
+          <div className="block m-4 space-x-3">
             <label className=" font-plus-jakarta">
-              <input type="checkbox" required /> Oboznámil som sa s Obchodné
-              podmienky
+              <input type="checkbox" required /> Oboznámil som sa s obchodnými
+              podmienkami
             </label>
 
             <label className=" font-plus-jakarta">
-              <input required type="checkbox" /> Oboznámil som sa s ochrana
+              <input required type="checkbox" /> Oboznámil som sa s ochranou
               osobných údajov
             </label>
           </div>
@@ -251,7 +250,7 @@ const FinalPage = () => {
                   onClick={handleCompleteOrder}
                   className=" text-center bg-green text-white1 text-white p-3 rounded font-plus-jakarta hover:shadow hover:shadow-green"
                 >
-                  Dokoncit objednavku
+                  Dokončit objednávku
                 </button>
               </Link>
             )}

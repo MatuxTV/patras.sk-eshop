@@ -1,9 +1,5 @@
 import Image from "next/image";
-import { getProducts } from "@/lib/directus";
-import Card from "./componets/card";
 import Nav from "./componets/nav";
-import Head from "next/head";
-import Script from "next/script";
 import ProductCard from "./componets/productcard";
 import { getCategory } from "@/lib/action";
 
@@ -73,18 +69,18 @@ export default async function Home() {
 
       <div className="m-24 mx-4 sm:mx-24 md:mx-56 flex justify-center h-86 bg-blue1 rounded-3xl">
         <ABT
-          type={"/IMG/BOTTLE.png"}
-          title={"PREDAJ VOD A NEALKOHOLICKYCH NAPOJOV"}
+          type={"/IMG/truck-solid.png"}
+          title={"VLASTNÁ DOPRAVA A DODÁVKA"}
         />
-        <ABT type={"/IMG/GLASS.png"} title={"PRENAJOM PREDAJNYCH AUTOMATOV"} />
-        <ABT type={"/IMG/AGREE.png"} title={"DLHOROCNE SKUSENOSTI"} />
+        <ABT type={"/IMG/GLASS.png"} title={"PRENÁJOM PREDAJNÝCH AUTOMATOV"} />
+        <ABT type={"/IMG/AGREE.png"} title={"DLHOROČNÉ SKÚSENOSTI"} />
       </div>
 
       <div className="flex bg-white2 w-[88%] max-w-6xl m-auto rounded-3xl justify-between md:rounded-[40px] h-24 md:h-64 max-h-64">
         <div>
           <div>
             <p className="font-plus-jakarta text-h7 text-blue1 mx-4 my-1 md:m-8 md:text-h3">
-              Vedeli ste ze...?
+              Vedeli ste že...?
             </p>
           </div>
           <div>

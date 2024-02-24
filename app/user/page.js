@@ -18,7 +18,6 @@ const UserPage = async () => {
     ).then((res) => res.json());
   }
   const userOrder = await getUserOrder();
-  console.log(userOrder, "userOrder");
   const Order = userOrder.data;
 
   function getSkladanie() {
@@ -36,14 +35,6 @@ const UserPage = async () => {
   }
   const prod = await getProd();
   const products = prod.data;
-
-  // const router = useRouter();
-
-  // useEffect(() => {
-  //   if (user.role === '95863818-e696-411d-bae4-c1e04725c376') {
-  //     redirect(router, "/admin");
-  //   }
-  // }, [user, router]);
 
   return (
     <div className="">
@@ -89,13 +80,13 @@ const UserPage = async () => {
                       {item.id_skladanie_objednavky.map((id) => {
                         const order = skladanie.find((p) => p.id === id);
 
-                        console.log(order, "order");
+                       
 
                         const orderProduct = products.filter(
                           (p) => p.id === order.id_produkt
                         );
 
-                        console.log(orderProduct, "orderProduct");
+                        
 
                         return (
                           <div key={id} value={id}>

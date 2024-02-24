@@ -27,8 +27,6 @@ const LoginPage = () => {
 
     const session = await getSession()
 
-    console.log(session)
-
     if (!response?.error) {
 
       if (session.user.role == "95863818-e696-411d-bae4-c1e04725c376"){

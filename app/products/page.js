@@ -28,8 +28,6 @@ export const Produkty = async ({ searchParams }) => {
   const products = await getProducts();
   const kategoria = await getCategory();
 
-  console.log(products);
-
   return (
     <div>
       <Nav product={"Produkty"} />
