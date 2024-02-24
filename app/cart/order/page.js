@@ -16,13 +16,17 @@ const CartItem = ({ item }) => {
   return (
     <div className="flex items-center justify-between p-4 border-b">
       <div className="flex items-center">
+      <div className=" h-[80px] w-[80px] relative">
         <Image
           src={`${process.env.NEXT_PUBLIC_DIRECTUS}assets/${item.obrazok}`}
           alt={item.meno}
-          width={80}
-          height={80}
+          // width={80}
+          // height={80}
           className="rounded"
+          objectFit="contain"
+          layout="fill"
         />
+        </div>
         <div className="ml-4">
           <p className="text-lg font-bold">{item.meno}</p>
           <p

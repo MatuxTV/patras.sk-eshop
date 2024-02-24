@@ -16,22 +16,24 @@ const CartItem = ({ item }) => {
   return (
     <div className="flex items-center justify-between p-4 border-b">
       <div className="flex items-center">
+      <div className=" h-0 w-0 md:h-[80px] md:w-[80px] relative">
         <Image
           src={`${process.env.NEXT_PUBLIC_DIRECTUS}assets/${item.obrazok}`}
           alt={item.meno}
-          width={80}
-          height={80}
           className="rounded"
+          objectFit="contain"
+          layout="fill"
         />
+        </div>
         <div className="ml-4">
-          <p className="text-lg font-bold">{item.meno}</p>
+          <p className="text-lg font-bold flex md:text-h7 text-[10px]">{item.meno}</p>
         </div>
       </div>
-      <div className=" flex items-center">
+      <div className=" flex items-center md:text-h7 text-[10px] ">
         <p>{item.quantity}ks</p>
       </div>
       <div className="flex items-center">
-        <p className="text-lg font-bold ml-4">{`${item.cena}€`}</p>
+        <p className="text-lg font-bold ml-4 md:text-h7 text-[10px]">{`${item.cena}€`}</p>
       </div>
     </div>
   );
@@ -212,7 +214,7 @@ const FinalPage = () => {
 
         {/* SUM */}
         <div>
-          <div className=" p-4 bg-blue2 rounded-xl my-4">
+          <div className=" p-4 bg-blue2 rounded-xl mb-4">
             <p className=" text-left font-plus-jakarta m-2">PLATBA</p>
                 <div className=" p-4 bg-white2 rounded-xl flex space-x-2 items-center ">
                   <div className=" bg-white1 border rounded md:px-2 font-plus-jakarta">X</div>

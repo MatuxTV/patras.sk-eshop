@@ -31,22 +31,13 @@ export const Produkty = async ({ searchParams }) => {
   return (
     <div>
       <Nav product={"Produkty"} />
-      <ToastContainer
-        position="top-right"
-        autoClose={3000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        zIndex={1}
-      />
       <div className=" md:justify-center">
         <Link href="/products-cat">
-          <p className="flex text-h4 m-10 font-plus-jakarta md:text-center">
+          <p className="flex justify-center md:justify-start text-h4 m-10 font-plus-jakarta text-center">
             Produkty/{kategoria.data.nazov}
           </p>
         </Link>
-        <div className="flex flex-wrap m-8">
+        <div className="flex flex-wrap m-8 md:justify-start justify-center">
           {products.data?.map((item) => {
             return <Product {...item} key={item.id} />;
           })}

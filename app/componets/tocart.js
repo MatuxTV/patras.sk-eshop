@@ -33,12 +33,12 @@ const ToCart = ({ product }) => {
           <div className="flex">
             <FontAwesomeIcon
               icon={faShoppingCart}
-              className="fas fa-shopping-cart"
+              className="fas fa-shopping-cart p-1"
               style={{ color: "white" }}
             />
           </div>
           <div>
-            <p className="text-white1 text-h6 font-plus-jakarta">Do Kosiku</p>
+            <p className="text-white1 text-h7 md:text-h6 font-plus-jakarta">Do Kosiku</p>
           </div>
         </div>
       </button>

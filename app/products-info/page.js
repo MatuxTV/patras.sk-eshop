@@ -34,32 +34,31 @@ const Produkt = async ({ searchParams }) => {
           rtl={false}
           zIndex={1}
         />
-        <div className="flex justify-center items-center drop-shadow-lg w-1/2 shadow-lg m-7 h-auto">
+        <div className="flex md:w-1/2 md:h-[450px] justify-center items-center drop-shadow-lg w-full shadow-lg h-[300px] md:m-7">
           <Image
             src={`${process.env.NEXT_PUBLIC_DIRECTUS}assets/${produkt.data.obrazok}`}
             alt={produkt.data.meno}
-            width={400}
-            height={350}
-            layout="intrinsic" // Toto zachová pôvodné proporcie obrázku, ale nechá ho prispôsobiť šírke kontajnera
-            objectFit="contain" // Zabránime, aby obrázok prekročil kontajner a bol v ňom celý viditeľný
+            className="rounded"
+            objectFit="contain"
+            layout="fill"
           />
         </div>
         <div className="md:w-1/2 m-5">
-          <h1 className="text-h3 font-plus-jakarta py-8">
+          <h1 className="text-h3 font-plus-jakarta py-8 md:text-start text-center">
             {produkt.data.meno}
           </h1>
           <p className="text-left py-5 font-plus-jakarta">
             {produkt.data.popisok}
           </p>
-          <p className="text-h4 font-plus-jakarta py-5">{produkt.data.cena}€</p>
-          <div className="align-middle py-5">
+          <p className="text-h4 font-plus-jakarta py-5 text-center md:text-start">{produkt.data.cena}€</p>
+          <div className="align-middle py-5  text-center md:text-start">
             {produkt.data.dostupnost ? <ToCart product={produkt.data} /> : ""}
           </div>
           <p
             className={`${
               produkt.data.dostupnost
-                ? "text-blue1 text-h6"
-                : "text-red text-h6"
+                ? "text-blue1 text-h6 text-center md:text-start"
+                : "text-red text-h6 text-center md:text-start"
             } py-8 font-plus-jakarta`}
           >
             {produkt.data.dostupnost

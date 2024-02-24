@@ -2,6 +2,7 @@
 import { deleteUser } from "@directus/sdk";
 import { useEffect, useState } from "react";
 import directus from "@/lib/directus";
+import { toast } from "react-toastify";
 
 const DelUser = () => {
   const [user, setUser] = useState([]);
@@ -22,7 +23,7 @@ const DelUser = () => {
     <div className=" bg-white2 m-8 rounded-lg">
       {user?.map((item) => {
         return item.role == "95863818-e696-411d-bae4-c1e04725c376" ? (
-          <></>
+          <div key={item.id} value={item.id}></div>
         ) : (
           <div
             key={item.id}
@@ -30,7 +31,11 @@ const DelUser = () => {
             className=" flex justify-center m-8"
           >
             <button
-              onClick={async () => await directus.request(deleteUser(item.id))}
+              onClick={async () => {
+                await directus.request(deleteUser(item.id));
+                window.location.reload();
+                toast.success("Užívateľ bol vymazaný");
+              }}
               className=" font-plus-jakarta"
             >
               x

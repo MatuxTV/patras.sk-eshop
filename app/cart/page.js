@@ -18,18 +18,23 @@ const CartItem = ({ item }) => {
         x
       </button>
       <div className="flex items-center">
+        <div className=" h-[80px] w-[80px] relative">
         <Image
           src={`${process.env.NEXT_PUBLIC_DIRECTUS}assets/${item.obrazok}`}
           alt={item.meno}
-          width={80}
-          height={80}
+          // width={80}
+          // height={80}
           className="rounded"
+          objectFit="contain"
+          layout="fill"
         />
-        <div className="ml-4">
+        </div>
+        
+        <div className="ml-4 justify-center">
           <p className="text-h6 font-plus-jakarta">{item.meno}</p>
           <p
             className={`${
-              item.dostupnost ? " text-blue1 font-bold" : " text-red"
+              item.dostupnost ? " text-blue1 font-bold text-center" : " text-red"
             }`}
           >
             {item.dostupnost ? `Na sklade - ${item.mnozstvo}ks` : "Nedostupné"}

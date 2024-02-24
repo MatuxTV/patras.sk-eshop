@@ -70,41 +70,42 @@ const UserPage = async () => {
                   </div>
 
                   <div>
-                  <p className=" text-center m-2 text-h6"> ID objednavky : <b>{item.id}</b></p>
+                    <p className=" text-center m-2 text-h6">
+                      {" "}
+                      ID objednavky : <b>{item.id}</b>
+                    </p>
                     {/* Objednané produkty */}
                     <div className="flex flex-col sm:flex-row sm:items-center">
                       <span className="text-sm font-medium text-gray-600 sm:mr-2">
                         Produkty:
                       </span>
+                      <div className=" ">
+                        {item.id_skladanie_objednavky.map((id) => {
+                          const order = skladanie.find((p) => p.id === id);
 
-                      {item.id_skladanie_objednavky.map((id) => {
-                        const order = skladanie.find((p) => p.id === id);
+                          const orderProduct = products.filter(
+                            (p) => p.id === order.id_produkt
+                          );
 
-                       
-
-                        const orderProduct = products.filter(
-                          (p) => p.id === order.id_produkt
-                        );
-
-                        
-
-                        return (
-                          <div key={id} value={id}>
-                            <ul className="list-disc list-inside text-gray-800">
-                              <li>{order.pocet_kusov}x - {orderProduct[0].meno} - {orderProduct[0].cena}€ </li>
-                            </ul>
-                          </div>
-                        );
-                      })}
+                          return (
+                            <div key={id} value={id}>
+                              <ul className=" list-inside text-gray-800">
+                                <li className="">
+                                  {order.pocet_kusov}x - {orderProduct[0].meno}{" "}
+                                  -{orderProduct[0].cena}€{" "}
+                                </li>
+                              </ul>
+                            </div>
+                          );
+                        })}
+                      </div>
                     </div>
                   </div>
 
                   {/* Cena celej objednávky */}
                   <div className="text-sm font-medium text-gray-600">
                     <span>Celková cena: </span>
-                    <span className=" text-black">
-                      {item.cena_objednavky}€
-                    </span>
+                    <span className=" text-black">{item.cena_objednavky}€</span>
                   </div>
                 </div>
               );

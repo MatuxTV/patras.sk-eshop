@@ -1,7 +1,10 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import RemoveItem from "../componets/remove_item_admin";
+import directus from "@/lib/directus";
+import { deleteItem } from "@directus/sdk";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const OrderList = () => {
   const [data, setData] = useState([]);
@@ -44,13 +47,32 @@ const OrderList = () => {
     fetchOrders().then((res) => setOrders(res.data));
   }, []);
 
+  const itemRemove = async() =>{
+    console.log(data[0].id_skladanie_objednavky,"id");
+
+    await directus.request(deleteItem(
+        'objednavka',
+         data[0].id 
+    ))
+    await directus.request(deleteItem(
+        'skladanie_produkt',
+         data[0].id_skladanie_objednavky
+    ))
+    
+    // window.location.reload();
+    toast.success("Objednávka bola vybavená");
+}
+
   return (
     <div>
       {data?.map((item) => {
         return (
           <div key={item.id + "order"} value={item.id}>
             <div className="bg-white2 p-8 m-8 rounded-lg">
-              <RemoveItem id={item.id} />
+              {/* <RemoveItem id={item.id} /> */}
+              <div>
+                <button onClick={itemRemove}>X</button>
+              </div>
               <h2 className="text-2xl font-bold font-plus-jakarta text-center mb-4">
                 OBJEDNÁVKA ČÍSLO <b>{item.id}</b>
               </h2>
@@ -66,6 +88,8 @@ const OrderList = () => {
                       <p>Email</p>
                       <p>Číslo</p>
                       <p>Adresa</p>
+                      <div className=" m-8"></div>
+                      <p>Poznamka</p>
                     </div>
                     <div className="font-medium text-red-600">
                       <p>
@@ -79,6 +103,8 @@ const OrderList = () => {
                       <p>
                         {item.ulica},{item.psc},{item.mesto}
                       </p>
+                      <div className=" m-8"></div>
+                      <p className=" flex">{item.poznamka}</p>
                     </div>
                   </div>
                 </div>

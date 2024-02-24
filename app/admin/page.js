@@ -7,6 +7,8 @@ import AddCat from "../componets/add_cat";
 import AddProduct from "../componets/add_prod";
 import DelUser from "../componets/dell_user";
 import SignOutButton from "../componets/signOutButton";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Admin = () => {
   const [imageProd, setImageProd] = useState(null); // Fotka pre produkt
@@ -67,6 +69,15 @@ const Admin = () => {
     <div>
       <Nav />
       <div className=" justify-center m-8">
+      <ToastContainer
+        position="top-right"
+        autoClose={1000}
+        hideProgressBar={true}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        zIndex={1}
+      />
         {/* {Pridavanie produktu} */}
         <div className="flex shadow-lg ">
           <p className="flex font-plus-jakarta justify-center items-center w-48">
@@ -171,6 +182,7 @@ const Admin = () => {
             <OrderList />
           </div>
         </div>
+          {/* {Vymazanie uzivatela} */}
         <div>
           <h1 className=" text-center text-h5 font-plus-jakarta">Uzivatelia</h1>
           <div>
