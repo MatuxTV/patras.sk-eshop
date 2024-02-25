@@ -59,7 +59,7 @@ const OrderList = () => {
          data[0].id_skladanie_objednavky
     ))
     
-    // window.location.reload();
+    window.location.reload();
     toast.success("Objednávka bola vybavená");
 }
 

@@ -14,7 +14,6 @@ const DelUser = () => {
       }).then((res) => res.json());
       return res;
     }
-
     fetchData().then((res) => setUser(res.data));
   }, []);
 
