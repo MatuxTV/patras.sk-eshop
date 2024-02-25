@@ -31,13 +31,14 @@ export const metadata = {
   description: "Voda pre vsetkych",
 };
 
+
 export default async function RootLayout({ children }) {
   let data = await getServerSession(options);
   let user = data?.user;
   return (
     <html lang="sk">
       <Head>
-        <link rel="icon" href="" sizes="any" />
+        <link rel="icon" href="/IMG/favicon.ico" sizes="any" />
         <title>{metadata.title}</title>
         <meta name="description" content={metadata.description} />
       </Head>

@@ -48,7 +48,6 @@ const OrderList = () => {
   }, []);
 
   const itemRemove = async() =>{
-    console.log(data[0].id_skladanie_objednavky,"id");
 
     await directus.request(deleteItem(
         'objednavka',

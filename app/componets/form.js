@@ -1,66 +1,61 @@
-'use client';
-import { useRouter } from 'next/navigation';
-import { useState } from 'react';
-import Link from 'next/link';
-import Image from 'next/image';
-import Nav from '../componets/nav';
-import { createUser } from '@directus/sdk';
-import directus from '@/lib/directus';
-import { toast } from 'react-toastify';
+"use client";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import Link from "next/link";
+import Image from "next/image";
+import Nav from "../componets/nav";
+import { createUser } from "@directus/sdk";
+import directus from "@/lib/directus";
+import { toast } from "react-toastify";
 
 export default function RegistrationForm() {
-  
   const router = useRouter();
 
   const [formData, setFormData] = useState({
-    first_name: '',
-    last_name: '',
-    email: '',
-    password: ''
+    first_name: "",
+    last_name: "",
+    email: "",
+    password: "",
   });
-  
-  const [error, setError] = useState('');
+
+  const [error, setError] = useState("");
 
   // Update form data on input change
   const handleChange = (event) => {
     const { name, value } = event.target;
-    setFormData(prevFormData => ({
+    setFormData((prevFormData) => ({
       ...prevFormData,
-      [name]: value
+      [name]: value,
     }));
   };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    console.log(formData,"formData");
-
     const response = await fetch(`/api/auth/register`, {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json'
+        "Content-Type": "application/json",
       },
-      body: JSON.stringify(formData)
+      body: JSON.stringify(formData),
     });
-    
-    console.log(response,"response");
 
     if (response.status === 201) {
-      router.push('/');
+      router.push("/");
       router.refresh();
-      toast.success('Registrácia prebehla úspešne');
+      toast.success("Registrácia prebehla úspešne");
     } else {
       const result = await response.json();
-      setError(result.message || 'An error occurred during registration.');
+      setError(result.message || "An error occurred during registration.");
     }
-  }
+  };
 
-  return(
+  return (
     <>
       <Nav /> {/* Komponent navigácie */}
       <div className="min-h-fit flex items-center justify-center ">
         <div className="flex flex-col justify-center">
-          <Image 
+          <Image
             className="m-8"
             src="/IMG/logo.png"
             alt="logo"
@@ -108,7 +103,6 @@ export default function RegistrationForm() {
               </label>
               <input
                 className="shadow appearance-none rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                
                 name="last_name"
                 type="text"
                 placeholder="Priezvisko"
@@ -128,7 +122,6 @@ export default function RegistrationForm() {
               </label>
               <input
                 className="shadow appearance-none rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              
                 name="email"
                 type="email"
                 placeholder="E-mail"
@@ -148,7 +141,6 @@ export default function RegistrationForm() {
               </label>
               <input
                 className="shadow appearance-none rounded w-full py-2 px-3 text-black1 mb-3 leading-tight focus:outline-none focus:shadow-outline"
-                
                 name="password"
                 type="password"
                 placeholder="Heslo"
@@ -195,4 +187,4 @@ export default function RegistrationForm() {
       </div>
     </>
   );
-};
+}
