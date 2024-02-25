@@ -19,6 +19,20 @@ export async function POST(request) {
       })
     );
 
+    // const result = await fetch(process.env.NEXT_PUBLIC_DIRECTUS + `users`, {
+    //   method: 'POST',
+    //   headers: {
+    //     'Content-Type': 'application/json'
+    //   },
+    //   body: JSON.stringify({
+    //     first_name,
+    //     last_name,
+    //     email,
+    //     password,
+    //     role: process.env.USER_ROLE,
+    //   })
+    // });
+
     console.log(result,"result");
 
     return NextResponse.json({ message: "Account Created!" }, { status: 201 });

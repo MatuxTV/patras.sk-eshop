@@ -2,7 +2,6 @@ import Nav from "../componets/nav";
 import { options } from "../api/auth/[...nextauth]/options.js";
 import { getServerSession } from "next-auth";
 import SignOutButton from "../componets/signOutButton";
-import { redirect, useRouter } from "next/navigation";
 
 const UserPage = async () => {
   let data = await getServerSession(options);

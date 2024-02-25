@@ -4,6 +4,9 @@ import { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import Nav from '../componets/nav';
+import { createUser } from '@directus/sdk';
+import directus from '@/lib/directus';
+import { toast } from 'react-toastify';
 
 export default function RegistrationForm() {
   
@@ -26,28 +29,12 @@ export default function RegistrationForm() {
       [name]: value
     }));
   };
-  
-    // const handleSubmit = async (data) => {
-    //   const response = await fetch(`/api/auth/register`, {
-    //     method: 'POST',
-    //     body: JSON.stringify({
-    //       ...data,
-    //     }),
-    //   });
-  
-    //   if (response.status === 201) {
-    //     router.push('/');
-    //   } else {
-    //     if (response.status === 409) {
-    //       setError('A user with this email already exist');
-    //     }
-    //   }
-    // };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
 
     console.log(formData,"formData");
+
     const response = await fetch(`/api/auth/register`, {
       method: 'POST',
       headers: {
@@ -61,6 +48,7 @@ export default function RegistrationForm() {
     if (response.status === 201) {
       router.push('/');
       router.refresh();
+      toast.success('Registrácia prebehla úspešne');
     } else {
       const result = await response.json();
       setError(result.message || 'An error occurred during registration.');
@@ -70,9 +58,9 @@ export default function RegistrationForm() {
   return(
     <>
       <Nav /> {/* Komponent navigácie */}
-      <div className="min-h-fit flex items-center justify-center bg-gray-100">
+      <div className="min-h-fit flex items-center justify-center ">
         <div className="flex flex-col justify-center">
-          <Image // Logo obrazok
+          <Image 
             className="m-8"
             src="/IMG/logo.png"
             alt="logo"

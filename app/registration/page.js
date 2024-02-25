@@ -1,5 +1,5 @@
 "use client";
-import RegistrationForm from "./form";
+import RegistrationForm from "../componets/form.js";
 
 export default function RegisterPage() {
 
