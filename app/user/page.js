@@ -57,6 +57,11 @@ const UserPage = async () => {
                 year: "numeric",
               });
 
+              function zaokruhlitNaDveDesatinneMiesta(cislo) {
+                return parseFloat(cislo.toFixed(2));
+              }
+              const round = zaokruhlitNaDveDesatinneMiesta(item.cena_objednavky)
+
               return (
                 <div
                   key={item.id}
@@ -104,7 +109,7 @@ const UserPage = async () => {
                   {/* Cena celej objednávky */}
                   <div className="text-sm font-medium text-gray-600">
                     <span>Celková cena: </span>
-                    <span className=" text-black">{item.cena_objednavky}€</span>
+                    <span className=" text-black">{round}€</span>
                   </div>
                 </div>
               );

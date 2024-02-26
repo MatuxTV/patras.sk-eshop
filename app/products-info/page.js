@@ -24,7 +24,7 @@ const Produkt = async ({ searchParams }) => {
     <div>
       <Nav product={"Produkty"} />
       <BackButton />
-      <div className="flex flex-col md:flex-row">
+      <div className="flex flex-col md:flex-row items-center">
         <ToastContainer
           position="top-right"
           autoClose={3000}
@@ -34,7 +34,7 @@ const Produkt = async ({ searchParams }) => {
           rtl={false}
           zIndex={1}
         />
-        <div className="flex md:w-1/2 md:h-[450px] justify-center items-center drop-shadow-lg w-full shadow-lg h-[300px] md:m-7">
+        <div className="flex md:w-1/2 md:h-[450px] justify-center items-center drop-shadow-lg w-full h-[300px] md:m-7">
           <Image
             src={`${process.env.NEXT_PUBLIC_DIRECTUS}assets/${produkt.data.obrazok}`}
             alt={produkt.data.meno}

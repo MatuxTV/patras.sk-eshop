@@ -62,9 +62,16 @@ const OrderList = () => {
     toast.success("Objednávka bola vybavená");
 }
 
+function zaokruhlitNaDveDesatinneMiesta(cislo) {
+  return parseFloat(cislo.toFixed(2));
+}
+
+
   return (
     <div>
       {data?.map((item) => {
+        const round = zaokruhlitNaDveDesatinneMiesta(item.cena_objednavky)
+        
         return (
           <div key={item.id + "order"} value={item.id}>
             <div className="bg-white2 p-8 m-8 rounded-lg">
@@ -164,7 +171,7 @@ const OrderList = () => {
                   <div className="flex justify-between mt-4">
                     <span className="text-gray-600">CENA OBJEDNÁVKY</span>
                     <span className="font-medium text-red-600">
-                      {item.cena_objednavky}€
+                      {round}€
                     </span>
                   </div>
                 </div>
