@@ -1,15 +1,16 @@
-import React from "react";
+'use client'
+import { useRouter } from 'next/navigation';
 
-const GoBack = () => {
-  const goBackHandler = () => {
-    window.history.back();
+const BackButton = () => {
+  const router = useRouter();
+
+  const goBack = () => {
+    router.back();
   };
 
   return (
-    <button onClick={goBackHandler} className=" flex text-h4 m-10 font-plus-jakarta">
-      Späť
-    </button>
+    <button className='flex text-h4 m-10 font-plus-jakarta' onClick={goBack}>⬅️</button>
   );
 };
 
-export default GoBack;
+export default BackButton;

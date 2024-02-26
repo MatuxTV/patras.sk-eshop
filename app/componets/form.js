@@ -1,32 +1,61 @@
-'use client';
-import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+"use client";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import Link from "next/link";
+import Image from "next/image";
+import Nav from "../componets/nav";
+import { createUser } from "@directus/sdk";
+import directus from "@/lib/directus";
+import { toast } from "react-toastify";
 
 export default function RegistrationForm() {
   const router = useRouter();
-  const [error, setError] = useState('');
-  
-  const handleSubmit = async (data) => {
+
+  const [formData, setFormData] = useState({
+    first_name: "",
+    last_name: "",
+    email: "",
+    password: "",
+  });
+
+  const [error, setError] = useState("");
+
+  // Update form data on input change
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      [name]: value,
+    }));
+  };
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+
     const response = await fetch(`/api/auth/register`, {
-      method: 'POST',
-      body: JSON.stringify(data),
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(formData),
     });
-    
+
     if (response.status === 201) {
-      router.push('/');
+      router.push("/");
       router.refresh();
-    } else if (response.status === 409) {
-      setError('A user with this email already exist');
+      toast.success("Registrácia prebehla úspešne");
+    } else {
+      const result = await response.json();
+      setError(result.message || "An error occurred during registration.");
     }
   };
 
-
-  return(
+  return (
     <>
       <Nav /> {/* Komponent navigácie */}
-      <div className="min-h-fit flex items-center justify-center bg-gray-100">
-        <div className="flex flex-col">
-          <Image // Logo obrazok
+      <div className="min-h-fit flex items-center justify-center ">
+        <div className="flex flex-col justify-center">
+          <Image
             className="m-8"
             src="/IMG/logo.png"
             alt="logo"
@@ -39,7 +68,6 @@ export default function RegistrationForm() {
             onSubmit={handleSubmit}
           >
             <div className="text-center">
-              {" "}
               {/* Nadpis formulára */}
               <p className="text-h4 text-black1 font-plus-jakarta m-4">
                 Registrácia
@@ -56,12 +84,12 @@ export default function RegistrationForm() {
               </label>
               <input
                 className="shadow appearance-none rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                id="first_name"
                 name="first_name"
                 type="text"
                 placeholder="Meno"
                 onChange={handleChange}
                 required
+                value={formData.first_name}
               />
             </div>
 
@@ -71,16 +99,16 @@ export default function RegistrationForm() {
                 className="block text-gray-700 text-sm font-plus-jakarta mb-2"
                 htmlFor="last_name"
               >
-                Meno
+                Priezvisko
               </label>
               <input
                 className="shadow appearance-none rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                id="last_name"
                 name="last_name"
                 type="text"
                 placeholder="Priezvisko"
                 onChange={handleChange}
                 required
+                value={formData.last_name}
               />
             </div>
 
@@ -94,12 +122,12 @@ export default function RegistrationForm() {
               </label>
               <input
                 className="shadow appearance-none rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                id="email"
                 name="email"
                 type="email"
                 placeholder="E-mail"
                 onChange={handleChange}
                 required
+                value={formData.email}
               />
             </div>
 
@@ -113,7 +141,6 @@ export default function RegistrationForm() {
               </label>
               <input
                 className="shadow appearance-none rounded w-full py-2 px-3 text-black1 mb-3 leading-tight focus:outline-none focus:shadow-outline"
-                id="password"
                 name="password"
                 type="password"
                 placeholder="Heslo"
@@ -121,6 +148,7 @@ export default function RegistrationForm() {
                 minLength={8} // Minimálna dĺžka hesla
                 // pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" // Mínimálne požiadavky na heslo
                 required
+                value={formData.password}
               />
             </div>
 
@@ -158,5 +186,5 @@ export default function RegistrationForm() {
         </div>
       </div>
     </>
-  )
+  );
 }

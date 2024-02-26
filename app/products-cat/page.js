@@ -6,6 +6,7 @@ import directus from "/lib/directus";
 import { readItems } from "@directus/sdk";
 
 export const Produkty = async () => {
+  
   function getProducts() {
     return fetch(process.env.NEXT_PUBLIC_DIRECTUS + "items/kategoria",{ cache: "no-store" }).then(
       (res) => res.json(),
@@ -23,11 +24,11 @@ export const Produkty = async () => {
       <Nav />
       <div className="flex justify-center flex-col">
         <div className="w-full justify-center flex">
-          <h1 className="flex font-plus-jakarta text-h5 m-16 md:text-h2 ">
+          <h1 className="flex font-plus-jakarta text-h5 m-12 md:text-h2 ">
             Produkty
           </h1>
         </div>
-        <div className="flex flex-wrap flex-row space-x-16 m-16">
+        <div className="flex  flex-wrap p-4 justify-center md:justify-between md:m-16">
           {data?.map((item) => {
             return<ProductCard {...item} key={item.id} />;
           })}

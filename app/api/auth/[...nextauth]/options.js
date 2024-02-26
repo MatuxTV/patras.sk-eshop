@@ -38,7 +38,7 @@ export const options = {
           withToken(
             user.data.access_token,
             readMe({
-              fields: ["id", "first_name", "last_name"],
+              fields: ["id", "first_name", "last_name","role"],
             })
           )
         );

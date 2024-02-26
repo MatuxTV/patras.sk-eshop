@@ -3,12 +3,17 @@ import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useCart } from "../../lib/cart-context"; // Import the hook
+import { faShoppingCart } from "@fortawesome/free-solid-svg-icons";
+import "@fortawesome/fontawesome-svg-core/styles.css";
+import { config } from "@fortawesome/fontawesome-svg-core";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+config.autoAddCss = false;
 
 const Nav = (props) => {
   const { cartItems } = useCart(); // Get cart items from the cart context
 
   // Calculate the total number of items in the cart
-  const cartItemCount = cartItems.reduce(
+  const cartItemCount = cartItems?.reduce(
     (total, item) => total + item.quantity,
     0
   );
@@ -18,14 +23,13 @@ const Nav = (props) => {
       <div className="flex items-center ">
         <Link href="/">
           <div className="container relative z-20 md:m-6">
-            <Image
-              className="z-20 md:m-6"
+          <Image
               src="/IMG/logo.png"
               alt="patras.sk"
-              sizes="30vw"
-              width={150}
-              height={150}
-              style={{ width: "100%", height: "auto" }}
+              width={100}
+              height={100}
+              objectFit="contain"
+              className="transition-transform duration-300 ease-in-out transform hover:scale-105"
             />
           </div>
         </Link>
@@ -48,12 +52,12 @@ const Nav = (props) => {
           >
             {cartItemCount > 0 ? (
               // Show the number of items in the cart
-              <span className="">
+              <span className=" text-white1 font-plus-jakarta text-h6">
                 {cartItemCount}
               </span>
             ) : (
               // Show the cart icon when the cart is empty
-              <i className="fas fa-shopping-cart text-white1" />
+              <FontAwesomeIcon icon={faShoppingCart} className="fas fa-shopping-cart" style={{ color: "white" }}/>
             )}
           </button>
         </Link>
