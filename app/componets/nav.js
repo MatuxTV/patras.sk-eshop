@@ -2,7 +2,7 @@
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { useCart } from "../../lib/cart-context"; // Import the hook
+import { useCart } from "../../lib/cart-context"; 
 import { faShoppingCart } from "@fortawesome/free-solid-svg-icons";
 import "@fortawesome/fontawesome-svg-core/styles.css";
 import { config } from "@fortawesome/fontawesome-svg-core";
@@ -10,13 +10,14 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 config.autoAddCss = false;
 
 const Nav = (props) => {
-  const { cartItems } = useCart(); // Get cart items from the cart context
+  const { cartItems } = useCart(); 
 
-  // Calculate the total number of items in the cart
+  
   const cartItemCount = cartItems?.reduce(
     (total, item) => total + item.quantity,
     0
   );
+  
 
   return (
     <nav className="relative items-center flex justify-between px-4 md:py-2 z-20">
@@ -51,12 +52,12 @@ const Nav = (props) => {
             className="bg-blue1 w-24 h-12 rounded-lg hover:bg-blue2 hover:drop-shadow-md shadow flex items-center justify-center"
           >
             {cartItemCount > 0 ? (
-              // Show the number of items in the cart
+              
               <span className=" text-white1 font-plus-jakarta text-h6">
                 {cartItemCount}
               </span>
             ) : (
-              // Show the cart icon when the cart is empty
+             
               <FontAwesomeIcon icon={faShoppingCart} className="fas fa-shopping-cart" style={{ color: "white" }}/>
             )}
           </button>

@@ -20,7 +20,6 @@ export default function RegistrationForm() {
 
   const [error, setError] = useState("");
 
-  // Update form data on input change
   const handleChange = (event) => {
     const { name, value } = event.target;
     setFormData((prevFormData) => ({

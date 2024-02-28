@@ -20,8 +20,6 @@ const CartItem = ({ item }) => {
         <Image
           src={`${process.env.NEXT_PUBLIC_DIRECTUS}assets/${item.obrazok}`}
           alt={item.meno}
-          // width={80}
-          // height={80}
           className="rounded"
           objectFit="contain"
           layout="fill"

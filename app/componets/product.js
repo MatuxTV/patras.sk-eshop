@@ -1,9 +1,9 @@
 import Image from "next/image";
 import Link from "next/link";
-import ToCart from "../componets/tocart"; // Adjust the path if necessary
+import ToCart from "../componets/tocart"; 
 
 export default function ProductCard( data ) {
-  const available = data.dostupnost; // Assuming 'available' is a boolean
+  const available = data.dostupnost; 
 
   return (
     <div>
