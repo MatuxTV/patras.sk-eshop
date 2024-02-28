@@ -16,7 +16,7 @@ const CatDetail = ({ onCategorySelected }) => {
 
   const handleSelectChange = (event) => {
     const selectedCategoryId = event.target.value;
-    onCategorySelected(selectedCategoryId); // This callback will pass the selected ID up to the parent component
+    onCategorySelected(selectedCategoryId); 
   };
 
   return (

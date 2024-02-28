@@ -7,7 +7,7 @@ import Nav from "../componets/nav";
 import Link from "next/link";
 
 const CartItem = ({ item }) => {
-  const { removeFromCart, changeQuantity } = useCart();
+  const { cartItems, removeFromCart, changeQuantity ,addToCart } = useCart();
 
   return (
     <div className="flex items-center justify-between p-4 border-b bg-blue2 rounded-lg mb-5">
@@ -47,7 +47,7 @@ const CartItem = ({ item }) => {
           min="1"
           value={item.quantity}
           onChange={(e) => {
-            changeQuantity(item.id, e.target.value);
+            addToCart(item);
           }}
           className="w-10 text-center border rounded"
         />

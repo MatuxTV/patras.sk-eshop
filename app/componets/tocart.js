@@ -10,7 +10,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 config.autoAddCss = false;
 
 const ToCart = ({ product }) => {
-  const { addToCart } = useCart(); // Use the hook
+  const { addToCart } = useCart(); 
 
   const handleAddToCart = (e) => {
     e.preventDefault();

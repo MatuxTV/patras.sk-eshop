@@ -28,7 +28,7 @@ export const Produkty = async () => {
             Produkty
           </h1>
         </div>
-        <div className="flex  flex-wrap p-4 justify-center md:justify-between md:m-16">
+        <div className="flex  flex-wrap p-4 justify-center md:justify-start m-8 md:m-16">
           {data?.map((item) => {
             return<ProductCard {...item} key={item.id} />;
           })}

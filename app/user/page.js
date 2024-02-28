@@ -40,7 +40,7 @@ const UserPage = async () => {
       <Nav product={"Produkty"} />
       <div className="flex flex-col justify-center">
         <p className="text-h4 text-center text-black1 font-plus-jakarta m-4">
-          Ahoj {user.first_name}
+          Ahoj {user.first_name}!
         </p>
         <div className="">
           <p className="text-h4 text-black1 text-center font-plus-jakarta m-4">
