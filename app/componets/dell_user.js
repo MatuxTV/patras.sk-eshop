@@ -21,7 +21,7 @@ const DelUser = () => {
   return (
     <div className=" bg-white2 m-8 rounded-lg">
       {user?.map((item) => {
-        return item.role == "95863818-e696-411d-bae4-c1e04725c376" ? (
+        return item.role == "df5647af-422c-4834-bb6c-56baccbe5fce6" ? (
           <div key={item.id} value={item.id}></div>
         ) : (
           <div

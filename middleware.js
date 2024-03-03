@@ -10,11 +10,11 @@ export async function middleware(req) {
     const { pathname } = req.nextUrl;
   
     // Ak sa užívateľ pokúša pristúpiť na admin stránku a nie je admin, presmerujte ho
-    if (pathname.startsWith('/admin') && session?.user?.role !== '95863818-e696-411d-bae4-c1e04725c376') {
+    if (pathname.startsWith('/admin') && session?.user?.role !== 'df5647af-422c-4834-bb6c-56baccbe5fce') {
       return NextResponse.redirect(new URL('/unauthorized', req.url)); // Presmerovanie na neautorizovanú stránku alebo na prihlásenie
     }
     //Ak sa uzivatel pokusá pristúpiť na user stránku a nie je user, presmerujte ho
-    if (pathname.startsWith('/user') && session?.user?.role !== 'bb4da356-49ec-44b3-88af-5c8612676ae4') {
+    if (pathname.startsWith('/user') && session?.user?.role !== '71477d9e-3e2a-48d1-ab4e-73f7699b0497') {
         return NextResponse.redirect(new URL('/unauthorized', req.url)); // Presmerovanie na neautorizovanú stránku alebo na prihlásenie
       }
       
