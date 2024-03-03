@@ -29,7 +29,7 @@ const LoginPage = () => {
 
     if (!response?.error) {
 
-      if (session.user.role == "95863818-e696-411d-bae4-c1e04725c376"){
+      if (session.user.role == "df5647af-422c-4834-bb6c-56baccbe5fce"){
           router.push('/admin');
       }else
       router.push('/');
