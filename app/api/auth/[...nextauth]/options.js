@@ -11,7 +11,7 @@ export const options = {
         password: {},
       },
       async authorize(credentials) {
-        const res = await fetch("http://localhost:8055/auth/login", {
+        const res = await fetch("https://directus-production-c628.up.railway.app/auth/login", {
           method: "POST",
           body: JSON.stringify(credentials),
           headers: { "Content-Type": "application/json" },

@@ -12,8 +12,8 @@ import "react-toastify/dist/ReactToastify.css";
 
 const Admin = () => {
   const [imageProd, setImageProd] = useState(null); // Fotka pre produkt
-  const [imageCat, setImageCat] = useState(null); // Fotka pre kategoriu
-  const [selectedCategoryId, setSelectedCategoryId] = useState(null); //Kategoria produktu
+  const [imageCat, setImageCat] = useState(null); // Fotka pre kategori
+  const [selectedCategoryId, setSelectedCategoryId] = useState(null); //Kategoria produkt
 
   const [product, setProduct] = useState({
     product_name: "",
