@@ -4,8 +4,7 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: '**.vercel.app',
-        port: '',
+        hostname: 'directus-production-c628.up.railway.app',
       },
     ],
   },}

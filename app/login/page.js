@@ -26,6 +26,7 @@ const LoginPage = () => {
     });
 
     const session = await getSession()
+    console.log(session)
 
     if (!response?.error) {
 
