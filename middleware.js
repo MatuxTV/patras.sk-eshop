@@ -1,6 +1,6 @@
-import { co } from '@directus/sdk/dist/index-7ec1f729';
-import { getToken } from 'next-auth/jwt';
-import { NextResponse } from 'next/server';
+// import { co } from '@directus/sdk/dist/index-7ec1f729';
+// import { getToken } from 'next-auth/jwt';
+// import { NextResponse } from 'next/server';
 
 export { default } from "next-auth/middleware"
 
