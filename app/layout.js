@@ -42,7 +42,7 @@ export default async function RootLayout({ children }) {
         <title>{metadata.title}</title>
         <meta name="description" content={metadata.description} />
       </Head>
-      <UserProvider user={user}>
+      <UserProvider user={user} >
         <ShippingProvider>
           <CartProvider>
             <body className={plus_jakarta.className + " min-[100vh]"}>
