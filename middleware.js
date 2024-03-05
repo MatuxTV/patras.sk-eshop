@@ -15,7 +15,7 @@ export async function middleware(req) {
     }
     //Ak sa uzivatel pokusá pristúpiť na user stránku a nie je user, presmerujte ho
     if (pathname.startsWith('/user') && session?.user?.role !== '71477d9e-3e2a-48d1-ab4e-73f7699b0497') {
-        return NextResponse.redirect(new URL('/unauthorized', req.url)); // Presmerovanie na neautorizovanú stránku alebo na prihlásenie
+        return NextResponse.redirect(new URL('/login', req.url)); // Presmerovanie na neautorizovanú stránku alebo na prihlásenie
       }
       
     return NextResponse.next();

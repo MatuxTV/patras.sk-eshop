@@ -3,9 +3,8 @@ const nextConfig = {
     images: {
     remotePatterns: [
       {
-        protocol: 'http',
-        hostname: 'localhost',
-        port: '8055',
+        protocol: 'https',
+        hostname: 'maturitna-react.vercel.app',
       },
     ],
   },}
