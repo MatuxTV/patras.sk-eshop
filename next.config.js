@@ -4,7 +4,8 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: 'maturitna-react.vercel.app',
+        hostname: '**.vercel.app',
+        port: '',
       },
     ],
   },}
