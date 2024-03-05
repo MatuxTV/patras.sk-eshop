@@ -4,7 +4,6 @@ import ToCart from "../componets/tocart";
 
 export default function ProductCard( data ) {
   const available = data.dostupnost; 
-  console.data(data);
 
   return (
     <div>
