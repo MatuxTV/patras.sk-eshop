@@ -8,7 +8,7 @@ export default function ProductCard( data ) {
         <div className="justify-center h-72 w-full relative my-5">
         <Image
           className="image"
-          src={`${process.env.NEXT_PUBLIC_DIRECTUS}files/${data.obrazok}`}
+          src={`${process.env.NEXT_PUBLIC_DIRECTUS}assets/${data.obrazok}`}
           alt="Product Image"
           fill
         />
