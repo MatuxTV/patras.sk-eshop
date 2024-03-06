@@ -70,6 +70,8 @@ const FinalPage = () => {
       };
     });
 
+    console.log(data, "result"); 
+
 
     const result = await directus.request(
       createItem("objednavka", {
@@ -100,6 +102,8 @@ const FinalPage = () => {
         })
       );
     });
+
+     
 
     try {
       router.push("/");

@@ -10,11 +10,13 @@ import { getSession } from "next-auth/react"
 
 
 const LoginPage = () => {
+
   const router = useRouter();
   const [error, setError] = useState(""); 
   const [data, setData] = useState({email: "", password: ""});
 
   const handleSubmit = async (e) => {
+    
     e.preventDefault();
     const response = await signIn('credentials', {
       email: data.email,
