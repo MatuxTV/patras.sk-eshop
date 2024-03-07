@@ -1,7 +1,7 @@
 'use client';
 import { toast } from "react-toastify";
 import directus from "@/lib/directus";
-import { createItem, uploadFiles } from "@directus/sdk";
+import { createItem, uploadFiles,updateFile } from "@directus/sdk";
 
 const AddCat = (props) => {
 
@@ -18,6 +18,14 @@ const AddCat = (props) => {
       imageFile.append('file', props.image);
 
       const fileResponse = await directus.request(uploadFiles(imageFile));
+
+      console.log(fileResponse.body, "fileResponse");
+
+      // const updateImage = await directus.request(
+      //   updateFile(imageFile.id, {
+      //     folder: '2f49eb52-c2f5-4795-b85a-c5be5c62dde9',
+      //   })
+      // );
 
       //Upload Produkt
       const categoryData = {

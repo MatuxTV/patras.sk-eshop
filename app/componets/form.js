@@ -4,8 +4,6 @@ import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import Nav from "../componets/nav";
-import { createUser } from "@directus/sdk";
-import directus from "@/lib/directus";
 import { toast } from "react-toastify";
 
 export default function RegistrationForm() {
@@ -145,7 +143,7 @@ export default function RegistrationForm() {
                 placeholder="Heslo"
                 onChange={handleChange}
                 minLength={8} // Minimálna dĺžka hesla
-                // pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" // Mínimálne požiadavky na heslo
+                pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" // Mínimálne požiadavky na heslo
                 required
                 value={formData.password}
               />
