@@ -1,6 +1,7 @@
 import { toast } from "react-toastify";
 import directus from "@/lib/directus";
 import { createItem, uploadFiles } from "@directus/sdk";
+import { getSession } from "next-auth/react";
 
 const AddProduct = (props) => {
   const handleNewProduct = async (e) => {
@@ -33,6 +34,8 @@ const AddProduct = (props) => {
         obrazok: fileResponse.id,
         kategoria: props.product.category,
       };
+
+      console.log(productData);
 
       const productResponse = await directus.request(createItem('produkty', productData));
       if (productResponse) {

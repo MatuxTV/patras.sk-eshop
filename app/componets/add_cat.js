@@ -2,6 +2,7 @@
 import { toast } from "react-toastify";
 import directus from "@/lib/directus";
 import { createItem, uploadFiles,updateFile } from "@directus/sdk";
+import { getSession } from "next-auth/react";
 
 const AddCat = (props) => {
 
@@ -19,7 +20,8 @@ const AddCat = (props) => {
 
       const fileResponse = await directus.request(uploadFiles(imageFile));
 
-      console.log(fileResponse.body, "fileResponse");
+      console.log(fileResponse, "fileResponse");
+   
 
       // const updateImage = await directus.request(
       //   updateFile(imageFile.id, {
