@@ -71,8 +71,6 @@ const FinalPage = () => {
       };
     });
 
-
-    console.log(data, "data");
     const result = await directus.request(
       createItem("objednavka", {
         meno: data?.firstName,
@@ -92,7 +90,7 @@ const FinalPage = () => {
         user_created: user?.id,
       })
     );
-    
+
     skladanie_produkt.map(async (item) => {
       await directus.request(
         createItem("skladanie_produkt", {

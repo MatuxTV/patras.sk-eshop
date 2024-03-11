@@ -19,8 +19,6 @@ const AddCat = (props) => {
       imageFile.append('file', props.image);
 
       const fileResponse = await directus.request(uploadFiles(imageFile));
-
-      console.log(fileResponse, "fileResponse");
    
 
       // const updateImage = await directus.request(
@@ -40,7 +38,6 @@ const AddCat = (props) => {
         toast.success("Kategoria pridana");
       }
     } catch (error) {
-      console.error(error);
       toast.error("Aj jaj, nieco sa nepodarilo, skuste to znova");
     }
   };

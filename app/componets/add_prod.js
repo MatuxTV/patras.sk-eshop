@@ -35,8 +35,6 @@ const AddProduct = (props) => {
         kategoria: props.product.category,
       };
 
-      console.log(productData);
-
       const productResponse = await directus.request(createItem('produkty', productData));
       if (productResponse) {
         toast.success("Produkt pridany");

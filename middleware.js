@@ -8,7 +8,6 @@ export const config = { matcher: ["/user,","/admin"] }
 export async function middleware(req) {
     const session = await getToken({ req, secret: process.env.NEXTAUTH_SECRET});
     const { pathname } = req.nextUrl;
-    console.log(session, "session")
   
     // Ak sa užívateľ pokúša pristúpiť na admin stránku a nie je admin, presmerujte ho
     if (pathname.startsWith('/admin') && session?.user?.role !== process.env.ADMIN_ROLE) {

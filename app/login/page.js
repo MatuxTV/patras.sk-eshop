@@ -24,7 +24,6 @@ const LoginPage = () => {
       redirect: false,
     });
     const session = await getSession()
-    console.log(session,"sessionlogin")
 
     if (!response?.error) {
 
