@@ -1,7 +1,8 @@
 'use client';
 import { toast } from "react-toastify";
 import directus from "@/lib/directus";
-import { createItem, uploadFiles } from "@directus/sdk";
+import { createItem, uploadFiles,updateFile } from "@directus/sdk";
+import { getSession } from "next-auth/react";
 
 const AddCat = (props) => {
 
@@ -18,6 +19,13 @@ const AddCat = (props) => {
       imageFile.append('file', props.image);
 
       const fileResponse = await directus.request(uploadFiles(imageFile));
+   
+
+      // const updateImage = await directus.request(
+      //   updateFile(imageFile.id, {
+      //     folder: '2f49eb52-c2f5-4795-b85a-c5be5c62dde9',
+      //   })
+      // );
 
       //Upload Produkt
       const categoryData = {
@@ -30,7 +38,6 @@ const AddCat = (props) => {
         toast.success("Kategoria pridana");
       }
     } catch (error) {
-      console.error(error);
       toast.error("Aj jaj, nieco sa nepodarilo, skuste to znova");
     }
   };

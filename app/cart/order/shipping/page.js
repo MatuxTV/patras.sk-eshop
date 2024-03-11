@@ -12,6 +12,7 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useUser } from "@/lib/user-context";
 
+
 const CartItem = ({ item }) => {
   return (
     <div className="flex items-center justify-between p-4 border-b">
@@ -69,7 +70,6 @@ const FinalPage = () => {
         pocet_kusov: item.quantity,
       };
     });
-
 
     const result = await directus.request(
       createItem("objednavka", {
