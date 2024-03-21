@@ -40,7 +40,7 @@ const AddProduct = (props) => {
         toast.success("Produkt pridany");
       }
     } catch (error) {
-      console.error(error);
+
       toast.error("Aj jaj, nieco sa nepodarilo, skuste to znova");
     }
   };
