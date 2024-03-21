@@ -71,6 +71,7 @@ function zaokruhlitNaDveDesatinneMiesta(cislo) {
     <div>
       {data?.map((item) => {
         const round = zaokruhlitNaDveDesatinneMiesta(item.cena_objednavky)
+        console.log(item);
         
         return (
           <div key={item.id + "order"} value={item.id}>

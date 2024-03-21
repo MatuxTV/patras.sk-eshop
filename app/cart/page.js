@@ -47,7 +47,8 @@ const CartItem = ({ item }) => {
           min="1"
           value={item.quantity}
           onChange={(e) => {
-            addToCart(item);
+            // addToCart(item);
+            changeQuantity(item.id, e.target.value);
           }}
           className="w-10 text-center border rounded"
         />

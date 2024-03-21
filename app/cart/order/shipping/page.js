@@ -91,6 +91,7 @@ const FinalPage = () => {
       })
     );
 
+    console.log(result,"result");
     skladanie_produkt.map(async (item) => {
       await directus.request(
         createItem("skladanie_produkt", {

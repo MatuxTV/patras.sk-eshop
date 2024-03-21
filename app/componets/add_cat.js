@@ -26,7 +26,7 @@ const AddCat = (props) => {
       //     folder: '2f49eb52-c2f5-4795-b85a-c5be5c62dde9',
       //   })
       // );
-
+      
       //Upload Produkt
       const categoryData = {
         nazov: props.category.category_name,
