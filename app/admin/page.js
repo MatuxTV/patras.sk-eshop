@@ -101,7 +101,7 @@ const Admin = () => {
               />
             </div>
 
-            <input
+            <textarea
               className="w-full p-2 "
               placeholder="Popis produktu"
               type="text"
