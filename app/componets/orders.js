@@ -80,7 +80,7 @@ function zaokruhlitNaDveDesatinneMiesta(cislo) {
                 <button onClick={itemRemove}>X</button>
               </div>
               <h2 className="text-2xl font-bold font-plus-jakarta text-center mb-4">
-                OBJEDNÁVKA ČÍSLO <b>{item.id}</b>
+                OBJEDNÁVKA ČÍSLO <b>{item?.id}</b>
               </h2>
 
               <div className="grid grid-cols-2 gap-8">
@@ -137,14 +137,15 @@ function zaokruhlitNaDveDesatinneMiesta(cislo) {
               <div className="mt-8">
                 <h3 className="text-xl font-semibold mb-2">PRODUKTY</h3>
                 <div className="space-y-2">
-                  {item.id_skladanie_objednavky.map((id) => {
+                  {item.id_skladanie_objednavky>0 ??
+                  item.id_skladanie_objednavky?.map((id) => {
                     const order = orders.find((p) => p.id === id);
 
                     const orderProduct = products.filter(
                       (p) => p.id === order.id_produkt
                     );
 
-                    return orderProduct != undefined ? (
+                    return orderProduct.length >0 ? (
                       <div
                         key={id + "product"}
                         value={id}
