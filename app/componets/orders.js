@@ -145,7 +145,7 @@ function zaokruhlitNaDveDesatinneMiesta(cislo) {
                       (p) => p.id === order.id_produkt
                     );
 
-                    return orderProduct.length >0 ? (
+                    return orderProduct.length > 0 ? (
                       <div
                         key={id + "product"}
                         value={id}
