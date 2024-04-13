@@ -97,7 +97,7 @@ function zaokruhlitNaDveDesatinneMiesta(cislo) {
                       <div className=" m-8"></div>
                       <p>Poznamka</p>
                     </div>
-                    <div className="font-medium text-red-600">
+                    <div className=" font-plus-jakarta text-red-600">
                       <p>
                         {item.meno} {item.priezvisko}
                       </p>
@@ -110,7 +110,8 @@ function zaokruhlitNaDveDesatinneMiesta(cislo) {
                         {item.ulica},{item.psc},{item.mesto}
                       </p>
                       <div className=" m-8"></div>
-                      <p className=" flex">{item.poznamka}</p>
+                      {item.poznamka.length > 0 ? (<p className="flex">{item.poznamka}</p>) : (<p> - </p>)}
+                      
                     </div>
                   </div>
                 </div>
@@ -124,11 +125,11 @@ function zaokruhlitNaDveDesatinneMiesta(cislo) {
                       <p>DIČ</p>
                       <p>IČ DPH</p>
                     </div>
-                    <div className="font-medium text-red-600">
-                      <p>{item.nazov_spolocnosti}</p>
-                      <p>{item.ico}</p>
-                      <p>{item.dic}</p>
-                      <p>{item.icdph}</p>
+                    <div className=" font-plus-jakarta text-red-600">
+                      {item.nazov_spolocnosti.length > 0 ? (<p className="flex">{item.nazov_spolocnosti}</p>) : (<p> - </p>)}
+                      {item.ico.length > 0 ? (<p className="flex">{item.ico}</p>) : (<p> - </p>)}
+                      {item.dic.length > 0 ? (<p className="flex">{item.dic}</p>) : (<p> - </p>)}
+                      {item.icdph.length > 0 ? (<p className="flex">{item.icdph}</p>) : (<p> - </p>)}
                     </div>
                   </div>
                 </div>
@@ -137,19 +138,19 @@ function zaokruhlitNaDveDesatinneMiesta(cislo) {
               <div className="mt-8">
                 <h3 className="text-xl font-semibold mb-2">PRODUKTY</h3>
                 <div className="space-y-2">
-                  {item.id_skladanie_objednavky>0 ??
+                  {item.id_skladanie_objednavky.length > 0 ?
                   item.id_skladanie_objednavky?.map((id) => {
                     const order = orders.find((p) => p.id === id);
 
                     const orderProduct = products.filter(
                       (p) => p.id === order.id_produkt
                     );
-
-                    return orderProduct.length >0 ? (
+                  
+                    return orderProduct.length > 0 ? (
                       <div
                         key={id + "product"}
                         value={id}
-                        className="flex justify-between"
+                        className="flex justify-between pb-4 "
                       >
                         <div className="text-gray-600">
                           <p>ID</p>
@@ -157,17 +158,17 @@ function zaokruhlitNaDveDesatinneMiesta(cislo) {
                           <p>Cena</p>
                           <p>Pocet kusov</p>
                         </div>
-                        <div className="font-medium text-red-600">
-                          <p>{orderProduct[0].id}</p>
+                        <div className=" font-plus-jakarta w-32">
+                          <p>ID-{orderProduct[0].id}</p>
                           <p>{orderProduct[0].meno}</p>
-                          <p>{orderProduct[0].cena}</p>
-                          <p>{order.pocet_kusov}</p>
+                          <p>{orderProduct[0].cena}€</p>
+                          <p>{order.pocet_kusov}ks</p>
                         </div>
                       </div>
                     ) : (
                       <>undefined</>
                     );
-                  })}
+                  }):null}
 
                   <div className="flex justify-between mt-4">
                     <span className="text-gray-600">CENA OBJEDNÁVKY</span>
