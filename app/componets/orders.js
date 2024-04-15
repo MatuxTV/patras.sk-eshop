@@ -139,12 +139,18 @@ function zaokruhlitNaDveDesatinneMiesta(cislo) {
                 <h3 className="text-xl font-semibold mb-2">PRODUKTY</h3>
                 <div className="space-y-2">
                   {item.id_skladanie_objednavky.length > 0 ?
-                  item.id_skladanie_objednavky?.map((id) => {
-                    const order = orders.find((p) => p.id === id);
 
+                  item.id_skladanie_objednavky?.map((id) => {
+                    console.log(orders, id)
+
+                    const order = orders.find((p) => p.id === id);
+                    console.log(order)
                     const orderProduct = products.filter(
+
                       (p) => p.id === order.id_produkt
+
                     );
+                    
                   
                     return orderProduct.length > 0 ? (
                       <div
