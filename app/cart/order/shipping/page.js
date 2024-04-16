@@ -4,30 +4,32 @@ import Image from "next/image";
 import Link from "next/link";
 import Nav from "../../../componets/nav";
 import { useCart } from "../../../../lib/cart-context";
-import { useShipping } from "@/lib/shipping-context";
 import { createItem } from "@directus/sdk";
 import directus from "@/lib/directus";
 import { useRouter } from "next/navigation";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useUser } from "@/lib/user-context";
-
+import { updateItem } from "@directus/sdk";
+import { readItem } from "@directus/sdk";
 
 const CartItem = ({ item }) => {
   return (
     <div className="flex items-center justify-between p-4 border-b">
       <div className="flex items-center">
-      <div className=" h-0 w-0 md:h-[80px] md:w-[80px] relative">
-        <Image
-          src={`${process.env.NEXT_PUBLIC_DIRECTUS}assets/${item.obrazok}`}
-          alt={item.meno}
-          className="rounded"
-          objectFit="contain"
-          layout="fill"
-        />
+        <div className=" h-0 w-0 md:h-[80px] md:w-[80px] relative">
+          <Image
+            src={`${process.env.NEXT_PUBLIC_DIRECTUS}assets/${item.obrazok}`}
+            alt={item.meno}
+            className="rounded"
+            objectFit="contain"
+            layout="fill"
+          />
         </div>
         <div className="ml-4">
-          <p className="text-lg font-bold flex md:text-h7 text-[10px]">{item.meno}</p>
+          <p className="text-lg font-bold flex md:text-h7 text-[10px]">
+            {item.meno}
+          </p>
         </div>
       </div>
       <div className=" flex items-center md:text-h7 text-[10px] ">
@@ -43,7 +45,6 @@ const CartItem = ({ item }) => {
 const FinalPage = () => {
   const router = useRouter();
   const { cartItems, removeFromCart, clearCart } = useCart();
-  const { shippingData } = useShipping();
   const [data, setData] = useState();
   const [note, setNote] = useState("");
 
@@ -52,6 +53,7 @@ const FinalPage = () => {
   const handlePoznamka = (e) => {
     setNote(e.target.value);
   };
+
   useEffect(() => {
     const localData = JSON.parse(localStorage.getItem("userData"));
     setData(localData);
@@ -63,6 +65,7 @@ const FinalPage = () => {
   );
 
   const handleCompleteOrder = async (event) => {
+    console.log(cartItems);
 
     const skladanie_produkt = cartItems.map((item) => {
       return {
@@ -70,6 +73,21 @@ const FinalPage = () => {
         pocet_kusov: item.quantity,
       };
     });
+
+    for (const element of cartItems) {
+      console.log(element)
+      const newQuantity = element.mnozstvo - element.quantity;
+      console.log(newQuantity,"qun")
+      if (newQuantity >= 0) {
+        await directus.request(
+          updateItem("produkty", element.id, { mnozstvo: newQuantity })
+        );
+      } else {
+        throw new Error(
+          "Pozadovane mnozstvo nieje na sklade " + item.id_produkt
+        );
+      }
+    }
 
     const result = await directus.request(
       createItem("objednavka", {
@@ -109,7 +127,6 @@ const FinalPage = () => {
         "Chyba v objednavke. Skontrolujte si udaje a skuste to znova"
       );
     }
-
     clearCart();
   };
 
@@ -168,7 +185,7 @@ const FinalPage = () => {
               <p>
                 {data?.street},{data?.postalCode},{data?.city}
               </p>
-              <p >{data?.email}</p>
+              <p>{data?.email}</p>
               <p>
                 {data?.prefix}
                 {data?.phoneNumber}
@@ -216,10 +233,12 @@ const FinalPage = () => {
         <div>
           <div className=" p-4 bg-blue2 rounded-xl mb-4">
             <p className=" text-left font-plus-jakarta m-2">PLATBA</p>
-                <div className=" p-4 bg-white2 rounded-xl flex space-x-2 items-center ">
-                  <div className=" bg-white1 border rounded md:px-2 font-plus-jakarta">X</div>
-                  <p className=" font-plus-jakarta">Platba pri prevzatí</p>
-                </div>
+            <div className=" p-4 bg-white2 rounded-xl flex space-x-2 items-center ">
+              <div className=" bg-white1 border rounded md:px-2 font-plus-jakarta">
+                X
+              </div>
+              <p className=" font-plus-jakarta">Platba pri prevzatí</p>
+            </div>
           </div>
           <div className=" p-4 bg-blue2 rounded-xl">
             {cartItems.map((item) => (
