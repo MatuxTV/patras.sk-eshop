@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import directus from "@/lib/directus";
 import { deleteItem } from "@directus/sdk";
 import { toast } from "react-toastify";
@@ -49,6 +49,8 @@ const OrderList = () => {
 
   const itemRemove = async() =>{
 
+    console.log(data[0],"data")
+
     await directus.request(deleteItem(
         'objednavka',
          data[0].id 
@@ -58,8 +60,8 @@ const OrderList = () => {
          data[0].id_skladanie_objednavky
     ))
     
-    window.location.reload();
     toast.success("Objednávka bola vybavená");
+    // window.location.reload();
 }
 
 function zaokruhlitNaDveDesatinneMiesta(cislo) {
@@ -68,14 +70,14 @@ function zaokruhlitNaDveDesatinneMiesta(cislo) {
 
 
   return (
-    <div>
-      {data?.map((item) => {
+    
+      <div>
+      {data.length !=0 ? data.map((item) => {
         const round = zaokruhlitNaDveDesatinneMiesta(item.cena_objednavky)
         
         return (
           <div key={item.id + "order"} value={item.id}>
             <div className="bg-white2 p-8 m-8 rounded-lg">
-              {/* <RemoveItem id={item.id} /> */}
               <div>
                 <button onClick={itemRemove}>X</button>
               </div>
@@ -187,8 +189,9 @@ function zaokruhlitNaDveDesatinneMiesta(cislo) {
             </div>
           </div>
         );
-      })}
-    </div>
+      }):<div className=" justify-center text-center p-8">Žiadne nové objednávky</div>}
+      </div>
+     
   );
 };
 export default OrderList;

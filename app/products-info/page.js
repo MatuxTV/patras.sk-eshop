@@ -55,15 +55,11 @@ const Produkt = async ({ searchParams }) => {
             {produkt.data.dostupnost ? <ToCart product={produkt.data} /> : ""}
           </div>
           <p
-            className={`${
-              produkt.data.dostupnost
-                ? "text-blue1 text-h6 text-center md:text-start"
-                : "text-red text-h6 text-center md:text-start"
-            } py-8 font-plus-jakarta`}
+            className={`text-h6 text-center md:text-start py-8 font-plus-jakarta ${produkt.data.dostupnost ? "text-blue1" : "text-red"}`}
           >
-            {produkt.data.dostupnost
-              ? `Na sklade - ${produkt.data.mnozstvo}ks`
-              : "Nedostupne"}
+            {produkt.data.mnozstvo > 0 && produkt.data.dostupnost
+                ? `Na sklade - ${produkt.data.mnozstvo}ks`
+                : "Nedostupne"}
           </p>
         </div>
       </div>

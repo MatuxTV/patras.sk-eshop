@@ -75,17 +75,27 @@ const FinalPage = () => {
     });
 
     for (const element of cartItems) {
-      console.log(element)
       const newQuantity = element.mnozstvo - element.quantity;
-      console.log(newQuantity,"qun")
       if (newQuantity >= 0) {
-        await directus.request(
-          updateItem("produkty", element.id, { mnozstvo: newQuantity })
-        );
+        if (newQuantity > 0) {
+          await directus.request(
+            updateItem("produkty", element.id, { mnozstvo: newQuantity })
+          );
+        }else if (newQuantity == 0) {
+          await directus.request(
+            updateItem("produkty", element.id, { dostupnost: false })
+          );
+        } else {
+          toast.error(
+            "Chyba v objednavke"
+          );
+          break;
+        }
       } else {
-        throw new Error(
-          "Pozadovane mnozstvo nieje na sklade " + item.id_produkt
+        toast.error(
+          "Chyba v objednavke. Nedostatok produktu na sklade. Skontrolujte si udaje a skuste to znova"
         );
+        break;
       }
     }
 

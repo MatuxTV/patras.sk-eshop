@@ -115,7 +115,6 @@ const LoginPage = () => {
               
               
             </div>
-
             {/* Zobrazenie chybových správ */}
             {error && <p className="text-red text-xs italic">{error}</p>}
 
