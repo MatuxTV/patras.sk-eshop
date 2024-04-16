@@ -1,9 +1,10 @@
 import Image from "next/image";
 import Link from "next/link";
-import ToCart from "../componets/tocart"; 
+import ToCart from "../componets/tocart";
 
-export default function ProductCard( data ) {
-  const available = data.dostupnost; 
+export default function ProductCard(data) {
+  const available = data.dostupnost;
+  const quantity = data.mnozstvo;
 
   return (
     <div>
@@ -23,11 +24,17 @@ export default function ProductCard( data ) {
             <div className="flex flex-row font-plus-jakarta h-16 items-center drop-shadow-xl justify-between">
               <p className="m-6 md:text-h5 text-h6">{data.cena}€</p>
               <div className="drop-shadow-md m-4">
-                {available ? <ToCart product={data}/> : ""}
+                {available ? <ToCart product={data} /> : ""}
               </div>
             </div>
-            <p className={`${available ? "text-blue1 text-h6" : "text-red text-h6"} text-center`}>
-              {available ? `Na sklade - ${data.mnozstvo}ks` : "Nedostupne"}
+            <p
+              className={`${
+                available ? "text-blue1 text-h6" : "text-red text-h6"
+              } text-center`}
+            >
+              {quantity > 0 && available
+                ? `Na sklade - ${data.mnozstvo}ks`
+                : "Nedostupne"}
             </p>
           </div>
         </div>
