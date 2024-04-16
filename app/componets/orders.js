@@ -147,7 +147,7 @@ function zaokruhlitNaDveDesatinneMiesta(cislo) {
                     console.log(order)
                     const orderProduct = products.filter(
 
-                      (p) => p.id === order.id_produkt
+                      (p) => p.id === order?.id_produkt
 
                     );
                     

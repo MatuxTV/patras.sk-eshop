@@ -27,18 +27,16 @@ const ToCart = ({ product }) => {
     <div>
       <button
         onClick={handleAddToCart}
-        className="bg-blue1 rounded-md hover:shadow"
+        className="bg-blue1 rounded-md hover:shadow px-3 py-2"
       >
         <div className="flex flex-row items-center">
-          <div className="flex">
             <FontAwesomeIcon
               icon={faShoppingCart}
-              className="fas fa-shopping-cart p-1"
+              className="fas fa-shopping-cart pr-2 w-5 h-5"
               style={{ color: "white" }}
             />
-          </div>
           <div>
-            <p className="text-white1 text-h7 md:text-h6 font-plus-jakarta">Do Kosiku</p>
+            <p className="text-white1 text-[0.8rem] md:text-[1rem] font-plus-jakarta">Do Kosiku</p>
           </div>
         </div>
       </button>
