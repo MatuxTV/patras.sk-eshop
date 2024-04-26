@@ -65,7 +65,7 @@ const UserPage = async () => {
               return (
                 <div
                   key={item.id}
-                  className="flex items-center justify-between p-4 m-8 bg-white shadow-md rounded-lg"
+                  className="flex items-center justify-between p-4 m-8 bg-white2 shadow-md rounded-lg"
                 >
                   {/* Dátum vytvorenia */}
                   <div className="text-sm font-medium ">

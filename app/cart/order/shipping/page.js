@@ -47,6 +47,7 @@ const FinalPage = () => {
   const { cartItems, removeFromCart, clearCart } = useCart();
   const [data, setData] = useState();
   const [note, setNote] = useState("");
+  const [cartButton,setCartButton] = useState("Dokončiť objednavku");
 
   const user = useUser();
 
@@ -65,7 +66,9 @@ const FinalPage = () => {
   );
 
   const handleCompleteOrder = async (event) => {
-    console.log(cartItems);
+    event.preventDefault();
+    
+    setCartButton(<div class="border-white1 h-20 w-20 animate-spin rounded-full border-8 border-t-green" />);
 
     const skladanie_produkt = cartItems.map((item) => {
       return {
@@ -87,13 +90,13 @@ const FinalPage = () => {
           );
         } else {
           toast.error(
-            "Chyba v objednavke"
+            "Chyba v objednávke"
           );
           break;
         }
       } else {
         toast.error(
-          "Chyba v objednavke. Nedostatok produktu na sklade. Skontrolujte si udaje a skuste to znova"
+          "Chyba v objednávke. Nedostatok produktu na sklade. Skontrolujte si údaje a skúste to znova"
         );
         break;
       }
@@ -116,6 +119,7 @@ const FinalPage = () => {
         dic: data?.dic,
         icdph: data?.icdph,
         user_created: user?.id,
+        proces : true,
       })
     );
 
@@ -131,13 +135,14 @@ const FinalPage = () => {
 
     try {
       router.push("/");
-      toast.success("Dakujeme za objednavku");
+      toast.success("Ďakujeme za objednávku");
     } catch (error) {
       toast.error(
-        "Chyba v objednavke. Skontrolujte si udaje a skuste to znova"
+        "Chyba v objednávke. Skontrolujte si údaje a skuste to znova"
       );
     }
     clearCart();
+    setCartButton ("Objednávka dokončená")
   };
 
   return (
@@ -262,12 +267,12 @@ const FinalPage = () => {
 
           <div className="block m-4 space-x-3">
             <label className=" font-plus-jakarta">
-              <input type="checkbox" required /> Oboznámil som sa s obchodnými
+              <input type="checkbox" /> Oboznámil som sa s obchodnými
               podmienkami
             </label>
 
             <label className=" font-plus-jakarta">
-              <input required type="checkbox" /> Oboznámil som sa s ochranou
+              <input type="checkbox" /> Oboznámil som sa s ochranou
               osobných údajov
             </label>
           </div>
@@ -279,9 +284,11 @@ const FinalPage = () => {
               <Link href="/cart/order/shipping">
                 <button
                   onClick={handleCompleteOrder}
-                  className=" text-center bg-green text-white1 text-white p-3 rounded font-plus-jakarta hover:shadow hover:shadow-green"
-                >
-                  Dokončit objednávku
+                  className="text-center bg-green text-white1 text-white p-3 rounded font-plus-jakarta 
+                  hover:shadow-[0_0_2px_#000,inset_0_0_2px_#000,0_0_5px_#00ff00,0_0_15px_#00ff00,0_0_30px_#00ff00]
+                   hover:z-10 transition-all duration-300"
+                > 
+                  {cartButton}
                 </button>
               </Link>
             )}
