@@ -31,7 +31,6 @@ const Admin_sprava = ({ searchParams }) => {
         kategoria: data.data.kategoria,
       });
       setSelectedCategoryId(data.data.kategoria);
-      console.log(data.data);
     };
 
     getProduct();
@@ -52,8 +51,6 @@ const Admin_sprava = ({ searchParams }) => {
     e.preventDefault();
 
     try {
-      console.log("formdata", formData);
-      console.log("selectedCategoryId", selectedCategoryId);
       const request = await directus.request(
         updateItem("produkty", productID, {
           meno: formData.meno,
@@ -67,7 +64,6 @@ const Admin_sprava = ({ searchParams }) => {
       toast.success("Zmeny boli úspešne uložené");
       // window.location.reload();
     } catch (error) {
-      console.error(error);
       toast.error("Nepodarilo sa uložiť zmeny");
     }
   };
