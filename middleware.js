@@ -20,7 +20,6 @@ export async function middleware(req) {
 
   // Get the pathname from the request URL
   const { pathname } = req.nextUrl;
-  console.log(pathname);
 
   // Check if the request starts with '/admin' and if the user role is not the admin role
   if (pathname.startsWith("/admin") && session?.user?.role !== process.env.ADMIN_ROLE) {
