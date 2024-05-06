@@ -10,19 +10,14 @@ const Admin = () => {
   return (
     <div>
       <Nav />
-      <div class="flex justify-center items-center text-center space-x-8">
+      <div className="flex justify-center items-center text-center space-x-8">
         <Link href={"/admin/admin_addprod"}>
-          <button class="font-plus-jakarta hover:bg-blue2 p-2 text-h6 rounded-lg transition-all delay-50">
+          <button className="font-plus-jakarta hover:bg-blue2 p-2 text-h6 rounded-lg transition-all delay-50">
             Pridanie produktu a kategórie
           </button>
         </Link>
-        <Link href={"/admin/admin_addprod"}>
-          <button class="font-plus-jakarta hover:bg-blue2 p-2 text-h6 rounded-lg transition-all delay-50">
-            Administrácia produktov
-          </button>
-        </Link>
         <Link href={"/admin/admin_objednavky"}>
-          <button class="font-plus-jakarta hover:bg-blue2 p-2 text-h6 rounded-lg transition-all delay-50">
+          <button className="font-plus-jakarta hover:bg-blue2 p-2 text-h6 rounded-lg transition-all delay-50">
             Vybavené objednávky
           </button>
         </Link>

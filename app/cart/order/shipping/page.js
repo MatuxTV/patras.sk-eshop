@@ -68,7 +68,7 @@ const FinalPage = () => {
   const handleCompleteOrder = async (event) => {
     event.preventDefault();
     
-    setCartButton(<div class="border-white1 h-20 w-20 animate-spin rounded-full border-8 border-t-green" />);
+    setCartButton(<div className="border-white1 h-20 w-20 animate-spin rounded-full border-8 border-t-green" />);
 
     const skladanie_produkt = cartItems.map((item) => {
       return {

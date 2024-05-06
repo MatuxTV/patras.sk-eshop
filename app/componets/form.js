@@ -57,7 +57,7 @@ export default function RegistrationForm() {
   };
   const handleSubmit = async (event) => {
     event.preventDefault();
-    setCartButton(<div class="border-black2 h-20 w-20 animate-spin rounded-full border-8 border-t-blue2" />);
+    setCartButton(<div className="border-black2 h-20 w-20 animate-spin rounded-full border-8 border-t-blue2" />);
 
     if (formData.password !== formData.passwordAgain) {
       setError("Heslá sa nezhodujú");

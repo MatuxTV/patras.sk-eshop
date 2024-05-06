@@ -63,31 +63,13 @@ const Admin_addprod = () => {
 
   return (
     <div className=" justify-center m-8">
-      <ToastContainer
-        position="top-right"
-        autoClose={1000}
-        hideProgressBar={true}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        zIndex={1}
-      />
       <BackButton />
-      {/* {Pridavanie produktu} */}
-      <div className="flex shadow-lg ">
-        <p className="flex font-plus-jakarta justify-center items-center w-48">
-          Pridavanie produktu
+      <div className="justify-center bg-white2 m-6 p-6 rounded-lg ">
+        <p className="font-plus-jakarta text-h3 text-center">
+          Pridanie produktu
         </p>
-        <div className="flex justify-between ">
-          <input
-            className="w-full p-2 "
-            placeholder="Nazov produktu"
-            type="text"
-            name="product_name"
-            value={product.product_name}
-            onChange={handleChangeProduct}
-          />
-          <div>
+        <div>
+          <div className=" p-8 bg-white1 my-6">
             <p className=" font-plus-jakarta">Obrazok produktu</p>
             <input
               type="file"
@@ -96,16 +78,25 @@ const Admin_addprod = () => {
             />
           </div>
 
+          <input
+            className="w-full p-2 my-4"
+            placeholder="Nazov produktu"
+            type="text"
+            name="product_name"
+            value={product.product_name}
+            onChange={handleChangeProduct}
+          />
           <textarea
-            className="w-full p-2 "
+            className="w-full p-2 my-4"
             placeholder="Popis produktu"
             type="text"
             name="description"
+            rows={5}
             value={product.description}
             onChange={handleChangeProduct}
           />
           <input
-            className="w-full p-2 "
+            className="w-full p-2 my-4"
             placeholder="Cena produktu"
             type="number"
             name="price"
@@ -113,8 +104,8 @@ const Admin_addprod = () => {
             value={product.price}
             onChange={handleChangeProduct}
           />
-          <div className=" items-center justify-center">
-            <p>Dostupnost produktu</p>
+          <div className=" items-center flex my-4 space-x-2">
+            <p className=" font-plus-jakarta">Dostupnost produktu</p>
             <input
               className=" p-2"
               placeholder="Dostupnost produktu"
@@ -124,9 +115,8 @@ const Admin_addprod = () => {
               onChange={handleChangeProduct}
             />
           </div>
-
           <input
-            className="w-full p-2"
+            className="w-full p-2 my-4"
             placeholder="Mnozstvo produktu na sklade"
             type="number"
             min={0}
@@ -134,30 +124,22 @@ const Admin_addprod = () => {
             value={product.quantity}
             onChange={handleChangeProduct}
           />
-          <div>
-            <p>Kategoria produktu</p>
+          <div className=" justify-center">
+            <p className=" font-plus-jakarta my-4">Kategoria produktu</p>
             <CatDetail onCategorySelected={handleCategorySelected} />
           </div>
-
-          <AddProduct product={product} image={imageProd} />
+          <div className=" justify-center flex">
+            <AddProduct product={product} image={imageProd} />
+          </div>
         </div>
       </div>
 
-      {/* {Nova kategoria} */}
-      <div className="flex mt-8 shadow-lg">
-        <p className=" flex font-plus-jakarta justify-center items-center w-48">
+      <div className="justify-center bg-white2 m-6 p-6 rounded-lg">
+        <p className="font-plus-jakarta text-h3 text-center">
           Pridavanie kategorie
         </p>
-        <div className="flex justify-between ">
-          <input
-            className="w-full p-2"
-            placeholder="Nazov kategorie"
-            type="text"
-            name="category_name"
-            value={category.category_name}
-            onChange={handleChangeCategory}
-          />
-          <div className="">
+        <div>
+          <div className=" p-8 bg-white1 my-6">
             <p className=" font-plus-jakarta">Obrazok kategorie</p>
             <input
               type="file"
@@ -166,7 +148,17 @@ const Admin_addprod = () => {
             />
           </div>
 
-          <AddCat category={category} image={imageCat} />
+          <input
+            className="w-full p-2"
+            placeholder="Nazov kategorie"
+            type="text"
+            name="category_name"
+            value={category.category_name}
+            onChange={handleChangeCategory}
+          />
+          <div className=" justify-center flex my-4">
+            <AddCat category={category} image={imageCat} />
+          </div>
         </div>
       </div>
     </div>

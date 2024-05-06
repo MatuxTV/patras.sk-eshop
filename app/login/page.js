@@ -18,7 +18,7 @@ const LoginPage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setCartButton(<div class="border-white1 h-20 w-20 animate-spin rounded-full border-8 border-t-blue2" />);
+    setCartButton(<div className="border-white1 h-20 w-20 animate-spin rounded-full border-8 border-t-blue2" />);
     const response = await signIn('credentials', {
       email: data.email,
       password: data.password,
