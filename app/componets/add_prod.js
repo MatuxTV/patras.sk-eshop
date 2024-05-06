@@ -48,7 +48,7 @@ const AddProduct = (props) => {
   return (
     <button
       type="submit"
-      className="  bg-white2 text-white font-bold rounded-lg hover:bg-blue2 p-6"
+      className="bg-white2 text-white font-bold border-2 rounded-lg hover:bg-blue2 p-6 transform transition-all delay-50 hover:scale-110"
       onClick={handleNewProduct}
     >
       Pridat produkt

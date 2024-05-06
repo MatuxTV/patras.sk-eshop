@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import ToCart from "../componets/tocart";
 
-export default function ProductCard(data) {
+export default function ProductCard({ data, user }) {
   const available = data.dostupnost;
   const quantity = data.mnozstvo;
 
@@ -27,6 +27,22 @@ export default function ProductCard(data) {
                 {available ? <ToCart product={data} /> : ""}
               </div>
             </div>
+            {user?.role === "df5647af-422c-4834-bb6c-56baccbe5fce" ? (
+              <>
+                <Link
+                  href={`/admin/admin_sprava?id=${data.id}`}
+                  passHref
+                  className="text-right "
+                >
+                  <button className=" rounded bg-green px-3 text-h7 mx-4 py-1">
+                    EDIT
+                  </button>
+                </Link>
+              </>
+            ) : (
+              ""
+            )}
+
             <p
               className={`${
                 available ? "text-blue1 text-h6" : "text-red text-h6"

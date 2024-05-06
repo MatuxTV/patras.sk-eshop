@@ -20,7 +20,8 @@ const CatDetail = ({ onCategorySelected }) => {
   };
 
   return (
-    <select onChange={handleSelectChange}>
+    <select className=" p-2"  onChange={handleSelectChange}>
+      <option value="">Vyberte kategóriu</option>
       {categories.map((category) => (
         <option key={category.id} value={category.id}>{category.nazov}</option>
       ))}

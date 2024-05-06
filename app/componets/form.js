@@ -14,9 +14,18 @@ export default function RegistrationForm() {
     last_name: "",
     email: "",
     password: "",
+    passwordAgain: "",
+  });
+
+  const [PassErrors, setPassErrors] = useState({
+    uppercase: '',
+    number: '',
+    specialChar: '',
+    length: ''
   });
 
   const [error, setError] = useState("");
+  const [cartButton,setCartButton] = useState("Registrovať sa");
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -26,9 +35,34 @@ export default function RegistrationForm() {
     }));
   };
 
+  const handleChangePass = (event) => {
+    const { name, value } = event.target;
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      [name]: value,
+    }));
+
+    const velkePismeno = /[A-Z]/;
+    const cislo = /[0-9]/;
+    const specZnak = /[\W_]/;
+    const delka = value.length >= 8;
+
+    setPassErrors({
+      uppercase: velkePismeno.test(value) ? '' : 'Aspoň jedno velké písmeno.',
+      number: cislo.test(value) ? '' : 'Aspoň jedno číslo.',
+      specialChar: specZnak.test(value) ? '' : 'Aspoň jeden špeciálny znak.',
+      length: delka ? '' : '8 znakov.'
+    });
+
+  };
   const handleSubmit = async (event) => {
     event.preventDefault();
+    setCartButton(<div className="border-black2 h-20 w-20 animate-spin rounded-full border-8 border-t-blue2" />);
 
+    if (formData.password !== formData.passwordAgain) {
+      setError("Heslá sa nezhodujú");
+      return;
+    }
     const response = await fetch(`/api/auth/register`, {
       method: "POST",
       headers: {
@@ -44,6 +78,7 @@ export default function RegistrationForm() {
     } else {
       const result = await response.json();
       setError(result.message || "An error occurred during registration.");
+      setCartButton("Registrovať sa");
     }
   };
 
@@ -137,15 +172,50 @@ export default function RegistrationForm() {
                 Heslo
               </label>
               <input
-                className="shadow appearance-none rounded w-full py-2 px-3 text-black1 mb-3 leading-tight focus:outline-none focus:shadow-outline"
+                className="shadow appearance-none rounded w-full py-2 px-3 text-black1 leading-tight focus:outline-none focus:shadow-outline"
                 name="password"
                 type="password"
                 placeholder="Heslo"
-                onChange={handleChange}
+                onChange={handleChangePass}
                 minLength={8} // Minimálna dĺžka hesla
                 pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" // Mínimálne požiadavky na heslo
                 required
                 value={formData.password}
+              />
+            </div>
+
+            <div className=" bg-white1 rounded p-2 my-2">
+              <p className="text-black1 text-h7 font-plus-jakarta ">
+                Heslo musí obsahovať:
+              </p>
+              <div className="">
+                <ul className="text-black2 text-[10px] font-plus-jakarta justify-end text-right">
+                  <li>{PassErrors.uppercase}</li>
+                  <li>{PassErrors.number}</li>
+                  <li>{PassErrors.specialChar}</li>
+                  <li>{PassErrors.length}</li>
+                </ul>
+              </div>
+            </div>
+
+            {/* Pole pre zopakovanie hesla */}
+            <div className="mb-6">
+              <label
+                className="font-plus-jakarta block text-black1 text-sm mb-2"
+                htmlFor="password"
+              >
+                Zopakujte svoje heslo
+              </label>
+              <input
+                className="shadow appearance-none rounded w-full py-2 px-3 text-black1 mb-3 leading-tight focus:outline-none focus:shadow-outline"
+                name="passwordAgain"
+                type="password"
+                placeholder="Zopakujte svoje heslo"
+                onChange={handleChange}
+                minLength={8} // Minimálna dĺžka hesla
+                pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" // Mínimálne požiadavky na heslo
+                required
+                value={formData.passwordAgain}
               />
             </div>
 
@@ -163,10 +233,10 @@ export default function RegistrationForm() {
             {/* Tlačidlo na odoslanie formulára */}
             <div className="flex items-center justify-center">
               <button
-                className="font-plus-jakarta m-5 bg-blue1 p-2 rounded-lg hover:bg-blue2"
+                className="font-plus-jakarta m-5 bg-blue1 p-2 rounded-lg hover:bg-blue2 transform-all duration-300 ease-in-out hover:scale-105"
                 type="submit"
               >
-                Registrovať
+                {cartButton}
               </button>
             </div>
 
@@ -176,7 +246,7 @@ export default function RegistrationForm() {
             {/* Odkaz na prihlásenie */}
             <div className="justify-start mt-3">
               <p>
-                Už máš účet? <Link href="/login">Prihlás sa</Link>
+                Už máš účet? <Link href="/login"><b>Prihlás sa!</b></Link>
               </p>
             </div>
           </form>

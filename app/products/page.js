@@ -3,9 +3,13 @@ import Product from "../componets/product";
 import Link from "next/link";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { getServerSession } from "next-auth";
+import { options } from "../api/auth/[...nextauth]/options";
 
 export const Produkty = async ({ searchParams }) => {
-  
+
+  let data = await getServerSession(options);
+  let user = data?.user;
   const category = searchParams.kategoria;
 
   function getProducts() {
@@ -39,7 +43,7 @@ export const Produkty = async ({ searchParams }) => {
         </Link>
         <div className="flex flex-wrap m-8 md:justify-start justify-center">
           {products.data?.map((item) => {
-            return <Product {...item} key={item.id} />;
+            return <Product {...item} key={item.id} data={item} user={user} />;
           })}
         </div>
       </div>

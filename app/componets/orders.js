@@ -2,7 +2,7 @@
 
 import { Suspense, useEffect, useState } from "react";
 import directus from "@/lib/directus";
-import { deleteItem } from "@directus/sdk";
+import { updateItem } from "@directus/sdk";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -47,39 +47,40 @@ const OrderList = () => {
     fetchOrders().then((res) => setOrders(res.data));
   }, []);
 
-  const itemRemove = async() =>{
-
-    console.log(data[0],"data")
-
-    await directus.request(deleteItem(
-        'objednavka',
-         data[0].id 
-    ))
-    await directus.request(deleteItem(
-        'skladanie_produkt',
-         data[0].id_skladanie_objednavky
-    ))
-    
+  const itemRemove = async(idItem) =>{
+    await directus.request(
+      updateItem('objednavka', idItem, { proces: false })
+    );
     toast.success("Objednávka bola vybavená");
-    // window.location.reload();
+    window.location.reload();
 }
 
 function zaokruhlitNaDveDesatinneMiesta(cislo) {
   return parseFloat(cislo.toFixed(2));
 }
 
+function avaibility_check() {
+  let number = 0;
+  const order_avaibility = data.map((item) => {
+    if (item.proces) {
+      number++;
+    }
+  });
+  return number;
+}
+
+const number = avaibility_check();
 
   return (
-    
       <div>
-      {data.length !=0 ? data.map((item) => {
+      {number !== 0 ? data.filter((item)=>item.proces==true).map((item) => {
         const round = zaokruhlitNaDveDesatinneMiesta(item.cena_objednavky)
         
         return (
           <div key={item.id + "order"} value={item.id}>
             <div className="bg-white2 p-8 m-8 rounded-lg">
               <div>
-                <button onClick={itemRemove}>X</button>
+                <button onClick={()=>itemRemove(item.id)}>X</button>
               </div>
               <h2 className="text-2xl font-bold font-plus-jakarta text-center mb-4">
                 OBJEDNÁVKA ČÍSLO <b>{item?.id}</b>
@@ -143,10 +144,7 @@ function zaokruhlitNaDveDesatinneMiesta(cislo) {
                   {item.id_skladanie_objednavky.length > 0 ?
 
                   item.id_skladanie_objednavky?.map((id) => {
-                    console.log(orders, id)
-
                     const order = orders.find((p) => p.id === id);
-                    console.log(order)
                     const orderProduct = products.filter(
 
                       (p) => p.id === order?.id_produkt

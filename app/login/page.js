@@ -14,10 +14,11 @@ const LoginPage = () => {
   const router = useRouter();
   const [error, setError] = useState(""); 
   const [data, setData] = useState({email: "", password: ""});
+  const [cartButton,setCartButton] = useState("Prihlasit sa ");
 
   const handleSubmit = async (e) => {
-    
     e.preventDefault();
+    setCartButton(<div className="border-white1 h-20 w-20 animate-spin rounded-full border-8 border-t-blue2" />);
     const response = await signIn('credentials', {
       email: data.email,
       password: data.password,
@@ -35,6 +36,7 @@ const LoginPage = () => {
     } else {
       if (response.status === 401) {
         setError('Your email or password is incorrect');
+        setCartButton("Prihlasit sa");
       }
     }
   }
@@ -107,10 +109,10 @@ const LoginPage = () => {
             <div className="flex items-center justify-center">
               
               <button
-                className="font-plus-jakarta m-5 bg-blue1 p-2 rounded-lg hover:bg-blue2"
+                className="font-plus-jakarta m-5 bg-blue1 p-2 rounded-lg hover:bg-blue2 transform-all duration-300 ease-in-out hover:scale-105"
                 type="submit"
               >
-                Prihlásiť sa
+                {cartButton}
               </button>
               
               
@@ -121,7 +123,7 @@ const LoginPage = () => {
             {/* Odkaz na prihlásenie */}
             <div className="justify-start mt-3">
               <p>
-                Este nemas ucet? <Link href="/registration">Registruj sa!</Link>
+                Este nemas ucet? <Link href="/registration"><b>Registruj sa!</b></Link>
               </p>
             </div>
           </form>

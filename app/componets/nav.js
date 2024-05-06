@@ -20,15 +20,15 @@ const Nav = (props) => {
   
 
   return (
-    <nav className="relative items-center flex justify-between px-4 md:py-2 z-20">
+    <nav className="relative items-center flex justify-between px-4 md:py-2 md:my-6  z-20">
       <div className="flex items-center ">
         <Link href="/">
           <div className="container relative z-20 md:m-6">
           <Image
               src="/IMG/logo.png"
               alt="patras.sk"
-              width={100}
-              height={100}
+              width={130}
+              height={130}
               objectFit="contain"
               className="transition-transform duration-300 ease-in-out transform hover:scale-105"
             />
@@ -49,7 +49,7 @@ const Nav = (props) => {
         <Link href="/cart" className="ml-auto relative">
         <button
             type="button"
-            className="bg-blue1 w-24 h-12 rounded-lg hover:bg-blue2 hover:drop-shadow-md shadow flex items-center justify-center"
+            className="bg-blue1 w-24 h-12 rounded-lg hover:bg-blue2 hover:drop-shadow-md shadow flex items-center justify-center  transform-all duration-300 ease-in-out hover:scale-105"
           >
             {cartItemCount > 0 ? (
               

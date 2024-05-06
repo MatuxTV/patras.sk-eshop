@@ -11,7 +11,7 @@ const SignOutButton = () => {
   return (
     <button
       onClick={signOutHandler}
-      className=" flex text-h4 m-10 font-plus-jakarta bg-blue1 rounded-lg p-5 text-white1 hover:shadow-lg hover:text-white2"
+      className="flex text-h4 m-10 font-plus-jakarta bg-blue1 rounded-lg p-5 text-white1 hover:bg-white1 hover:shadow-inner hover:text-blue1 transition-all delay-100"
     >
       Odhlasit
     </button>

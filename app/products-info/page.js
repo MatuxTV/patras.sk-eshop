@@ -1,5 +1,4 @@
 import Nav from "../componets/nav";
-import Link from "next/link";
 import Image from "next/image";
 import ToCart from "../componets/tocart";
 import BackButton from "../componets/back_button";
@@ -25,15 +24,6 @@ const Produkt = async ({ searchParams }) => {
       <Nav product={"Produkty"} />
       <BackButton />
       <div className="flex flex-col md:flex-row items-center">
-        <ToastContainer
-          position="top-right"
-          autoClose={3000}
-          hideProgressBar={false}
-          newestOnTop={false}
-          closeOnClick
-          rtl={false}
-          zIndex={1}
-        />
         <div className="flex md:w-1/2 md:h-[450px] justify-center items-center drop-shadow-lg w-full h-[300px] md:m-7">
           <Image
             src={`${process.env.NEXT_PUBLIC_DIRECTUS}assets/${produkt.data.obrazok}`}
