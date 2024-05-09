@@ -70,7 +70,7 @@ const Admin_addprod = () => {
         </p>
         <div>
           <div className=" p-8 bg-white1 my-6">
-            <p className=" font-plus-jakarta">Obrazok produktu</p>
+            <p className=" font-plus-jakarta">Obrazok produktu (Prosim pridávajte vždy vo formáte PNG)</p>
             <input
               type="file"
               accept="image/*"

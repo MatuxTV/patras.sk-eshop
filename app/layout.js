@@ -118,7 +118,7 @@ export default async function RootLayout({ children }) {
                       Obchodne podmienky
                     </p>
                   </a>
-                  <a href="podmienky">
+                  <a href="reklamacia">
                     <p className="font-plus-jakarta text-[8px] md:text-h7">
                       Podmienky reklamacie
                     </p>
