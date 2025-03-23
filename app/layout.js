@@ -18,6 +18,7 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { ShippingProvider } from "@/lib/shipping-context";
 import { UserProvider } from "@/lib/user-context";
+import { SpeedInsights } from "@vercel/speed-insights/next"
 
 config.autoAddCss = false;
 
