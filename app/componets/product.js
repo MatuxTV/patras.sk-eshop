@@ -1,11 +1,12 @@
 import Image from "next/image";
 import Link from "next/link";
 import ToCart from "../componets/tocart";
+import { bufferImage } from "@/lib/exportImage";
 
 export default function ProductCard({ data, user }) {
+  const buffer = data.obrazok;
   const available = data.dostupnost;
   const quantity = data.mnozstvo;
-
   return (
     <div>
       <Link href={`/products-info?id=${data.id}`} passHref>
@@ -13,7 +14,7 @@ export default function ProductCard({ data, user }) {
           <div className="justify-center item-center border-1 border-black2 border-opacity-1 h-56 w-56 relative m-6 border-2 rounded-lg bg-white2">
             <Image
               className="image"
-              src={`${process.env.NEXT_PUBLIC_DIRECTUS}assets/${data.obrazok}`}
+              src={bufferImage(buffer)}
               alt="Product Image"
               fill
             />

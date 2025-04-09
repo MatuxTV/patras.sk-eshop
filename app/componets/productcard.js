@@ -1,14 +1,18 @@
 import Image from "next/image";
 import Link from "next/link";
+import { bufferImage } from "@/lib/exportImage";
 
 export default function ProductCard( data ) {
+  console.log(data);
+  const imageSrc = bufferImage(data.obrazok);
+
   return (
     <Link href={`/products?kategoria=${data.id}`}>
       <div className="bg-white1 w-64 md:w-96 md:h-[400px] border-2 mt-2 m-5 border-white2 rounded-2xl hover:bg-blue2">
         <div className="justify-center h-72 w-full relative my-5">
         <Image
           className="image"
-          src={`${process.env.NEXT_PUBLIC_DIRECTUS}assets/${data.obrazok}`}
+          src={imageSrc}
           alt="Product Image"
           fill
         />

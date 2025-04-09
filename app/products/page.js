@@ -5,6 +5,7 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { getServerSession } from "next-auth";
 import { options } from "../api/auth/[...nextauth]/options";
+import pool from "@/app/api/postgresql"; // správne importuj cestu
 
 export const Produkty = async ({ searchParams }) => {
 
@@ -12,25 +13,40 @@ export const Produkty = async ({ searchParams }) => {
   let user = data?.user;
   const category = searchParams.kategoria;
 
-  function getProducts() {
-    return fetch(
-      process.env.NEXT_PUBLIC_DIRECTUS +
-        `items/produkty?filter[kategoria][id][_eq]=${category}`,
-      {
-        cache: "no-store",
-      }
-    ).then((res) => res.json());
+  async function getProducts(categoryId) {
+    const query = `
+      SELECT * 
+      FROM "Produkty"
+      WHERE "kategoria" = ${categoryId};
+    `;
+  
+    try {
+      const res = await pool.query(query); 
+      return res.rows; 
+    } catch (error) {
+      console.error("Chyba pri získavaní produktov: ", error);
+      throw error;
+    }
   }
-  function getCategory() {
-    return fetch(
-      process.env.NEXT_PUBLIC_DIRECTUS + `items/kategoria/${category}`,
-      {
-        cache: "no-store",
-      }
-    ).then((res) => res.json());
+  
+  // Získanie kategórie podľa jej ID
+  async function getCategory(categoryId) {
+    const query = `
+      SELECT * 
+      FROM "Kategoria"
+      WHERE "id" = ${categoryId};
+    `;
+  
+    try {
+      const res = await pool.query(query); 
+      return res.rows[0];
+    } catch (error) {
+      console.error("Chyba pri získavaní kategórie: ", error);
+      throw error;
+    }
   }
-  const products = await getProducts();
-  const kategoria = await getCategory();
+  const products = await getProducts(category);
+  const kategoria = await getCategory(category);
 
   return (
     <div>
@@ -38,11 +54,11 @@ export const Produkty = async ({ searchParams }) => {
       <div className=" md:justify-center">
         <Link href="/products-cat">
           <p className="flex justify-center md:justify-start text-h4 m-10 font-plus-jakarta text-center">
-            Produkty/{kategoria.data.nazov}
+            Produkty/{kategoria.nazov}
           </p>
         </Link>
         <div className="flex flex-wrap m-8 md:justify-start justify-center">
-          {products.data?.map((item) => {
+          {products?.map((item) => {
             return <Product {...item} key={item.id} data={item} user={user} />;
           })}
         </div>
