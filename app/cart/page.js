@@ -5,6 +5,7 @@ import Image from "next/image";
 import { useCart } from "../../lib/cart-context"; // Adjust the import path accordingly
 import Nav from "../componets/nav";
 import Link from "next/link";
+import { bufferImage } from "@/lib/exportImage"; 
 
 const CartItem = ({ item }) => {
   const { cartItems, removeFromCart, changeQuantity ,addToCart } = useCart();
@@ -20,7 +21,7 @@ const CartItem = ({ item }) => {
       <div className="flex items-center">
         <div className=" h-[80px] w-[80px] relative">
         <Image
-          src={`${process.env.NEXT_PUBLIC_DIRECTUS}assets/${item.obrazok}`}
+          src={bufferImage(item.obrazok)}
           alt={item.meno}
           // width={80}
           // height={80}

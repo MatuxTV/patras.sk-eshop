@@ -11,15 +11,18 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useUser } from "@/lib/user-context";
 import { updateItem } from "@directus/sdk";
-import { readItem } from "@directus/sdk";
+import pool from "@/app/api/postgresql";
+import { bufferImage } from "@/lib/exportImage";
+
 
 const CartItem = ({ item }) => {
+  
   return (
     <div className="flex items-center justify-between p-4 border-b">
       <div className="flex items-center">
         <div className=" h-0 w-0 md:h-[80px] md:w-[80px] relative">
           <Image
-            src={`${process.env.NEXT_PUBLIC_DIRECTUS}assets/${item.obrazok}`}
+            src={bufferImage(item.obrazok)}
             alt={item.meno}
             className="rounded"
             objectFit="contain"
@@ -81,12 +84,12 @@ const FinalPage = () => {
       const newQuantity = element.mnozstvo - element.quantity;
       if (newQuantity >= 0) {
         if (newQuantity > 0) {
-          await directus.request(
-            updateItem("produkty", element.id, { mnozstvo: newQuantity })
+          await pool.query(
+            `UPDATE "Produkty" SET "mnozstvo" = ${newQuantity} WHERE "id" = ${element.id};`
           );
-        }else if (newQuantity == 0) {
-          await directus.request(
-            updateItem("produkty", element.id, { dostupnost: false })
+        } else if (newQuantity == 0) {
+          await pool.query(
+            `UPDATE "Produkty" SET "mnozstvo" = ${newQuantity}, "dostupnost" = false WHERE "id" = ${element.id};`
           );
         } else {
           toast.error(
@@ -102,34 +105,14 @@ const FinalPage = () => {
       }
     }
 
-    const result = await directus.request(
-      createItem("objednavka", {
-        meno: data?.firstName,
-        priezvisko: data?.lastName,
-        email: data?.email,
-        prefix: data?.prefix,
-        tcislo: data?.phoneNumber,
-        ulica: data?.street,
-        mesto: data?.city,
-        psc: data?.postalCode,
-        poznamka: note,
-        cena_objednavky: total,
-        nazov_spolocnosti: data?.companyName,
-        ico: data?.ico,
-        dic: data?.dic,
-        icdph: data?.icdph,
-        user_created: user?.id,
-        proces : true,
-      })
+    const result = await pool.query(
+      `INSERT INTO "Objednavky" ("meno","priezvisko","email","prefix","t_cislo","cena_objednavky","ulica","mesto","psc","poznamka","nazov_spolocnost","ico","dic","icdph","date_created","user_created")
+      VALUES ('${firstName}','${lastName}','${email}','${prefix}','${phoneNumber}',${total},'${street}','${city}',${postalCode},'${note}','${companyName}','${ico}','${dic}','${icdph}',now(),'${user.id}') RETURNING id;`
     );
 
     skladanie_produkt.map(async (item) => {
-      await directus.request(
-        createItem("skladanie_produkt", {
-          id_objednavky: result.id,
-          id_produkt: item.id_produkt,
-          pocet_kusov: item.pocet_kusov,
-        })
+      await pool.query(
+        `INSERT INTO "Skladanie_produkt" ("id_objednavka","id_produkt","pocet_kusov") VALUES (${result.rows[0].id},${item.id_produkt},${item.pocet_kusov});`
       );
     });
 
@@ -194,34 +177,34 @@ const FinalPage = () => {
             </div>
             <div className=" text-center pt-4">
               <p>
-                {data?.firstName} {data?.lastName}
+                {firstName} {lastName}
               </p>
 
               <p>
-                {data?.street},{data?.postalCode},{data?.city}
+                {street},{postalCode},{city}
               </p>
-              <p>{data?.email}</p>
+              <p>{email}</p>
               <p>
-                {data?.prefix}
-                {data?.phoneNumber}
+                {prefix}
+                {phoneNumber}
               </p>
-              {data?.companyName != "" ? (
+              {companyName != "" ? (
                 <div className=" my-6">
                   <p>
                     <b> Spoločnosť: </b>
-                    {data?.companyName}
+                    {companyName}
                   </p>
                   <p>
                     <b> IČO: </b>
-                    {data?.ico}
+                    {ico}
                   </p>
                   <p>
                     <b> DIČ: </b>
-                    {data?.dic}
+                    {dic}
                   </p>
                   <p>
                     <b> IČDPH: </b>
-                    {data?.icdph}{" "}
+                    {icdph}{" "}
                   </p>
                 </div>
               ) : (

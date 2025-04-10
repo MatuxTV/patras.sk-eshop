@@ -4,11 +4,10 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import { useCart } from "../../../lib/cart-context";
-import { ShippingProvider } from "@/lib/shipping-context";
 import { useShipping } from "@/lib/shipping-context";
 import Nav from "../../componets/nav";
 import { useRouter } from "next/navigation";
-import { data } from "autoprefixer";
+import { bufferImage } from "@/lib/exportImage"; 
 
 const CartItem = ({ item }) => {
   const { removeFromCart, changeQuantity } = useCart();
@@ -18,7 +17,7 @@ const CartItem = ({ item }) => {
       <div className="flex items-center">
       <div className=" h-[80px] w-[80px] relative">
         <Image
-          src={`${process.env.NEXT_PUBLIC_DIRECTUS}assets/${item.obrazok}`}
+          src={bufferImage(item.obrazok)}
           alt={item.meno}
           className="rounded"
           objectFit="contain"

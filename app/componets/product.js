@@ -7,6 +7,7 @@ export default function ProductCard({ data, user }) {
   const buffer = data.obrazok;
   const available = data.dostupnost;
   const quantity = data.mnozstvo;
+  
   return (
     <div>
       <Link href={`/products-info?id=${data.id}`} passHref>
