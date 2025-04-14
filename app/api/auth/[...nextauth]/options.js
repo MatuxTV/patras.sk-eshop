@@ -1,29 +1,37 @@
 import CredentialsProvider from "next-auth/providers/credentials";
-import directus from "@/lib/directus";
-import { readMe, withToken } from "@directus/sdk";
+import pool from "@/app/api/postgresql";
+import bcrypt from "bcrypt";
 
 export const options = {
   providers: [
     CredentialsProvider({
       name: "credentials",
       credentials: {
-        email: {},
-        password: {},
+        email: { label: "Email", type: "text" },
+        password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
-        const res = await fetch("https://directus-production-c628.up.railway.app/auth/login", {
-          method: "POST",
-          body: JSON.stringify(credentials),
-          headers: { "Content-Type": "application/json" },
-        });
-        const user = await res.json();
-        if (!res.ok && user) {
-          throw new Error("Email address or password is invalid");
+        const { email, password } = credentials;
+
+        // Získame používateľa z databázy
+        const result = await pool.query('SELECT * FROM "Users" WHERE email = $1', [email]);
+
+        if (result.rows.length === 0) {
+          throw new Error("Používateľ neexistuje");
         }
-        if (res.ok && user) {
-          return user;
+
+        const user = result.rows[0];
+
+        // Overenie hesla
+        const isValid = await bcrypt.compare(password, user.password);
+        if (!isValid) {
+          throw new Error("Nesprávne heslo");
         }
-        return null;
+
+        // Vrátime používateľa bez hesla
+        delete user.password;
+
+        return user;
       },
     }),
   ],
@@ -32,28 +40,13 @@ export const options = {
     signIn: "/login",
   },
   callbacks: {
-    async jwt({ token, user, account }) {
-      if (account && user) {
-        const userData = await directus.request(
-          withToken(
-            user.data.access_token,
-            readMe({
-              fields: ["id", "first_name", "last_name","role"],
-            })
-          )
-        );
-        return {
-          ...token,
-          accessToken: user.data.access_token,
-          refreshToken: user.data.refresh_token,
-          user: userData,
-        };
+    async jwt({ token, user }) {
+      if (user) {
+        token.user = user;
       }
       return token;
     },
     async session({ session, token }) {
-      session.user.accessToken = token.accessToken;
-      session.user.refreshToken = token.refreshToken;
       session.user = token.user;
       return session;
     },

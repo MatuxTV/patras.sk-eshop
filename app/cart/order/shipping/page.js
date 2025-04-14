@@ -1,22 +1,16 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { use, useEffect, useState } from "react";
 import Image from "next/image";
-import Link from "next/link";
 import Nav from "../../../componets/nav";
 import { useCart } from "../../../../lib/cart-context";
-import { createItem } from "@directus/sdk";
-import directus from "@/lib/directus";
-import { useRouter } from "next/navigation";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useUser } from "@/lib/user-context";
-import { updateItem } from "@directus/sdk";
-import pool from "@/app/api/postgresql";
+import { useRouter } from "next/navigation";
 import { bufferImage } from "@/lib/exportImage";
 
 
 const CartItem = ({ item }) => {
-  
   return (
     <div className="flex items-center justify-between p-4 border-b">
       <div className="flex items-center">
@@ -47,85 +41,86 @@ const CartItem = ({ item }) => {
 
 const FinalPage = () => {
   const router = useRouter();
-  const { cartItems, removeFromCart, clearCart } = useCart();
-  const [data, setData] = useState();
+  const { cartItems, clearCart } = useCart();
   const [note, setNote] = useState("");
-  const [cartButton,setCartButton] = useState("Dokončiť objednavku");
-
   const user = useUser();
-
-  const handlePoznamka = (e) => {
-    setNote(e.target.value);
-  };
-
-  useEffect(() => {
-    const localData = JSON.parse(localStorage.getItem("userData"));
-    setData(localData);
-  }, []);
+  const [userData, setUserData] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   const total = cartItems.reduce(
     (acc, item) => acc + item.cena * item.quantity,
     0
   );
 
+  useEffect(() => {
+    const localData = JSON.parse(localStorage.getItem("userData"));
+    setUserData(localData);
+  }, []);
+
   const handleCompleteOrder = async (event) => {
     event.preventDefault();
-    
-    setCartButton(<div className="border-white1 h-20 w-20 animate-spin rounded-full border-8 border-t-green" />);
+    if (!userData) return;
 
-    const skladanie_produkt = cartItems.map((item) => {
-      return {
-        id_produkt: item.id,
-        pocet_kusov: item.quantity,
-      };
-    });
+    setLoading(true);
 
-    for (const element of cartItems) {
-      const newQuantity = element.mnozstvo - element.quantity;
-      if (newQuantity >= 0) {
-        if (newQuantity > 0) {
-          await pool.query(
-            `UPDATE "Produkty" SET "mnozstvo" = ${newQuantity} WHERE "id" = ${element.id};`
-          );
-        } else if (newQuantity == 0) {
-          await pool.query(
-            `UPDATE "Produkty" SET "mnozstvo" = ${newQuantity}, "dostupnost" = false WHERE "id" = ${element.id};`
-          );
-        } else {
-          toast.error(
-            "Chyba v objednávke"
-          );
-          break;
-        }
-      } else {
-        toast.error(
-          "Chyba v objednávke. Nedostatok produktu na sklade. Skontrolujte si údaje a skúste to znova"
-        );
-        break;
-      }
-    }
+    const fakturacneUdaje = {
+      firstName: userData.firstName,
+      lastName: userData.lastName,
+      email: userData.email,
+      prefix: userData.prefix,
+      phoneNumber: userData.phoneNumber,
+      street: userData.street,
+      city: userData.city,
+      postalCode: userData.postalCode,
+      companyName: userData.companyName,
+      ico: userData.ico,
+      dic: userData.dic,
+      icdph: userData.icdph,
+    };
 
-    const result = await pool.query(
-      `INSERT INTO "Objednavky" ("meno","priezvisko","email","prefix","t_cislo","cena_objednavky","ulica","mesto","psc","poznamka","nazov_spolocnost","ico","dic","icdph","date_created","user_created")
-      VALUES ('${firstName}','${lastName}','${email}','${prefix}','${phoneNumber}',${total},'${street}','${city}',${postalCode},'${note}','${companyName}','${ico}','${dic}','${icdph}',now(),'${user.id}') RETURNING id;`
-    );
-
-    skladanie_produkt.map(async (item) => {
-      await pool.query(
-        `INSERT INTO "Skladanie_produkt" ("id_objednavka","id_produkt","pocet_kusov") VALUES (${result.rows[0].id},${item.id_produkt},${item.pocet_kusov});`
-      );
-    });
+    const payload = {
+      cartItems,
+      user,
+      note,
+      total,
+      fakturacneUdaje,
+    };
 
     try {
+      const res = await fetch("/api/complete-order", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+
+      if (!res.ok) throw new Error("Chyba pri odoslaní objednávky");
+
+      const result = await res.json();
+
+      toast.success("Objednávka bola úspešná");
+      await fetch("/api/send-email", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          type: "customer",
+          email: userData.email,
+        }),
+      });
+      
+      await fetch("/api/send-email", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          type: "owner",
+        }),
+      });
       router.push("/");
-      toast.success("Ďakujeme za objednávku");
+      clearCart();
     } catch (error) {
-      toast.error(
-        "Chyba v objednávke. Skontrolujte si údaje a skuste to znova"
-      );
+      toast.error("Objednávku sa nepodarilo dokončiť.");
+    } finally {
+      setLoading(false);
     }
-    clearCart();
-    setCartButton ("Objednávka dokončená")
   };
 
   return (
@@ -137,37 +132,7 @@ const FinalPage = () => {
         </h1>
       </div>
 
-      {/* Progress Bar */}
-      <div className="flex justify-around mb-8 h-16 items-center bg-blue2 text-xs sm:text-sm md:text-base lg:text-h5">
-        <div className="flex flex-row gap-2  items-center">
-          <p className="bg-blue1 w-10 h-10 flex items-center justify-center text-center font-plus-jakarta text-white1 rounded-full sm:w-12 sm:h-12 md:w-16 md:h-16">
-            1
-          </p>
-          <Link href={"/cart"}>
-            <p className="font-plus-jakarta">Košík</p>
-          </Link>
-        </div>
-
-        <div className="flex flex-row gap-2 items-center">
-          <p className="bg-blue1 w-10 h-10 flex items-center justify-center text-center font-plus-jakarta text-white1 rounded-full sm:w-12 sm:h-12 md:w-16 md:h-16">
-            2
-          </p>
-          <Link href={"/cart/order"}>
-            <p className="font-plus-jakarta">Dodacie údaje</p>
-          </Link>
-        </div>
-        <div className="flex flex-row gap-2 items-center">
-          <p className="bg-blue1 w-10 h-10 flex items-center justify-center text-center font-plus-jakarta text-white1 rounded-full sm:w-12 sm:h-12 md:w-16 md:h-16">
-            3
-          </p>
-          <Link href={"/cart/order/shipping"}>
-            <p className="font-plus-jakarta">Doprava a platba</p>
-          </Link>
-        </div>
-      </div>
-
       <div className=" grid grid-cols-2 gap-6">
-        {/* O vas  */}
         <div className=" justify-center">
           <div className=" bg-white1 shadow-md  justify-center p-4 rounded-xl mb-8">
             <div>
@@ -176,42 +141,44 @@ const FinalPage = () => {
               </p>
             </div>
             <div className=" text-center pt-4">
-              <p>
-                {firstName} {lastName}
-              </p>
-
-              <p>
-                {street},{postalCode},{city}
-              </p>
-              <p>{email}</p>
-              <p>
-                {prefix}
-                {phoneNumber}
-              </p>
-              {companyName != "" ? (
-                <div className=" my-6">
+              {userData && (
+                <>
                   <p>
-                    <b> Spoločnosť: </b>
-                    {companyName}
+                    {userData.firstName} {userData.lastName}
                   </p>
                   <p>
-                    <b> IČO: </b>
-                    {ico}
+                    {userData.street},{userData.postalCode},{userData.city}
                   </p>
+                  <p>{userData.email}</p>
                   <p>
-                    <b> DIČ: </b>
-                    {dic}
+                    {userData.prefix}
+                    {userData.phoneNumber}
                   </p>
-                  <p>
-                    <b> IČDPH: </b>
-                    {icdph}{" "}
-                  </p>
-                </div>
-              ) : (
-                ""
+                  {userData.companyName && (
+                    <div className=" my-6">
+                      <p>
+                        <b> Spoločnosť: </b>
+                        {userData.companyName}
+                      </p>
+                      <p>
+                        <b> IČO: </b>
+                        {userData.ico}
+                      </p>
+                      <p>
+                        <b> DIČ: </b>
+                        {userData.dic}
+                      </p>
+                      <p>
+                        <b> IČDPH: </b>
+                        {userData.icdph}
+                      </p>
+                    </div>
+                  )}
+                </>
               )}
             </div>
           </div>
+
           <div className=" bg-blue2 p-4">
             <h2 className="text-xl mb-4 font-plus-jakarta font-bold">
               Poznámka k objednávke
@@ -222,12 +189,11 @@ const FinalPage = () => {
               type="text"
               name="note"
               value={note}
-              onChange={handlePoznamka}
+              onChange={(e) => setNote(e.target.value)}
             />
           </div>
         </div>
 
-        {/* SUM */}
         <div>
           <div className=" p-4 bg-blue2 rounded-xl mb-4">
             <p className=" text-left font-plus-jakarta m-2">PLATBA</p>
@@ -250,30 +216,22 @@ const FinalPage = () => {
 
           <div className="block m-4 space-x-3">
             <label className=" font-plus-jakarta">
-              <input type="checkbox" /> Oboznámil som sa s obchodnými
-              podmienkami
+              <input type="checkbox" /> Oboznámil som sa s obchodnými podmienkami
             </label>
-
             <label className=" font-plus-jakarta">
-              <input type="checkbox" /> Oboznámil som sa s ochranou
-              osobných údajov
+              <input type="checkbox" /> Oboznámil som sa s ochranou osobných údajov
             </label>
           </div>
 
           <div className="flex justify-center">
-            {cartItems.length === 0 ? (
-              <></>
-            ) : (
-              <Link href="/cart/order/shipping">
-                <button
-                  onClick={handleCompleteOrder}
-                  className="text-center bg-green text-white1 text-white p-3 rounded font-plus-jakarta 
-                  hover:shadow-[0_0_2px_#000,inset_0_0_2px_#000,0_0_5px_#00ff00,0_0_15px_#00ff00,0_0_30px_#00ff00]
-                   hover:z-10 transition-all duration-300"
-                > 
-                  {cartButton}
-                </button>
-              </Link>
+            {cartItems.length === 0 ? null : (
+              <button
+                onClick={handleCompleteOrder}
+                disabled={loading}
+                className="text-center bg-green text-white1 text-white p-3 rounded font-plus-jakarta hover:shadow-[0_0_2px_#000,inset_0_0_2px_#000,0_0_5px_#00ff00,0_0_15px_#00ff00,0_0_30px_#00ff00] hover:z-10 transition-all duration-300"
+              >
+                {loading ? "Odosielanie..." : "Dokončiť objednávku"}
+              </button>
             )}
           </div>
         </div>

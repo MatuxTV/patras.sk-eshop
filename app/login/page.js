@@ -5,7 +5,6 @@ import Nav from "../componets/nav";
 import Link from "next/link";
 import { signIn} from 'next-auth/react';
 import { useRouter } from "next/navigation"; 
-import { useSession } from "next-auth/react"
 import { getSession } from "next-auth/react"
 
 
@@ -28,15 +27,17 @@ const LoginPage = () => {
 
     if (!response?.error) {
 
-      if (session.user?.role == "df5647af-422c-4834-bb6c-56baccbe5fce"){
+      if (session.user?.role == process.env.ADMIN_ROLE) {
           router.push('/admin');
       }else
       router.push('/');
       router.refresh();
     } else {
       if (response.status === 401) {
-        setError('Your email or password is incorrect');
+        setError('Nesprávne heslo alebo e-mail');
         setCartButton("Prihlasit sa");
+      } else {
+        setError('Nastala chyba pri prihlasovani');
       }
     }
   }
