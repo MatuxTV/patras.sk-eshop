@@ -112,7 +112,7 @@ const Admin_objednavky = () => {
                           <p>{item.email}</p>
                           <p>
                             +{item.prefix}
-                            {item.tcislo}
+                            {item.t_cislo}
                           </p>
                           <p>
                             {item.ulica},{item.psc},{item.mesto}
