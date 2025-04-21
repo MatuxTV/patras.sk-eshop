@@ -1,9 +1,6 @@
 "use client";
 
 import { Suspense, useEffect, useState } from "react";
-import directus from "@/lib/directus";
-import { updateItem } from "@directus/sdk";
-import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import BackButton from "@/app/componets/back_button";
 
@@ -14,43 +11,62 @@ const Admin_objednavky = () => {
 
   useEffect(() => {
     async function fetchData() {
-      const res = await fetch(
-        process.env.NEXT_PUBLIC_DIRECTUS + "items/objednavka",
-        {
-          cache: "no-store",
-        }
-      ).then((res) => res.json());
-      return res;
+      const res = await fetch('/api/orders');
+      const json = await res.json();
+      setData(json);
     }
-
+  
     async function fetchOrders() {
-      const res = await fetch(
-        process.env.NEXT_PUBLIC_DIRECTUS + "items/skladanie_produkt",
-        {
-          cache: "no-store",
-        }
-      ).then((res) => res.json());
-      return res;
+      const res = await fetch('/api/skladanie');
+      const json = await res.json();
+      setOrders(json);
     }
-
+  
     async function fetchProducts() {
-      const res = await fetch(
-        process.env.NEXT_PUBLIC_DIRECTUS + "items/produkty",
-        {
-          cache: "no-store",
-        }
-      ).then((res) => res.json());
-      return res;
+      const res = await fetch('/api/products');
+      const json = await res.json();
+      setProducts(json);
     }
-
-    fetchData().then((res) => setData(res.data));
-    fetchProducts().then((res) => setProducts(res.data));
-    fetchOrders().then((res) => setOrders(res.data));
+    fetchData();
+    fetchOrders();
+    fetchProducts();
   }, []);
 
   function zaokruhlitNaDveDesatinneMiesta(cislo) {
     return parseFloat(cislo.toFixed(2));
   }
+
+  const OrderProductList = ({ objednavka_id, orders, products }) => {
+    const relevantOrders = orders.filter((order) => order.id_objednavka === objednavka_id);
+  
+    return (
+      <div className="space-y-2">
+        {relevantOrders.map((order) => {
+          const product = products.find((p) => p.id === order.id_produkt);
+  
+          if (!product) return null;
+  
+          return (
+            <div key={order.id} className="flex justify-between pb-4">
+              <div className="text-gray-600">
+                <p>ID</p>
+                <p>Produkt</p>
+                <p>Cena</p>
+                <p>Počet kusov</p>
+              </div>
+              <div className="font-plus-jakarta w-32">
+                <p>ID-{product.id}</p>
+                <p>{product.nazov}</p>
+                <p>{product.cena}€</p>
+                <p>{order.pocet_kusov}ks</p>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    );
+  };
+
   return (
     <div>
         <BackButton />
@@ -60,7 +76,6 @@ const Admin_objednavky = () => {
           .map((item) => {
             const round = zaokruhlitNaDveDesatinneMiesta(item.cena_objednavky);
             const inputDate = item.date_created;
-
               const dateObject = new Date(inputDate);
               const formattedDate = dateObject.toLocaleDateString("sk-SK", {
                 day: "2-digit",
@@ -122,8 +137,8 @@ const Admin_objednavky = () => {
                           <p>IČ DPH</p>
                         </div>
                         <div className=" font-plus-jakarta text-red-600">
-                          {item.nazov_spolocnosti.length > 0 ? (
-                            <p className="flex">{item.nazov_spolocnosti}</p>
+                          {item.nazov_spolocnost.length > 0 ? (
+                            <p className="flex">{item.nazov_spolocnost}</p>
                           ) : (
                             <p> - </p>
                           )}
@@ -150,38 +165,11 @@ const Admin_objednavky = () => {
                   <div className="mt-8">
                     <h3 className="text-xl font-semibold mb-2">PRODUKTY</h3>
                     <div className="space-y-2">
-                      {item.id_skladanie_objednavky.length > 0
-                        ? item.id_skladanie_objednavky?.map((id) => {
-                            const order = orders.find((p) => p.id === id);
-                            const orderProduct = products.filter(
-                              (p) => p.id === order?.id_produkt
-                            );
-
-                            return orderProduct.length > 0 ? (
-                              <div
-                                key={id + "product"}
-                                value={id}
-                                className="flex justify-between pb-4 "
-                              >
-                                <div className="text-gray-600">
-                                  <p>ID</p>
-                                  <p>Produkt</p>
-                                  <p>Cena</p>
-                                  <p>Pocet kusov</p>
-                                </div>
-                                <div className=" font-plus-jakarta w-32">
-                                  <p>ID-{orderProduct[0].id}</p>
-                                  <p>{orderProduct[0].meno}</p>
-                                  <p>{orderProduct[0].cena}€</p>
-                                  <p>{order.pocet_kusov}ks</p>
-                                </div>
-                              </div>
-                            ) : (
-                              <>undefined</>
-                            );
-                          })
-                        : null}
-
+                     <OrderProductList
+                        objednavka_id={item.id}
+                        orders={orders}
+                        products={products}
+                     />
                       <div className="flex justify-between mt-4">
                         <span className="text-gray-600">CENA OBJEDNÁVKY</span>
                         <span className="font-medium text-red-600">

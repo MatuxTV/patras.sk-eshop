@@ -2,22 +2,13 @@ import React from "react";
 import Nav from "../componets/nav";
 import ProductCard from "../componets/productcard";
 import { getProducts } from "@/lib/directus";
-import directus from "/lib/directus";
-import { readItems } from "@directus/sdk";
+import pool from "@/app/api/postgresql"; 
 
 export const Produkty = async () => {
   
-  function getProducts() {
-    return fetch(process.env.NEXT_PUBLIC_DIRECTUS + "items/kategoria",{ cache: "no-store" }).then(
-      (res) => res.json(),
-    );
-  }
-  async function fetchData() {
-    const data = await getProducts();
-    return data;
-  }
-  const res = await fetchData();
-  const data = res.data;
+  const res = await pool.query('SELECT * FROM "Kategoria"');
+  const data = res.rows;
+
 
   return (
     <div>

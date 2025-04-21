@@ -1,7 +1,8 @@
 import Image from "next/image";
 import Nav from "./componets/nav";
 import ProductCard from "./componets/productcard";
-import { getCategory } from "@/lib/action";
+import { getCategory } from "@/lib/action"
+import pool from "@/app/api/postgresql"; 
 
 const ABT = (props) => {
   return (
@@ -19,7 +20,8 @@ const ABT = (props) => {
 };
 
 export default async function Home() {
-  const category = await getCategory();
+  const res = await pool.query('SELECT * FROM "Kategoria"');
+  const category = res.rows;
   
   return (
     <div className="min-h-screen flex flex-col">
@@ -62,7 +64,7 @@ export default async function Home() {
         className="p-0 w-28 self-center md:w-64"
       />
       <div className="flex flex-wrap justify-center p-4 md:p-12 gap-4 md:gap-12">
-        {category.data?.map((item) => {
+        {category?.map((item) => {
           return <ProductCard {...item} key={item.id} />;
         })}
       </div>

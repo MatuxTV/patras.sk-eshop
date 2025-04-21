@@ -5,12 +5,9 @@ const CatDetail = ({ onCategorySelected }) => {
 
   useEffect(() => {
     async function fetchData() {
-      const res = await fetch(process.env.NEXT_PUBLIC_DIRECTUS + "items/kategoria", {
-        cache: "no-store",
-      }).then((res) => res.json());
-      setCategories(res.data);
+      const res = await fetch('/api/category').then((res) => res.json());
+      setCategories(res);
     }
-
     fetchData();
   }, []);
 

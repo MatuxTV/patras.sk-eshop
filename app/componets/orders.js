@@ -1,8 +1,6 @@
 "use client";
 
-import { Suspense, useEffect, useState } from "react";
-import directus from "@/lib/directus";
-import { updateItem } from "@directus/sdk";
+import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -12,48 +10,26 @@ const OrderList = () => {
   const [orders, setOrders] = useState([]);
 
   useEffect(() => {
-    async function fetchData() {
-      const res = await fetch(
-        process.env.NEXT_PUBLIC_DIRECTUS + "items/objednavka",
-        {
-          cache: "no-store",
-        }
-      ).then((res) => res.json());
-      return res;
-    }
-
-    async function fetchOrders() {
-      const res = await fetch(
-        process.env.NEXT_PUBLIC_DIRECTUS + "items/skladanie_produkt",
-        {
-          cache: "no-store",
-        }
-      ).then((res) => res.json());
-      return res;
-    }
-
-    async function fetchProducts() {
-      const res = await fetch(
-        process.env.NEXT_PUBLIC_DIRECTUS + "items/produkty",
-        {
-          cache: "no-store",
-        }
-      ).then((res) => res.json());
-      return res;
-    }
-
-    fetchData().then((res) => setData(res.data));
-    fetchProducts().then((res) => setProducts(res.data));
-    fetchOrders().then((res) => setOrders(res.data));
+    fetch("/api/orders").then(res => res.json()).then(setData);
+    fetch("/api/products").then(res => res.json()).then(setProducts);
+    fetch("/api/skladanie").then(res => res.json()).then(setOrders);
   }, []);
 
-  const itemRemove = async(idItem) =>{
-    await directus.request(
-      updateItem('objednavka', idItem, { proces: false })
-    );
-    toast.success("Objednávka bola vybavená");
-    window.location.reload();
-}
+  const itemRemove = async (idItem) => {
+    const res = await fetch(`/api/orders/${idItem}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },  
+    });
+
+    if (res.ok) {
+      toast.success("Objednávka bola vybavená");
+      setData((prev) => prev.filter((order) => order.id !== idItem));
+    } else {
+      toast.error("Chyba pri vybavovaní objednávky");
+    }
+  };
 
 function zaokruhlitNaDveDesatinneMiesta(cislo) {
   return parseFloat(cislo.toFixed(2));
@@ -70,6 +46,37 @@ function avaibility_check() {
 }
 
 const number = avaibility_check();
+
+const OrderProductList = ({ objednavka_id, orders, products }) => {
+  const relevantOrders = orders.filter((order) => order.id_objednavka === objednavka_id);
+
+  return (
+    <div className="space-y-2">
+      {relevantOrders.map((order) => {
+        const product = products.find((p) => p.id === order.id_produkt);
+
+        if (!product) return null;
+
+        return (
+          <div key={order.id} className="flex justify-between pb-4">
+            <div className="text-gray-600">
+              <p>ID</p>
+              <p>Produkt</p>
+              <p>Cena</p>
+              <p>Počet kusov</p>
+            </div>
+            <div className="font-plus-jakarta w-32">
+              <p>ID-{product.id}</p>
+              <p>{product.nazov}</p>
+              <p>{product.cena}€</p>
+              <p>{order.pocet_kusov}ks</p>
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  );
+};
 
   return (
       <div>
@@ -129,7 +136,7 @@ const number = avaibility_check();
                       <p>IČ DPH</p>
                     </div>
                     <div className=" font-plus-jakarta text-red-600">
-                      {item.nazov_spolocnosti.length > 0 ? (<p className="flex">{item.nazov_spolocnosti}</p>) : (<p> - </p>)}
+                      {item.nazov_spolocnost.length > 0 ? (<p className="flex">{item.nazov_spolocnosti}</p>) : (<p> - </p>)}
                       {item.ico.length > 0 ? (<p className="flex">{item.ico}</p>) : (<p> - </p>)}
                       {item.dic.length > 0 ? (<p className="flex">{item.dic}</p>) : (<p> - </p>)}
                       {item.icdph.length > 0 ? (<p className="flex">{item.icdph}</p>) : (<p> - </p>)}
@@ -140,48 +147,16 @@ const number = avaibility_check();
 
               <div className="mt-8">
                 <h3 className="text-xl font-semibold mb-2">PRODUKTY</h3>
-                <div className="space-y-2">
-                  {item.id_skladanie_objednavky.length > 0 ?
-
-                  item.id_skladanie_objednavky?.map((id) => {
-                    const order = orders.find((p) => p.id === id);
-                    const orderProduct = products.filter(
-
-                      (p) => p.id === order?.id_produkt
-
-                    );
-                    
-                  
-                    return orderProduct.length > 0 ? (
-                      <div
-                        key={id + "product"}
-                        value={id}
-                        className="flex justify-between pb-4 "
-                      >
-                        <div className="text-gray-600">
-                          <p>ID</p>
-                          <p>Produkt</p>
-                          <p>Cena</p>
-                          <p>Pocet kusov</p>
-                        </div>
-                        <div className=" font-plus-jakarta w-32">
-                          <p>ID-{orderProduct[0].id}</p>
-                          <p>{orderProduct[0].meno}</p>
-                          <p>{orderProduct[0].cena}€</p>
-                          <p>{order.pocet_kusov}ks</p>
-                        </div>
-                      </div>
-                    ) : (
-                      <>undefined</>
-                    );
-                  }):null}
-
-                  <div className="flex justify-between mt-4">
-                    <span className="text-gray-600">CENA OBJEDNÁVKY</span>
-                    <span className="font-medium text-red-600">
-                      {round}€
-                    </span>
-                  </div>
+                <OrderProductList
+                  objednavka_id={item.id}
+                  orders={orders}
+                  products={products}
+                />
+                <div className="flex justify-between mt-4">
+                  <span className="text-gray-600">CENA OBJEDNÁVKY</span>
+                  <span className=" font-plus-jakarta text-h6 text-red text-">
+                    {round}€
+                  </span>
                 </div>
               </div>
             </div>

@@ -2,22 +2,31 @@ import Nav from "../componets/nav";
 import Image from "next/image";
 import ToCart from "../componets/tocart";
 import BackButton from "../componets/back_button";
-import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { bufferImage } from "@/lib/exportImage";
+import pool from "@/app/api/postgresql"; 
 
 const Produkt = async ({ searchParams }) => {
   const productID = searchParams.id;
 
-  function getProduct() {
-    return fetch(
-      `${process.env.NEXT_PUBLIC_DIRECTUS}items/produkty/${productID}`,
-      {
-        cache: "no-store",
-      }
-    ).then((res) => res.json());
-  }
 
+  async function getProduct() {
+    const query = `
+      SELECT * 
+      FROM "Produkty"
+      WHERE "id" = ${productID};
+    `;
+  
+    try {
+      const res = await pool.query(query); 
+      return res.rows[0];
+    } catch (error) {
+      console.error("Chyba pri získavaní produktu: ", error);
+      throw error;
+    }
+  }
   const produkt = await getProduct();
+  const obrazok = bufferImage(produkt.obrazok);
 
   return (
     <div>
@@ -26,8 +35,8 @@ const Produkt = async ({ searchParams }) => {
       <div className="flex flex-col md:flex-row items-center">
         <div className="flex md:w-1/2 md:h-[450px] justify-center items-center drop-shadow-lg w-full h-[300px] md:m-7">
           <Image
-            src={`${process.env.NEXT_PUBLIC_DIRECTUS}assets/${produkt.data.obrazok}`}
-            alt={produkt.data.meno}
+            src={obrazok}
+            alt={produkt.nazov}
             className="rounded"
             objectFit="contain"
             layout="fill"
@@ -35,20 +44,20 @@ const Produkt = async ({ searchParams }) => {
         </div>
         <div className="md:w-1/2 m-5">
           <h1 className="text-h3 font-plus-jakarta py-8 md:text-start text-center">
-            {produkt.data.meno}
+            {produkt.nazov}
           </h1>
           <p className="text-left py-5 font-plus-jakarta">
-            {produkt.data.popisok}
+            {produkt.popis}
           </p>
-          <p className="text-h4 font-plus-jakarta py-5 text-center md:text-start">{produkt.data.cena}€</p>
+          <p className="text-h4 font-plus-jakarta py-5 text-center md:text-start">{produkt.cena}€</p>
           <div className="align-middle py-5  text-center md:text-start">
-            {produkt.data.dostupnost ? <ToCart product={produkt.data} /> : ""}
+            {produkt.dostupnost ? <ToCart product={produkt} /> : ""}
           </div>
           <p
-            className={`text-h6 text-center md:text-start py-8 font-plus-jakarta ${produkt.data.dostupnost ? "text-blue1" : "text-red"}`}
+            className={`text-h6 text-center md:text-start py-8 font-plus-jakarta ${produkt.dostupnost ? "text-blue1" : "text-red"}`}
           >
-            {produkt.data.mnozstvo > 0 && produkt.data.dostupnost
-                ? `Na sklade - ${produkt.data.mnozstvo}ks`
+            {produkt.mnozstvo > 0 && produkt.dostupnost
+                ? `Na sklade - ${produkt.mnozstvo}ks`
                 : "Nedostupne"}
           </p>
         </div>
