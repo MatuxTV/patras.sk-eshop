@@ -1,46 +1,65 @@
 'use client';
+
 import { toast } from "react-toastify";
-import directus from "@/lib/directus";
-import { createItem, uploadFiles,updateFile } from "@directus/sdk";
-import { getSession } from "next-auth/react";
 
-const AddCat = (props) => {
-
-  const handleNewCategory = async(e) => {
+const AddCat = ({ category, image }) => {
+  const handleNewCategory = async (e) => {
     e.preventDefault();
 
-    if (!props.image) {
-      toast.error("Nepridali ste obrazok");
+    if (!image) {
+      toast.error("Nepridali ste obrázok");
+      return;
+    }
+
+    if (!category.category_name) {
+      toast.error("Nepridali ste názov kategórie");
       return;
     }
 
     try {
-      const imageFile = new FormData();
-      imageFile.append('file', props.image);
+      const toBase64Array = (file) =>
+        new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.readAsArrayBuffer(file);
+          reader.onload = () => {
+            const arrayBuffer = reader.result;
+            const uint8Array = new Uint8Array(arrayBuffer);
+            resolve(Array.from(uint8Array));
+          };
+          reader.onerror = (error) => reject(error);
+        });
 
-      const fileResponse = await directus.request(uploadFiles(imageFile));
-   
-      const categoryData = {
-        nazov: props.category.category_name,
-        obrazok: fileResponse.id,
+      const imageData = await toBase64Array(image);
+
+      const payload = {
+        nazov: category.category_name,
+        obrazok: imageData,
       };
 
-      const productResponse = await directus.request(createItem('kategoria', categoryData));
-      if (productResponse) {
-        toast.success("Kategoria pridana");
-      }
+      const res = await fetch("/api/post-category", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      });
+
+      if (!res.ok) throw new Error("Kategória sa nepodarilo pridať");
+
+      toast.success("Kategória pridaná");
     } catch (error) {
-      toast.error("Aj jaj, nieco sa nepodarilo, skuste to znova");
+      console.error(error);
+      toast.error("Aj jaj, niečo sa nepodarilo, skúste to znova");
     }
   };
 
   return (
     <button
       type="submit"
-      className=" bg-white2 text-white font-bold border-2 rounded-lg hover:bg-blue2 p-6 transform transition-all delay-50 hover:scale-110"
+      className="bg-white2 text-white font-bold border-2 rounded-lg hover:bg-blue2 p-6 transform transition-all delay-50 hover:scale-110"
       onClick={handleNewCategory}
     >
-      Pridat kategoriu
+      Pridať kategóriu
     </button>
   );
 };

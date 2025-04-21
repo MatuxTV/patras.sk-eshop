@@ -22,7 +22,7 @@ const UserPage = async () => {
   // Získanie produktov
   const productsResult = await pool.query(`SELECT * FROM "Produkty"`);
   const products = productsResult.rows;
-  console.log(Order);
+
 
 
   return (
@@ -53,7 +53,6 @@ const UserPage = async () => {
                 const round = zaokruhlitNaDveDesatinneMiesta(
                   item.cena_objednavky
                 );
-                console.log(round);
 
                 const objednane = skladanie.filter((s) => s.id_objednavka === item.id);
 

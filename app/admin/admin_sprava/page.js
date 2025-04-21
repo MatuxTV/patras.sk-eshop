@@ -7,33 +7,35 @@ import { toast } from "react-toastify";
 import { updateItem } from "@directus/sdk";
 import directus from "@/lib/directus";
 import BackButton from "@/app/componets/back_button";
+import { bufferImage } from "@/lib/exportImage";
 
-const Admin_sprava = ({ searchParams }) => {
+const AdminSprava = ({ searchParams }) => {
   const [selectedCategoryId, setSelectedCategoryId] = useState();
   const [products, setProducts] = useState(null);
   const [formData, setFormData] = useState({});
+
   const productID = searchParams.id;
 
   useEffect(() => {
-    const getProduct = async () => {
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_DIRECTUS}items/produkty/${productID}`,
-        { cache: "no-store" }
-      );
-      const data = await response.json();
-      setProducts(data.data);
-      setFormData({
-        meno: data.data.meno,
-        cena: data.data.cena,
-        popisok: data.data.popisok,
-        mnozstvo: data.data.mnozstvo,
-        dostupnost: data.data.dostupnost,
-        kategoria: data.data.kategoria,
-      });
-      setSelectedCategoryId(data.data.kategoria);
+    const fetchProduct = async () => {
+      try {
+        const response = await fetch(`/api/products/${productID}`);
+        const data = await response.json();
+        setProducts(data);
+        setFormData({
+          nazov: data[0].nazov,
+          cena: data[0].cena,
+          popis: data[0].popis,
+          mnozstvo: data[0].mnozstvo,
+          dostupnost: data[0].dostupnost,
+          kategoria: data[0].kategoria,
+        });
+        setSelectedCategoryId(data[0].kategoria);
+      } catch (error) {
+        toast.error("Nepodarilo sa načítať produkt");
+      }
     };
-
-    getProduct();
+    fetchProduct();
   }, [productID]);
 
   const handleCategorySelected = (categoryId) => {
@@ -47,22 +49,26 @@ const Admin_sprava = ({ searchParams }) => {
       [name]: type === "checkbox" ? checked : value,
     }));
   };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
-      const request = await directus.request(
-        updateItem("produkty", productID, {
-          meno: formData.meno,
+      await fetch(`/api/update-products/${productID}`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          nazov: formData.nazov,
           cena: formData.cena,
-          popisok: formData.popisok,
+          popis: formData.popis,
           mnozstvo: formData.mnozstvo,
           kategoria: selectedCategoryId,
           dostupnost: formData.dostupnost,
-        })
-      );
+        }),
+      });
       toast.success("Zmeny boli úspešne uložené");
-      // window.location.reload();
     } catch (error) {
       toast.error("Nepodarilo sa uložiť zmeny");
     }
@@ -75,26 +81,26 @@ const Admin_sprava = ({ searchParams }) => {
       <Nav product="Produkty" />
       <BackButton />
       <div className="bg-white2 flex rounded-lg m-16">
-        <div className=" m-6 p-7 w-1/2 justify-center flex border-r-4 border-white1 items-center drop-shadow-lg h-[650px]">
+        <div className="m-6 p-7 w-1/2 flex justify-center items-center border-r-4 border-white1 drop-shadow-lg h-[650px]">
           <Image
             className="rounded"
-            src={`${process.env.NEXT_PUBLIC_DIRECTUS}assets/${products.obrazok}`}
-            alt={`${products.meno}`}
+            src={bufferImage(products[0].obrazok)}
+            alt={products.nazov}
             objectFit="contain"
             layout="fill"
           />
         </div>
         <form onSubmit={handleSubmit} className="w-1/2">
           <div className="text-center p-6 bg-whiteBG m-4 rounded-3xl">
-            <p className="font-plus-jakarta text-h3">{products.meno}</p>
+            <p className="font-plus-jakarta text-h3">{formData.nazov}</p>
           </div>
           <div className="p-8">
             <div>
               <p className="ml-5 font-plus-jakarta">Názov produktu</p>
               <input
                 className="w-full rounded-lg my-2 p-2"
-                name="meno"
-                value={formData.meno || ""}
+                name="nazov"
+                value={formData.nazov || ""}
                 onChange={handleChange}
               />
             </div>
@@ -106,30 +112,26 @@ const Admin_sprava = ({ searchParams }) => {
               value={formData.cena || ""}
               onChange={handleChange}
             />
-            <div className=" flex my-4">
-              <p className=" font-plus-jakarta">Dostupnost produktu</p>
+            <div className="flex my-4">
+              <p className="font-plus-jakarta">Dostupnosť produktu</p>
               <input
-                className=" p-2"
-                placeholder="Dostupnost produktu"
+                className="p-2"
                 type="checkbox"
-                name="avaibility"
-                checked={formData.dostupnost || ""}
+                name="dostupnost"
+                checked={formData.dostupnost || false}
                 onChange={handleChange}
               />
             </div>
-
             <p className="ml-5 font-plus-jakarta">Popis produktu</p>
             <textarea
               className="w-full rounded-lg my-2 p-2"
               name="popisok"
-              value={formData.popisok || ""}
+              value={formData.popis|| ""}
               onChange={handleChange}
               cols={20}
               rows={5}
             />
-            <p className="ml-5 font-plus-jakarta">
-              Množstvo produktu na sklade
-            </p>
+            <p className="ml-5 font-plus-jakarta">Množstvo produktu na sklade</p>
             <input
               className="w-full rounded-lg my-2 p-2"
               name="mnozstvo"
@@ -137,7 +139,7 @@ const Admin_sprava = ({ searchParams }) => {
               value={formData.mnozstvo || ""}
               onChange={handleChange}
             />
-            <p className="ml-5 font-plus-jakarta">Kategoria produktu</p>
+            <p className="ml-5 font-plus-jakarta">Kategória produktu</p>
             <CatDetail onCategorySelected={handleCategorySelected} />
             <div className="flex justify-end">
               <button
@@ -154,4 +156,4 @@ const Admin_sprava = ({ searchParams }) => {
   );
 };
 
-export default Admin_sprava;
+export default AdminSprava;

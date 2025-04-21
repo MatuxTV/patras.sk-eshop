@@ -21,7 +21,7 @@ export default function ProductCard({ data, user }) {
             />
           </div>
           <div className="w-full font-plus-jakarta text-h5 relative">
-            <p className="text-center relative z-20 m-2 text-h6">{data.meno}</p>
+            <p className="text-center relative z-20 m-2 text-h6">{data.nazov}</p>
             <div className="w-full rounded-xl bg-blue1 h-1" />
             <div className="flex flex-row font-plus-jakarta h-16 items-center drop-shadow-xl justify-between">
               <p className="m-6 md:text-h5 text-h6">{data.cena}€</p>

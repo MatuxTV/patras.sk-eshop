@@ -1,47 +1,61 @@
-import { toast } from "react-toastify";
-import directus from "@/lib/directus";
-import { createItem, uploadFiles } from "@directus/sdk";
-import { getSession } from "next-auth/react";
+"use client";
 
-const AddProduct = (props) => {
+import { toast } from "react-toastify";
+
+const AddProduct = ({ product, image }) => {
   const handleNewProduct = async (e) => {
     e.preventDefault();
 
-    if (!props.image) {
-      toast.error("Nepridali ste obrazok");
+    if (!image) {
+      toast.error("Nepridali ste obrázok");
       return;
     }
 
-    if (!props.product.product_name) {
-      toast.error("Nepridali ste nazov produktu");
+    if (!product.product_name) {
+      toast.error("Nepridali ste názov produktu");
       return;
     }
 
     try {
-      //Upload Obrazok
-      const imageFile = new FormData();
-      imageFile.append('file', props.image);
+      const toBase64 = (file) =>
+        new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.readAsArrayBuffer(file);
+          reader.onload = () => {
+            const arrayBuffer = reader.result;
+            const uint8Array = new Uint8Array(arrayBuffer);
+            resolve(Array.from(uint8Array));
+          };
+          reader.onerror = (error) => reject(error);
+        });
 
-      const fileResponse = await directus.request(uploadFiles(imageFile));
+      const imageData = await toBase64(image);
 
-      //Upload Produkt
-      const productData = {
-        meno: props.product.product_name,
-        popisok: props.product.description,
-        cena: props.product.price,
-        dostupnost: props.product.avaibility,
-        mnozstvo: props.product.quantity,
-        obrazok: fileResponse.id,
-        kategoria: props.product.category,
+      // 2. Posielame fetch s produktom a obrázkom
+      const payload = {
+        nazov: product.product_name,
+        popis: product.description,
+        cena: product.price,
+        dostupnost: product.avaibility,
+        mnozstvo: product.quantity,
+        obrazok: imageData, // obrázok ako base64 string
+        kategoria: product.category,
       };
 
-      const productResponse = await directus.request(createItem('produkty', productData));
-      if (productResponse) {
-        toast.success("Produkt pridany");
-      }
-    } catch (error) {
+      const res = await fetch("/api/post-products", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      });
 
-      toast.error("Aj jaj, nieco sa nepodarilo, skuste to znova");
+      if (!res.ok) throw new Error("Produkt sa nepodarilo pridať");
+
+      toast.success("Produkt pridaný");
+    } catch (error) {
+      console.error(error);
+      toast.error("Aj jaj, niečo sa nepodarilo, skúste to znova");
     }
   };
 
@@ -51,7 +65,7 @@ const AddProduct = (props) => {
       className="bg-white2 text-white font-bold border-2 rounded-lg hover:bg-blue2 p-6 transform transition-all delay-50 hover:scale-110"
       onClick={handleNewProduct}
     >
-      Pridat produkt
+      Pridať produkt
     </button>
   );
 };

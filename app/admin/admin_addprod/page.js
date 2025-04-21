@@ -3,13 +3,12 @@ import AddCat from "../../componets/add_cat";
 import AddProduct from "../../componets/add_prod";
 import { useState, useEffect } from "react";
 import CatDetail from "../../componets/category_dropdown";
-import { toast, ToastContainer } from "react-toastify";
 import BackButton from "@/app/componets/back_button";
 
 const Admin_addprod = () => {
-  const [imageProd, setImageProd] = useState(null); // Fotka pre produkt
-  const [imageCat, setImageCat] = useState(null); // Fotka pre kategori
-  const [selectedCategoryId, setSelectedCategoryId] = useState(null); //Kategoria produkt
+  const [imageProd, setImageProd] = useState(null); 
+  const [imageCat, setImageCat] = useState(null); 
+  const [selectedCategoryId, setSelectedCategoryId] = useState(null);
 
   const [product, setProduct] = useState({
     product_name: "",

@@ -3,7 +3,7 @@ import Link from "next/link";
 import { bufferImage } from "@/lib/exportImage";
 
 export default function ProductCard( data ) {
-  console.log(data);
+
   const imageSrc = bufferImage(data.obrazok);
 
   return (
