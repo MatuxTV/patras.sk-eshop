@@ -114,7 +114,7 @@ const OrderProductList = ({ objednavka_id, orders, products }) => {
                       <p>{item.email}</p>
                       <p>
                         +{item.prefix}
-                        {item.tcislo}
+                        {item.t_cislo}
                       </p>
                       <p>
                         {item.ulica},{item.psc},{item.mesto}
