@@ -1,36 +1,19 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Patras.sk E-Shop 🚀
 
-## Getting Started
+The official e-commerce platform for **Patras.sk**, built using **Next.js (App Router)** and designed for seamless product browsing and secure checkout.
 
-First, run the development server:
+---
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## 🧾 Overview
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+This e-shop enables:
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+- Displaying product categories and detailed pages  
+- Shopping cart and checkout flow  
+- Admin tools for adding/updating products  
+- Integration with external services (e.g. payment gateways)  
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+Built with modern technologies:
+- **Next.js** for fast SSR/SSG and dynamic routing  
+- **TypeScript** for type-safe development  
+- Optional backend integration (API routes or external GraphQL/RPC)
