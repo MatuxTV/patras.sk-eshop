@@ -1,6 +1,5 @@
 "use client";
 import { useState, useEffect } from "react";
-import { toast } from "react-toastify";
 import AddCat from "../../componets/add_cat";
 import AddProduct from "../../componets/add_prod";
 import CatDetail from "../../componets/category_dropdown";
@@ -15,7 +14,7 @@ const Admin_addprod = () => {
     product_name: "",
     description: "",
     price: "",
-    avaibility: "",
+    avaibility: true,
     quantity: "",
     category: "",
   });
@@ -112,6 +111,7 @@ const Admin_addprod = () => {
               placeholder="Dostupnost produktu"
               type="checkbox"
               name="avaibility"
+              defaultChecked={true}
               value={product.avaibility}
               onChange={handleChangeProduct}
             />

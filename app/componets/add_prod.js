@@ -60,10 +60,12 @@ const AddProduct = ({ product, image }) => {
       });
 
       if (!res.ok) throw new Error("Produkt sa nepodarilo pridať");
-
       toast.success("Produkt pridaný");
     } catch (error) {
-      console.error(error);
+      if (error.status == 413) {
+        toast.error("Obrázok je príliš veľký, skúste menší súbor");
+      }
+      // console.error(error);
       toast.error("Aj jaj, niečo sa nepodarilo, skúste to znova");
     }
   };
