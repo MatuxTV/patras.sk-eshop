@@ -33,7 +33,7 @@ const DelUser = () => {
         ?.filter(
           (item) =>
             item.active === true &&
-            item.role !== process.env.NEXT_PUBLIC_ADMIN_ROLE
+            item.role !== process.env.ADMIN_ROLE
         )
         .map((item) => (
           <div
