@@ -22,12 +22,12 @@ export async function middleware(req) {
   const { pathname } = req.nextUrl;
 
   // Check if the request starts with '/admin' and if the user role is not the admin role
-  if (pathname.startsWith("/admin") && session?.user?.role !== process.env.NEXT_PUBLIC_ADMIN_ROLE) {
+  if (pathname.startsWith("/admin") && session?.user?.role !== process.env.ADMIN_ROLE) {
     // If the user is not an admin, redirect them to the login page
     return NextResponse.redirect(new URL("/login", req.url));
   }
   // Check if the request starts with '/user' and if the user role is not the user role
-  if (pathname.startsWith("/user") && session?.user?.role !== process.env.NEXT_PUBLIC_USER_ROLE) {
+  if (pathname.startsWith("/user") && session?.user?.role !== process.env.USER_ROLE) {
     // If the user does not have the user role, redirect them to the login page
     return NextResponse.redirect(new URL("/login", req.url));
   }
