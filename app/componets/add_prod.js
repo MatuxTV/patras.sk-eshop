@@ -6,6 +6,8 @@ const AddProduct = ({ product, image }) => {
   const handleNewProduct = async (e) => {
     e.preventDefault();
 
+    console.log(product);
+
     if (!image) {
       toast.error("Nepridali ste obrázok");
       return;
@@ -13,6 +15,16 @@ const AddProduct = ({ product, image }) => {
 
     if (!product.product_name) {
       toast.error("Nepridali ste názov produktu");
+      return;
+    }
+
+    if (product.category === "" || product.category == null) {
+      toast.error("Nepridali ste kategóriu produktu");
+      return;
+    }
+    
+    if (!product.price || product.price <= 0) {
+      toast.error("Cena musí byť väčšia ako 0");
       return;
     }
 

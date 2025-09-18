@@ -1,9 +1,10 @@
 "use client";
+import { useState, useEffect } from "react";
+import { toast } from "react-toastify";
 import AddCat from "../../componets/add_cat";
 import AddProduct from "../../componets/add_prod";
-import { useState, useEffect } from "react";
 import CatDetail from "../../componets/category_dropdown";
-import BackButton from "@/app/componets/back_button";
+import BackButton from "../../componets/back_button";
 
 const Admin_addprod = () => {
   const [imageProd, setImageProd] = useState(null); 
@@ -59,6 +60,7 @@ const Admin_addprod = () => {
   const handleImageChangeCat = (e) => {
     setImageCat(e.target.files[0]);
   };
+
 
   return (
     <div className=" justify-center m-8">

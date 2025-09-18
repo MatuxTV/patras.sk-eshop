@@ -1,26 +1,17 @@
 import { Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
 import Image from "next/image";
-import Head from "next/head";
 import Link from "next/link";
 import { CartProvider } from "@/lib/cart-context";
 import { getServerSession } from "next-auth";
 import { options } from "./api/auth/[...nextauth]/options";
-import "@fortawesome/fontawesome-svg-core/styles.css";
-import { config } from "@fortawesome/fontawesome-svg-core";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faEnvelope,
-  faPhone,
-  faShoppingCart,
-} from "@fortawesome/free-solid-svg-icons";
-import { toast, ToastContainer } from "react-toastify";
+import { MdEmail ,MdPhone,MdShoppingCart} from "react-icons/md";
+
+import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { ShippingProvider } from "@/lib/shipping-context";
 import { UserProvider } from "@/lib/user-context";
-import { SpeedInsights } from "@vercel/speed-insights/next"
-
-config.autoAddCss = false;
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 const plus_jakarta = Plus_Jakarta_Sans({
   subsets: ["latin"],
@@ -30,20 +21,17 @@ const plus_jakarta = Plus_Jakarta_Sans({
 export const metadata = {
   title: "Patras.sk",
   description: "Voda pre vsetkych",
+  icons: {
+    icon: "/IMG/favicon.ico",
+  },
 };
-
 
 export default async function RootLayout({ children }) {
   let data = await getServerSession(options);
   let user = data?.user;
   return (
     <html lang="sk">
-      <Head>
-        <link rel="icon" href="/IMG/favicon.ico" sizes="any" />
-        <title>{metadata.title}</title>
-        <meta name="description" content={metadata.description} />
-      </Head>
-      <UserProvider user={user} >
+      <UserProvider user={user}>
         <ShippingProvider>
           <CartProvider>
             <body className={plus_jakarta.className + " min-[100vh]"}>
@@ -61,10 +49,9 @@ export default async function RootLayout({ children }) {
                   className="flex items-center gap-3"
                   href="tel:+421 905 249 998"
                 >
-                  <FontAwesomeIcon
-                    icon={faPhone}
-                    className="fas fa-phone"
-                    style={{ color: "black" }}
+                  <MdPhone 
+                    className="text-black" 
+                    size={20}
                   />
                   <p className="font-plus-jakarta">+421 905 249 998</p>
                 </a>
@@ -72,28 +59,28 @@ export default async function RootLayout({ children }) {
                   className="flex items-center gap-3"
                   href="mailto:patras@patras.sk"
                 >
-                  <FontAwesomeIcon
-                    icon={faEnvelope}
-                    className="fas fa-envelop"
-                    style={{ color: "black" }}
+                  {/* Replace FontAwesome with React Icons */}
+                  <MdEmail 
+                    className="text-black"
+                    size={20}
                   />
                   <p className="font-plus-jakarta">patras@patras.sk</p>
                 </a>
                 <div className="ml-auto flex flex-row gap-4">
-
                   {user ? (
-                    user.role == "df5647af-422c-4834-bb6c-56baccbe5fce" ? (
+                    user.role == process.env.ADMIN_ROLE ? (
                       <Link href="/admin">
-                      <b className=" text-green">{user?.first_name}</b>
-                    </Link>
-                    ):
-                    <Link href="/user">
-                      <b className=" text-blue1">{user?.first_name}</b>
-                    </Link>
+                        <b className=" text-green">{user?.first_name}</b>
+                      </Link>
+                    ) : (
+                      <Link href="/user">
+                        <b className=" text-blue1">{user?.first_name}</b>
+                      </Link>
+                    )
                   ) : (
                     <Link href="/login">
                       <p className="font-plus-jakarta hover:underline">
-                        Prihlasenie
+                        Prihlásenie
                       </p>
                     </Link>
                   )}
@@ -112,7 +99,7 @@ export default async function RootLayout({ children }) {
                     +421 905 249 998
                   </p>
                   <p className="font-plus-jakarta flex text-[8px] md:text-h7">
-                    Mlynska 34 976 Selce
+                    Mlynská 34 976 11 Selce
                   </p>
                   <a href="/podmienky">
                     <p className="font-plus-jakarta text-[8px] md:text-h7">
@@ -121,7 +108,7 @@ export default async function RootLayout({ children }) {
                   </a>
                   <a href="reklamacia">
                     <p className="font-plus-jakarta text-[8px] md:text-h7">
-                      Podmienky reklamacie
+                      Podmienky reklamácie
                     </p>
                   </a>
                 </div>
