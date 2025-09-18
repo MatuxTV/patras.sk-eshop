@@ -6,8 +6,6 @@ const AddProduct = ({ product, image }) => {
   const handleNewProduct = async (e) => {
     e.preventDefault();
 
-    console.log(product);
-
     if (!image) {
       toast.error("Nepridali ste obrázok");
       return;
