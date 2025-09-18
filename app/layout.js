@@ -8,7 +8,6 @@ import { options } from "./api/auth/[...nextauth]/options";
 import { MdEmail ,MdPhone,MdShoppingCart} from "react-icons/md";
 
 import { ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 import { ShippingProvider } from "@/lib/shipping-context";
 import { UserProvider } from "@/lib/user-context";
 import { SpeedInsights } from "@vercel/speed-insights/next";

@@ -1,7 +1,6 @@
 "use client";
 
 import { Suspense, useEffect, useState } from "react";
-import "react-toastify/dist/ReactToastify.css";
 import BackButton from "@/app/componets/back_button";
 
 const Admin_objednavky = () => {

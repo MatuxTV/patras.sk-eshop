@@ -4,7 +4,6 @@ import Image from "next/image";
 import Nav from "../../../componets/nav";
 import { useCart } from "../../../../lib/cart-context";
 import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 import { useUser } from "@/lib/user-context";
 import { useRouter } from "next/navigation";
 import { bufferImage } from "@/lib/exportImage";

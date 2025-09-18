@@ -1,5 +1,4 @@
 "use client";
-
 import { toast } from "react-toastify";
 
 const AddProduct = ({ product, image }) => {
@@ -16,13 +15,13 @@ const AddProduct = ({ product, image }) => {
       return;
     }
 
-    if (product.category === "" || product.category == null) {
-      toast.error("Nepridali ste kategóriu produktu");
-      return;
-    }
-    
     if (!product.price || product.price <= 0) {
       toast.error("Cena musí byť väčšia ako 0");
+      return;
+    }
+
+    if (product.category === "" || product.category == null) {
+      toast.error("Nepridali ste kategóriu produktu");
       return;
     }
 

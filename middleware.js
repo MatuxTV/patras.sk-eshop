@@ -31,7 +31,6 @@ export async function middleware(req) {
     // If the user does not have the user role, redirect them to the login page
     return NextResponse.redirect(new URL("/login", req.url));
   }
-
   // If none of the conditions are met, continue with the request
   return NextResponse.next();
 }

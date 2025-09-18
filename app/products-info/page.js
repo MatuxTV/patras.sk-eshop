@@ -2,7 +2,6 @@ import Nav from "../componets/nav";
 import Image from "next/image";
 import ToCart from "../componets/tocart";
 import BackButton from "../componets/back_button";
-import "react-toastify/dist/ReactToastify.css";
 import { bufferImage } from "@/lib/exportImage";
 import pool from "@/app/api/postgresql"; 
 

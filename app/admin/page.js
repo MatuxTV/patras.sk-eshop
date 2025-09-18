@@ -3,7 +3,6 @@ import Nav from "../componets/nav";
 import OrderList from "../componets/orders";
 import DelUser from "../componets/dell_user";
 import SignOutButton from "../componets/signOutButton";
-import "react-toastify/dist/ReactToastify.css";
 import Link from "next/link";
 
 const Admin = () => {

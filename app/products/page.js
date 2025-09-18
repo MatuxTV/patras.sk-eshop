@@ -2,7 +2,6 @@ import Nav from "../componets/nav";
 import Product from "../componets/product";
 import Link from "next/link";
 import { toast, ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 import { getServerSession } from "next-auth";
 import { options } from "../api/auth/[...nextauth]/options";
 import pool from "@/app/api/postgresql"; // správne importuj cestu

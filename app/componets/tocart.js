@@ -1,8 +1,7 @@
 "use client";
 import React from "react";
 import { useCart } from "../../lib/cart-context"; // Import the hook
-import { toast, ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import { toast } from "react-toastify";
 import { faShoppingCart } from "@fortawesome/free-solid-svg-icons";
 import "@fortawesome/fontawesome-svg-core/styles.css";
 import { config } from "@fortawesome/fontawesome-svg-core";

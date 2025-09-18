@@ -69,6 +69,9 @@ const AdminSprava = ({ searchParams }) => {
         }),
       });
       toast.success("Zmeny boli úspešne uložené");
+      setTimeout(() => {
+       window.location.reload();
+      }, 1000);
     } catch (error) {
       toast.error("Nepodarilo sa uložiť zmeny");
     }
