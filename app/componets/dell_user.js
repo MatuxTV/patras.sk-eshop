@@ -30,11 +30,7 @@ const DelUser = () => {
   return (
     <div className="bg-white2 m-8 rounded-lg">
       {user
-        ?.filter(
-          (item) =>
-            item.active === true &&
-            item.role !== process.env.ADMIN_ROLE
-        )
+        ?.filter((item) => item.active === true)
         .map((item) => (
           <div
             key={item.id}

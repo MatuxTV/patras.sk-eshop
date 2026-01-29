@@ -6,21 +6,21 @@ import { useCart } from "../../../../lib/cart-context";
 import { toast } from "react-toastify";
 import { useUser } from "@/lib/user-context";
 import { useRouter } from "next/navigation";
-import { bufferImage } from "@/lib/exportImage";
-
 
 const CartItem = ({ item }) => {
   return (
     <div className="flex items-center justify-between p-4 border-b">
       <div className="flex items-center">
         <div className=" h-0 w-0 md:h-[80px] md:w-[80px] relative">
-          <Image
-            src={bufferImage(item.obrazok)}
-            alt={item.meno}
-            className="rounded"
-            objectFit="contain"
-            layout="fill"
-          />
+          {item.obrazok && (
+            <Image
+              src={item.obrazok}
+              alt={item.nazov || "Product"}
+              className="rounded"
+              objectFit="contain"
+              layout="fill"
+            />
+          )}
         </div>
         <div className="ml-4">
           <p className="text-lg font-bold flex md:text-h7 text-[10px]">
@@ -48,7 +48,7 @@ const FinalPage = () => {
 
   const total = cartItems.reduce(
     (acc, item) => acc + item.cena * item.quantity,
-    0
+    0,
   );
 
   useEffect(() => {
@@ -105,7 +105,7 @@ const FinalPage = () => {
           email: userData.email,
         }),
       });
-      
+
       await fetch("/api/send-email", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -215,10 +215,12 @@ const FinalPage = () => {
 
           <div className="block m-4 space-x-3">
             <label className=" font-plus-jakarta">
-              <input type="checkbox" /> Oboznámil som sa s obchodnými podmienkami
+              <input type="checkbox" /> Oboznámil som sa s obchodnými
+              podmienkami
             </label>
             <label className=" font-plus-jakarta">
-              <input type="checkbox" /> Oboznámil som sa s ochranou osobných údajov
+              <input type="checkbox" /> Oboznámil som sa s ochranou osobných
+              údajov
             </label>
           </div>
 

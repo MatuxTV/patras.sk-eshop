@@ -2,13 +2,19 @@ import React from "react";
 import Nav from "../componets/nav";
 import ProductCard from "../componets/productcard";
 import { getProducts } from "@/lib/directus";
-import pool from "@/app/api/postgresql"; 
+import pool from "@/app/api/postgresql";
 
 export const Produkty = async () => {
-  
   const res = await pool.query('SELECT * FROM "Kategoria"');
   const data = res.rows;
 
+  // Convert Uint8Array images to base64 strings
+  const serializedData = data?.map((cat) => ({
+    ...cat,
+    obrazok: cat.obrazok
+      ? `data:image/jpeg;base64,${Buffer.from(cat.obrazok).toString("base64")}`
+      : null,
+  }));
 
   return (
     <div>
@@ -20,8 +26,8 @@ export const Produkty = async () => {
           </h1>
         </div>
         <div className="flex  flex-wrap p-4 justify-center md:justify-start m-8 md:m-16">
-          {data?.map((item) => {
-            return<ProductCard {...item} key={item.id} />;
+          {serializedData?.map((item) => {
+            return <ProductCard {...item} key={item.id} />;
           })}
         </div>
       </div>

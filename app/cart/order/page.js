@@ -7,7 +7,6 @@ import { useCart } from "../../../lib/cart-context";
 import { useShipping } from "@/lib/shipping-context";
 import Nav from "../../componets/nav";
 import { useRouter } from "next/navigation";
-import { bufferImage } from "@/lib/exportImage"; 
 
 const CartItem = ({ item }) => {
   const { removeFromCart, changeQuantity } = useCart();
@@ -15,14 +14,16 @@ const CartItem = ({ item }) => {
   return (
     <div className="flex items-center justify-between p-4 border-b">
       <div className="flex items-center">
-      <div className=" h-[80px] w-[80px] relative">
-        <Image
-          src={bufferImage(item.obrazok)}
-          alt={item.meno}
-          className="rounded"
-          objectFit="contain"
-          layout="fill"
-        />
+        <div className=" h-[80px] w-[80px] relative">
+          {item.obrazok && (
+            <Image
+              src={item.obrazok}
+              alt={item.nazov || "Product"}
+              className="rounded"
+              objectFit="contain"
+              layout="fill"
+            />
+          )}
         </div>
         <div className="ml-4">
           <p className="text-lg font-bold">{item.meno}</p>
@@ -48,7 +49,7 @@ const CheckoutLayout = () => {
   const { cartItems } = useCart();
   const total = cartItems.reduce(
     (acc, item) => acc + item.cena * item.quantity,
-    0
+    0,
   );
   const router = useRouter();
   const [formData, setFormData] = useState({
@@ -299,7 +300,7 @@ const CheckoutLayout = () => {
             <div className="flex justify-between items-center mt-4">
               <span className="text-lg">Celková suma</span>
               <span className="text-lg font-bold">{`${total.toFixed(
-                2
+                2,
               )}€`}</span>
             </div>
 

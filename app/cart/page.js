@@ -5,10 +5,9 @@ import Image from "next/image";
 import { useCart } from "../../lib/cart-context"; // Adjust the import path accordingly
 import Nav from "../componets/nav";
 import Link from "next/link";
-import { bufferImage } from "@/lib/exportImage"; 
 
 const CartItem = ({ item }) => {
-  const { cartItems, removeFromCart, changeQuantity ,addToCart } = useCart();
+  const { cartItems, removeFromCart, changeQuantity, addToCart } = useCart();
 
   return (
     <div className="flex items-center justify-between p-4 border-b bg-blue2 rounded-lg mb-5">
@@ -20,22 +19,24 @@ const CartItem = ({ item }) => {
       </button>
       <div className="flex items-center">
         <div className=" h-[80px] w-[80px] relative">
-        <Image
-          src={bufferImage(item.obrazok)}
-          alt={item.meno}
-          // width={80}
-          // height={80}
-          className="rounded"
-          objectFit="contain"
-          layout="fill"
-        />
+          {item.obrazok && (
+            <Image
+              src={item.obrazok}
+              alt={item.nazov || "Product"}
+              className="rounded"
+              objectFit="contain"
+              layout="fill"
+            />
+          )}
         </div>
-        
+
         <div className="ml-4 justify-center">
           <p className="text-h6 font-plus-jakarta">{item.meno}</p>
           <p
             className={`${
-              item.dostupnost ? " text-blue1 font-bold text-center" : " text-red"
+              item.dostupnost
+                ? " text-blue1 font-bold text-center"
+                : " text-red"
             }`}
           >
             {item.dostupnost ? `Na sklade - ${item.mnozstvo}ks` : "Nedostupné"}
@@ -63,7 +64,7 @@ const Cart = () => {
   const { cartItems } = useCart();
   const total = cartItems.reduce(
     (acc, item) => acc + item.cena * item.quantity,
-    0
+    0,
   );
   return (
     <div className="container mx-auto my-8 p-4">

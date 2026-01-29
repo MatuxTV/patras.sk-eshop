@@ -7,37 +7,31 @@ import { options } from "../api/auth/[...nextauth]/options";
 import pool from "@/app/api/postgresql"; // správne importuj cestu
 
 export const Produkty = async ({ searchParams }) => {
-
   let data = await getServerSession(options);
   let user = data?.user;
-  const category = searchParams.kategoria;
+  const resolvedParams = await searchParams;
+  const category = resolvedParams.kategoria;
 
   async function getProducts(categoryId) {
-    const query = `
-      SELECT * 
-      FROM "Produkty"
-      WHERE "kategoria" = ${categoryId};
-    `;
-  
     try {
-      const res = await pool.query(query); 
-      return res.rows; 
+      const res = await pool.query(
+        'SELECT * FROM "Produkty" WHERE "kategoria" = $1',
+        [categoryId],
+      );
+      return res.rows;
     } catch (error) {
       console.error("Chyba pri získavaní produktov: ", error);
       throw error;
     }
   }
-  
+
   // Získanie kategórie podľa jej ID
   async function getCategory(categoryId) {
-    const query = `
-      SELECT * 
-      FROM "Kategoria"
-      WHERE "id" = ${categoryId};
-    `;
-  
     try {
-      const res = await pool.query(query); 
+      const res = await pool.query(
+        'SELECT * FROM "Kategoria" WHERE "id" = $1',
+        [categoryId],
+      );
       return res.rows[0];
     } catch (error) {
       console.error("Chyba pri získavaní kategórie: ", error);
@@ -46,6 +40,14 @@ export const Produkty = async ({ searchParams }) => {
   }
   const products = await getProducts(category);
   const kategoria = await getCategory(category);
+
+  // Convert Uint8Array images to base64 strings for client components
+  const serializedProducts = products?.map((product) => ({
+    ...product,
+    obrazok: product.obrazok
+      ? `data:image/jpeg;base64,${Buffer.from(product.obrazok).toString("base64")}`
+      : null,
+  }));
 
   return (
     <div>
@@ -57,7 +59,7 @@ export const Produkty = async ({ searchParams }) => {
           </p>
         </Link>
         <div className="flex flex-wrap m-8 md:justify-start justify-center">
-          {products?.map((item) => {
+          {serializedProducts?.map((item) => {
             return <Product {...item} key={item.id} data={item} user={user} />;
           })}
         </div>

@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import pool from "@/app/api/postgresql";
 
 export async function PATCH(req, { params }) {
-  const id = params.id;
+  const { id } = await params;
   const body = await req.json();
 
   try {
@@ -18,12 +18,18 @@ export async function PATCH(req, { params }) {
         body.kategoria,
         body.dostupnost,
         id,
-      ]
+      ],
     );
 
-    return NextResponse.json({ message: "Produkt bol úspešne aktualizovaný" }, { status: 200 });
+    return NextResponse.json(
+      { message: "Produkt bol úspešne aktualizovaný" },
+      { status: 200 },
+    );
   } catch (error) {
     console.error("Chyba pri aktualizácii produktu:", error);
-    return NextResponse.json({ error: "Chyba pri aktualizácii" }, { status: 500 });
+    return NextResponse.json(
+      { error: "Chyba pri aktualizácii" },
+      { status: 500 },
+    );
   }
 }

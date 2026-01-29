@@ -1,5 +1,6 @@
 "use client";
 import React, { useState, useEffect } from "react";
+import { useSearchParams } from "next/navigation";
 import Nav from "@/app/componets/nav";
 import Image from "next/image";
 import CatDetail from "@/app/componets/category_dropdown";
@@ -7,14 +8,13 @@ import { toast } from "react-toastify";
 import { updateItem } from "@directus/sdk";
 import directus from "@/lib/directus";
 import BackButton from "@/app/componets/back_button";
-import { bufferImage } from "@/lib/exportImage";
 
-const AdminSprava = ({ searchParams }) => {
+const AdminSprava = () => {
+  const searchParams = useSearchParams();
+  const productID = searchParams.get("id");
   const [selectedCategoryId, setSelectedCategoryId] = useState();
   const [products, setProducts] = useState(null);
   const [formData, setFormData] = useState({});
-
-  const productID = searchParams.id;
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -70,7 +70,7 @@ const AdminSprava = ({ searchParams }) => {
       });
       toast.success("Zmeny boli úspešne uložené");
       setTimeout(() => {
-       window.location.reload();
+        window.location.reload();
       }, 1000);
     } catch (error) {
       toast.error("Nepodarilo sa uložiť zmeny");
@@ -85,13 +85,15 @@ const AdminSprava = ({ searchParams }) => {
       <BackButton />
       <div className="bg-white2 flex rounded-lg m-16">
         <div className="m-6 p-7 w-1/2 flex justify-center items-center border-r-4 border-white1 drop-shadow-lg h-[650px]">
-          <Image
-            className="rounded"
-            src={bufferImage(products[0].obrazok)}
-            alt={products.nazov}
-            objectFit="contain"
-            layout="fill"
-          />
+          {products[0].obrazok && (
+            <Image
+              className="rounded"
+              src={products[0].obrazok}
+              alt={products[0].nazov || "Product"}
+              objectFit="contain"
+              layout="fill"
+            />
+          )}
         </div>
         <form onSubmit={handleSubmit} className="w-1/2">
           <div className="text-center p-6 bg-whiteBG m-4 rounded-3xl">
@@ -129,12 +131,14 @@ const AdminSprava = ({ searchParams }) => {
             <textarea
               className="w-full rounded-lg my-2 p-2"
               name="popisok"
-              value={formData.popis|| ""}
+              value={formData.popis || ""}
               onChange={handleChange}
               cols={20}
               rows={5}
             />
-            <p className="ml-5 font-plus-jakarta">Množstvo produktu na sklade</p>
+            <p className="ml-5 font-plus-jakarta">
+              Množstvo produktu na sklade
+            </p>
             <input
               className="w-full rounded-lg my-2 p-2"
               name="mnozstvo"

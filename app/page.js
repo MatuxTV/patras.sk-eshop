@@ -1,8 +1,8 @@
 import Image from "next/image";
 import Nav from "./componets/nav";
 import ProductCard from "./componets/productcard";
-import { getCategory } from "@/lib/action"
-import pool from "@/app/api/postgresql"; 
+import { getCategory } from "@/lib/action";
+import pool from "@/app/api/postgresql";
 
 const ABT = (props) => {
   return (
@@ -22,7 +22,15 @@ const ABT = (props) => {
 export default async function Home() {
   const res = await pool.query('SELECT * FROM "Kategoria"');
   const category = res.rows;
-  
+
+  // Convert Uint8Array images to base64 strings
+  const serializedCategory = category?.map((cat) => ({
+    ...cat,
+    obrazok: cat.obrazok
+      ? `data:image/jpeg;base64,${Buffer.from(cat.obrazok).toString("base64")}`
+      : null,
+  }));
+
   return (
     <div className="min-h-screen flex flex-col">
       <div className="flex items-center justify-center h-full">
@@ -64,7 +72,7 @@ export default async function Home() {
         className="p-0 w-28 self-center md:w-64"
       />
       <div className="flex flex-wrap justify-center p-4 md:p-12 gap-4 md:gap-12">
-        {category?.map((item) => {
+        {serializedCategory?.map((item) => {
           return <ProductCard {...item} key={item.id} />;
         })}
       </div>

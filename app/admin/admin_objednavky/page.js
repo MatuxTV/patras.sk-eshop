@@ -10,19 +10,19 @@ const Admin_objednavky = () => {
 
   useEffect(() => {
     async function fetchData() {
-      const res = await fetch('/api/orders');
+      const res = await fetch("/api/orders");
       const json = await res.json();
       setData(json);
     }
-  
+
     async function fetchOrders() {
-      const res = await fetch('/api/skladanie');
+      const res = await fetch("/api/skladanie");
       const json = await res.json();
       setOrders(json);
     }
-  
+
     async function fetchProducts() {
-      const res = await fetch('/api/products');
+      const res = await fetch("/api/products");
       const json = await res.json();
       setProducts(json);
     }
@@ -32,19 +32,21 @@ const Admin_objednavky = () => {
   }, []);
 
   function zaokruhlitNaDveDesatinneMiesta(cislo) {
-    return parseFloat(cislo.toFixed(2));
+    return parseFloat(parseFloat(cislo || 0).toFixed(2));
   }
 
   const OrderProductList = ({ objednavka_id, orders, products }) => {
-    const relevantOrders = orders.filter((order) => order.id_objednavka === objednavka_id);
-  
+    const relevantOrders = orders.filter(
+      (order) => order.id_objednavka === objednavka_id,
+    );
+
     return (
       <div className="space-y-2">
         {relevantOrders.map((order) => {
           const product = products.find((p) => p.id === order.id_produkt);
-  
+
           if (!product) return null;
-  
+
           return (
             <div key={order.id} className="flex justify-between pb-4">
               <div className="text-gray-600">
@@ -68,24 +70,26 @@ const Admin_objednavky = () => {
 
   return (
     <div>
-        <BackButton />
+      <BackButton />
       {data.length != 0 ? (
         data
           .filter((item) => item.proces == false)
           .map((item) => {
             const round = zaokruhlitNaDveDesatinneMiesta(item.cena_objednavky);
             const inputDate = item.date_created;
-              const dateObject = new Date(inputDate);
-              const formattedDate = dateObject.toLocaleDateString("sk-SK", {
-                day: "2-digit",
-                month: "2-digit",
-                year: "numeric",
-              });
+            const dateObject = new Date(inputDate);
+            const formattedDate = dateObject.toLocaleDateString("sk-SK", {
+              day: "2-digit",
+              month: "2-digit",
+              year: "numeric",
+            });
 
             return (
               <div key={item.id + "order"} value={item.id}>
                 <div className="bg-white2 p-8 m-8 rounded-lg">
-                    <h3 className=" font-plus-jakarta text-center m-4">{formattedDate}</h3>
+                  <h3 className=" font-plus-jakarta text-center m-4">
+                    {formattedDate}
+                  </h3>
                   <h2 className="text-2xl font-bold font-plus-jakarta text-center mb-4">
                     OBJEDNÁVKA ČÍSLO <b>{item?.id}</b>
                   </h2>
@@ -117,7 +121,7 @@ const Admin_objednavky = () => {
                             {item.ulica},{item.psc},{item.mesto}
                           </p>
                           <div className=" m-8"></div>
-                          {item.poznamka.length > 0 ? (
+                          {item.poznamka?.length > 0 ? (
                             <p className="flex">{item.poznamka}</p>
                           ) : (
                             <p> - </p>
@@ -136,22 +140,22 @@ const Admin_objednavky = () => {
                           <p>IČ DPH</p>
                         </div>
                         <div className=" font-plus-jakarta text-red-600">
-                          {item.nazov_spolocnost.length > 0 ? (
+                          {item.nazov_spolocnost?.length > 0 ? (
                             <p className="flex">{item.nazov_spolocnost}</p>
                           ) : (
                             <p> - </p>
                           )}
-                          {item.ico.length > 0 ? (
+                          {item.ico?.length > 0 ? (
                             <p className="flex">{item.ico}</p>
                           ) : (
                             <p> - </p>
                           )}
-                          {item.dic.length > 0 ? (
+                          {item.dic?.length > 0 ? (
                             <p className="flex">{item.dic}</p>
                           ) : (
                             <p> - </p>
                           )}
-                          {item.icdph.length > 0 ? (
+                          {item.icdph?.length > 0 ? (
                             <p className="flex">{item.icdph}</p>
                           ) : (
                             <p> - </p>
@@ -164,11 +168,11 @@ const Admin_objednavky = () => {
                   <div className="mt-8">
                     <h3 className="text-xl font-semibold mb-2">PRODUKTY</h3>
                     <div className="space-y-2">
-                     <OrderProductList
+                      <OrderProductList
                         objednavka_id={item.id}
                         orders={orders}
                         products={products}
-                     />
+                      />
                       <div className="flex justify-between mt-4">
                         <span className="text-gray-600">CENA OBJEDNÁVKY</span>
                         <span className="font-medium text-red-600">

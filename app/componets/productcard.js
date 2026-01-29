@@ -1,21 +1,15 @@
 import Image from "next/image";
 import Link from "next/link";
-import { bufferImage } from "@/lib/exportImage";
 
-export default function ProductCard( data ) {
-
-  const imageSrc = bufferImage(data.obrazok);
+export default function ProductCard(data) {
+  // obrazok is already a base64 string when coming from server
+  const imageSrc = data.obrazok;
 
   return (
     <Link href={`/products?kategoria=${data.id}`}>
       <div className="bg-white1 w-64 md:w-96 md:h-[400px] border-2 mt-2 m-5 border-white2 rounded-2xl hover:bg-blue2">
         <div className="justify-center h-72 w-full relative my-5">
-        <Image
-          className="image"
-          src={imageSrc}
-          alt="Product Image"
-          fill
-        />
+          <Image className="image" src={imageSrc} alt="Product Image" fill />
         </div>
         <div className="w-full text-h5 relative">
           <p className="text-center relative z-20 font-plus-jakarta">
